@@ -1,0 +1,77 @@
+package com.sistema_escolar.sistema.escolar.model;
+
+import com.sistema_escolar.sistema.escolar.model.enums.DiasSemana;
+import com.sistema_escolar.sistema.escolar.model.enums.Periodo;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "disciplina")
+@ToString(exclude = {"alunoDisciplinas", "exames"})
+@EntityListeners(AuditingEntityListener.class)
+public class Disciplina {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nome")
+    private String nome;
+
+    @Column(name = "localizacao")
+    private String localizacao;
+
+    @Column(name = "alunos_matriculados")
+    private int alunosMatriculados;
+
+    @Column(name = "vagas")
+    private int vagas;
+
+    @Column(name = "dias_semana")
+    @Enumerated(EnumType.STRING)
+    private DiasSemana diaSemana;
+
+    @Column(name = "periodo")
+    @Enumerated(EnumType.STRING)
+    private Periodo periodo;
+
+    @Column(name = "hora_inicio")
+    private LocalTime horaInicio;
+
+    @Column(name = "hora_fim")
+    private LocalTime horaFim;
+
+    @JoinColumn(name = "departamento_id")
+    @ManyToOne
+    private Departamento departamento;
+
+    @JoinColumn(name = "docente_id")
+    @ManyToOne
+    private Docente docente;
+
+    @Column(name = "data_criacao")
+    @CreatedDate
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "data_atualizacao")
+    @LastModifiedDate
+    private LocalDateTime dataAtualizacao;
+
+    @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
+    private List<Exame> exames;
+
+    @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
+    private List<AlunoDisciplina> alunoDisciplinas;
+
+}

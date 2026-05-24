@@ -1,0 +1,66 @@
+package com.sistema_escolar.sistema.escolar.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "docente")
+@EntityListeners(AuditingEntityListener.class)
+public class Docente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "registro_interno")
+    private String registroInterno;
+
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "nome")
+    private String nome;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "telefone")
+    private String telefone;
+
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
+
+    @Column(name = "formacao")
+    private String formacao;
+
+    @Column(name = "salario")
+    private BigDecimal salario;
+
+    @JoinColumn(name = "departamento_id")
+    @ManyToOne
+    private Departamento departamento;
+
+    @JoinColumn(name = "user_id")
+    @OneToOne
+    private Usuario usuario;
+
+    @Column(name = "data_criacao")
+    @CreatedDate
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "data_atualizacao")
+    @LastModifiedDate
+    private LocalDateTime dataAtualizacao;
+
+    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY)
+    private List<Disciplina> disciplinas;
+}
