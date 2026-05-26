@@ -15,7 +15,4 @@ public class ResultadoRequestDTO {
 
     @NotNull(message = "campo obrigatório!")
     private Double nota;
-
-    @NotNull(message = "campo obrigatório!")
-    private Integer peso;
 }

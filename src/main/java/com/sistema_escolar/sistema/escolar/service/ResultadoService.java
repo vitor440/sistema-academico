@@ -1,18 +1,17 @@
 package com.sistema_escolar.sistema.escolar.service;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoDisciplinaResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDTO;
 import org.springframework.data.domain.Page;
 
 public interface ResultadoService {
 
-    ResultadoResponseDTO salvar(ResultadoRequestDTO requestDTO);
+    public AlunoDisciplinaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
 
-    ResultadoResponseDTO atualizar(Long id, ResultadoRequestDTO requestDTO);
+    public AlunoDisciplinaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO, Long resultadoId);
 
-    ResultadoResponseDTO obterPeloId(Long id);
+    public void deletarResultadoExame(Long id, Long resultadoId);
 
-    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection);
-
-    void deletarPeloId(Long id);
+    public ResultadoResponseDTO obterResultadoPeloId(Long id, Long resultadoId);
 }

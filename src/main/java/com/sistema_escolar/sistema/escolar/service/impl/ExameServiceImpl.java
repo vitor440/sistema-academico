@@ -44,6 +44,7 @@ public class ExameServiceImpl implements ExameService {
         exame.setData(requestDTO.getData());
         exame.setHora(requestDTO.getHora());
         exame.setTipo(requestDTO.getTipo());
+        exame.setPeso(requestDTO.getPeso());
 
         validator.validar(exame);
         return mapper.toDTO(repository.save(exame));

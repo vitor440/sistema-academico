@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -14,11 +15,13 @@ import java.net.URI;
 @RestController
 @RequestMapping("/exames")
 @RequiredArgsConstructor
-public class ExameController implements GenericController{
+public class ExameController implements com.sistema_escolar.sistema.escolar.controller.docs.ExameControllerDocs {
 
     private final ExameService service;
 
     @PostMapping
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<ExameResponseDTO> salvar(@RequestBody @Valid ExameRequestDTO dto) {
         ExameResponseDTO response = service.salvar(dto);
         URI location = getLocation(response.getId());
@@ -26,16 +29,22 @@ public class ExameController implements GenericController{
     }
 
     @PutMapping("/{id}")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<ExameResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ExameRequestDTO dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }
 
     @GetMapping("/{id}")
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE', 'ALUNO')")
     public ResponseEntity<ExameResponseDTO> obterPeloId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.obterPeloId(id));
     }
 
     @GetMapping
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE', 'ALUNO')")
     public ResponseEntity<Page<ExameResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
@@ -46,6 +55,8 @@ public class ExameController implements GenericController{
 
 
     @DeleteMapping("/{id}")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();

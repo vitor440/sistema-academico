@@ -38,6 +38,9 @@ public class Exame {
     @Enumerated(EnumType.STRING)
     private TipoExame tipo;
 
+    @Column(name = "peso")
+    private int peso;
+
     @Column(name = "data_criacao")
     @CreatedDate
     private LocalDateTime dataCriacao;

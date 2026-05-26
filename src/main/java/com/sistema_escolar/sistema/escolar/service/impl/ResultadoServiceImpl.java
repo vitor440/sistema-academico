@@ -1,83 +1,97 @@
 package com.sistema_escolar.sistema.escolar.service.impl;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoDisciplinaResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
+import com.sistema_escolar.sistema.escolar.mapper.AlunoDisciplinaMapper;
 import com.sistema_escolar.sistema.escolar.mapper.ResultadoMapper;
-import com.sistema_escolar.sistema.escolar.model.Aluno;
+import com.sistema_escolar.sistema.escolar.model.AlunoDisciplina;
 import com.sistema_escolar.sistema.escolar.model.Exame;
 import com.sistema_escolar.sistema.escolar.model.Resultado;
-import com.sistema_escolar.sistema.escolar.repository.AlunoRepository;
+import com.sistema_escolar.sistema.escolar.repository.AlunoDisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
-import com.sistema_escolar.sistema.escolar.repository.ResultadoRepository;
 import com.sistema_escolar.sistema.escolar.service.ResultadoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ResultadoServiceImpl implements ResultadoService {
 
-    private final ResultadoRepository repository;
-    private final ResultadoMapper mapper;
-    private final AlunoRepository alunoRepository;
+    private final AlunoDisciplinaRepository repository;
+    private final AlunoDisciplinaMapper mapper;
+    private final ResultadoMapper resultadoMapper;
     private final ExameRepository exameRepository;
 
-    @Override
-    public ResultadoResponseDTO salvar(ResultadoRequestDTO requestDTO) {
-        Resultado resultado = mapper.toEntity(requestDTO);
-//        Aluno aluno = getAluno(requestDTO.getAlunoId());
-        Exame exame = getExame(requestDTO.getExameId());
-//        resultado.setAluno(aluno);
-        resultado.setExame(exame);
-
-        return mapper.toDTO(repository.save(resultado));
-    }
-
-    @Override
-    public ResultadoResponseDTO atualizar(Long id, ResultadoRequestDTO requestDTO) {
-        Resultado resultado = getResultado(id);
-        resultado.setNota(requestDTO.getNota());
-//        resultado.setAluno(getAluno(requestDTO.getAlunoId()));
-        resultado.setExame(getExame(requestDTO.getExameId()));
-        resultado.setPeso(requestDTO.getPeso());
-
-        return mapper.toDTO(repository.save(resultado));
-    }
-
 
 
     @Override
-    public ResultadoResponseDTO obterPeloId(Long id) {
-        return mapper.toDTO(getResultado(id));
+    public AlunoDisciplinaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO) {
+        AlunoDisciplina alunoDisciplina = getAlunoDisciplina(id);
+        Resultado resultado = resultadoMapper.toEntity(resultadoRequestDTO);
+        resultado.setAluno(alunoDisciplina.getAluno());
+        resultado.setExame(getExame(resultadoRequestDTO.getExameId()));
+
+        resultado.setAlunoDisciplina(alunoDisciplina);
+        alunoDisciplina.addResultado(resultado);
+        return mapper.toDTO(repository.save(alunoDisciplina));
     }
 
     @Override
-    public Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
-        Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
-        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
+    public AlunoDisciplinaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO, Long resultadoId) {
+        AlunoDisciplina alunoDisciplina = getAlunoDisciplina(id);
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        for (Resultado resultado : alunoDisciplina.getResultados()) {
+            if (resultado.getId().equals(resultadoId)) {
+                resultado.setNota(resultadoRequestDTO.getNota());
+                resultado.setExame(getExame(resultadoRequestDTO.getExameId()));
+                resultado.setAluno(alunoDisciplina.getAluno());
+                resultado.setAlunoDisciplina(alunoDisciplina);
+
+                alunoDisciplina.calculaMedia(alunoDisciplina.getResultados());
+                return mapper.toDTO(repository.save(alunoDisciplina));
+            }
+        }
+
+        throw new RegistroNaoEncontradoException("Não existe resultado com ID: " + resultadoId);
     }
 
     @Override
-    public void deletarPeloId(Long id) {
-        Resultado resultado = getResultado(id);
-        repository.delete(resultado);
+    public void deletarResultadoExame(Long id, Long resultadoId) {
+        AlunoDisciplina alunoDisciplina = getAlunoDisciplina(id);
+
+        for (Resultado resultado : alunoDisciplina.getResultados()) {
+            if (resultado.getId().equals(resultadoId)) {
+
+                alunoDisciplina.getResultados().remove(resultado);
+                alunoDisciplina.calculaMedia(alunoDisciplina.getResultados());
+                repository.save(alunoDisciplina);
+                return;
+            }
+        }
+
+        throw new RegistroNaoEncontradoException("Não existe resultado com ID: " + resultadoId);
     }
 
-    private Resultado getResultado(Long id) {
+    @Override
+    public ResultadoResponseDTO obterResultadoPeloId(Long id, Long resultadoId) {
+        AlunoDisciplina alunoDisciplina = getAlunoDisciplina(id);
+
+        for (Resultado resultado : alunoDisciplina.getResultados()) {
+            if (resultado.getId().equals(resultadoId)) {
+
+                return resultadoMapper.toDTO(resultado);
+            }
+        }
+
+        throw new RegistroNaoEncontradoException("Não existe resultado com ID: " + resultadoId);
+    }
+
+
+    private AlunoDisciplina getAlunoDisciplina(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Resultado de exame não encontrado!"));
-    }
-
-    private Aluno getAluno(Long id) {
-        return alunoRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Aluno não encontrado!"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Registro não encontrado!"));
     }
 
     private Exame getExame(Long id) {

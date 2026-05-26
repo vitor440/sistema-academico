@@ -3,6 +3,7 @@ package com.sistema_escolar.sistema.escolar.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +31,8 @@ public class SecutityConfiguration {
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/swagger-ui/**", "/v3/api-docs",
-                            "/v3/api-docs/**", "/swagger-ui.html", "/auth/**", "/permissoes", "/clients").permitAll()
+                            "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                            .requestMatchers(HttpMethod.POST,"/auth/usuarios").permitAll()
                             .anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oauth2Rs -> oauth2Rs.jwt(Customizer.withDefaults()))

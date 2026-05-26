@@ -23,6 +23,4 @@ public class ResultadoResponseDTO {
     private Double nota;
 
     private Long AlunoDisciplinaId;
-
-    private Integer peso;
 }

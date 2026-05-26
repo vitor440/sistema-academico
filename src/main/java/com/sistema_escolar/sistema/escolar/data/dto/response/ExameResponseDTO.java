@@ -25,4 +25,6 @@ public class ExameResponseDTO {
     private LocalTime hora;
 
     private TipoExame tipo;
+
+    private Integer peso;
 }

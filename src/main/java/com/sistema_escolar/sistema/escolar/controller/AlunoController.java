@@ -14,11 +14,12 @@ import java.net.URI;
 @RestController
 @RequestMapping("/alunos")
 @RequiredArgsConstructor
-public class AlunoController implements GenericController{
+public class AlunoController implements com.sistema_escolar.sistema.escolar.controller.docs.AlunoControllerDocs {
 
     private final AlunoService service;
 
     @PostMapping
+    @Override
     public ResponseEntity<AlunoResponseDTO> salvar(@RequestBody @Valid AlunoRequestDTO dto) {
         AlunoResponseDTO response = service.salvar(dto);
         URI location = getLocation(response.getId());
@@ -26,16 +27,19 @@ public class AlunoController implements GenericController{
     }
 
     @PutMapping("/{id}")
+    @Override
     public ResponseEntity<AlunoResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid AlunoRequestDTO dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }
 
     @GetMapping("/{id}")
+    @Override
     public ResponseEntity<AlunoResponseDTO> obterPeloId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.obterPeloId(id));
     }
 
     @GetMapping
+    @Override
     public ResponseEntity<Page<AlunoResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
@@ -46,6 +50,7 @@ public class AlunoController implements GenericController{
 
 
     @DeleteMapping("/{id}")
+    @Override
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();

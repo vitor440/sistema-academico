@@ -9,3 +9,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+springdoc:
+  override-with-generic-response: false

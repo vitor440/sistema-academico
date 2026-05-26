@@ -30,9 +30,6 @@ public class Resultado {
     @Column(name = "nota")
     private Double nota;
 
-    @Column(name = "peso")
-    private int peso;
-
     @JoinColumn(name = "aluno_disciplina_id")
     @ManyToOne
     private AlunoDisciplina alunoDisciplina;

@@ -26,4 +26,7 @@ public class ExameRequestDTO {
 
     @NotNull(message = "campo obrigatório!")
     private LocalTime hora;
+
+    @NotNull(message = "campo obrigatório!")
+    private Integer peso;
 }

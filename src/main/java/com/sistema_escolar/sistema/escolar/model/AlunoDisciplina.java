@@ -64,8 +64,8 @@ public class AlunoDisciplina {
         int somaPesos = 0;
 
         for (Resultado resultado : resultados) {
-            soma += resultado.getNota() * resultado.getPeso();
-            somaPesos += resultado.getPeso();
+            soma += resultado.getNota() * resultado.getExame().getPeso();
+            somaPesos += resultado.getExame().getPeso();
         }
 
         this.media = soma/somaPesos;
