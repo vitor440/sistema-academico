@@ -4,6 +4,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.UsuarioRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.UsuarioResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.UsuarioMapper;
+import com.sistema_escolar.sistema.escolar.model.Permission;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.PermissionRepository;
 import com.sistema_escolar.sistema.escolar.repository.UsuarioRepository;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static org.springframework.data.domain.Sort.Direction;
 
@@ -34,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO salvar(UsuarioRequestDTO requestDTO) {
+    public UsuarioResponseDTO salvar(UsuarioRequestDTO requestDTO, String role) {
         Usuario usuario = mapper.toEntity(requestDTO);
         usuario.setEnabled(true);
         usuario.setAccountNonExpired(true);
@@ -42,6 +45,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setCredentialsNonExpired(true);
         usuario.setSenha(passwordEncoder.encode(usuario.getPassword()));
 
+        Permission permission = permissionRepository.findByRole(role)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Não existe permission com role: " + role));
+
+        usuario.setPermissions(List.of(permission));
         validator.validar(usuario);
         return mapper.toDTO(repository.save(usuario));
     }

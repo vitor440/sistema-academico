@@ -22,8 +22,9 @@ public class AuthController implements AuthControllerDocs {
 
     @PostMapping("/usuarios")
     @Override
-    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Valid UsuarioRequestDTO dto) {
-        UsuarioResponseDTO response = service.salvar(dto);
+    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Valid UsuarioRequestDTO dto,
+                                                     @RequestParam(value = "role", defaultValue = "ALUNO") String role) {
+        UsuarioResponseDTO response = service.salvar(dto, role);
         URI location = getLocation(response.getId());
         return ResponseEntity.created(location).body(response);
     }

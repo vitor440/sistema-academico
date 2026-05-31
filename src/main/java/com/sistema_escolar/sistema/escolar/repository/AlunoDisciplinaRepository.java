@@ -14,7 +14,9 @@ public interface AlunoDisciplinaRepository extends JpaRepository<AlunoDisciplina
 
     Optional<AlunoDisciplina> findByAlunoAndDisciplina(Aluno aluno, Disciplina disciplina);
 
-    @Query(" SELECT AD FROM AlunoDisciplina AD WHERE AD.aluno = :aluno AND AD.disciplina = :disciplina AND AD.disciplina.horaInicio = :horaInicio")
-    Optional<AlunoDisciplina> findByAlunoAndDisciplinaAndHorario(Aluno aluno, Disciplina disciplina, LocalTime horaInicio);
+    @Query(" SELECT AD FROM AlunoDisciplina AD WHERE AD.aluno = :aluno AND AD.disciplina.horaInicio = :horaInicio")
+    Optional<AlunoDisciplina> findByAlunoAndHorario(Aluno aluno, LocalTime horaInicio);
+
+
 
 }

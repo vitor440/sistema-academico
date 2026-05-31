@@ -2,22 +2,21 @@ package com.sistema_escolar.sistema.escolar.data.dto.request;
 
 import com.sistema_escolar.sistema.escolar.model.enums.Areas;
 import com.sistema_escolar.sistema.escolar.model.enums.Periodo;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class CursoRequestDTO {
 
     @NotBlank(message = "campo obrigatório!")
+    @Size(min = 10, max = 300, message = "nome do curso deve ter entre 10 a 300 dígitos!")
     private String nome;
 
     @NotNull(message = "campo obrigatório!")
     private Areas area;
 
     @NotNull(message = "campo obrigatório!")
+    @PositiveOrZero
     private int quantidadeAlunos;
 
     @NotNull(message = "campo obrigatório!")

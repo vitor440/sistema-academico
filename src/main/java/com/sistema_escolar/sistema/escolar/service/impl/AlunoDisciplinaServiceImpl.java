@@ -34,7 +34,6 @@ public class AlunoDisciplinaServiceImpl implements AlunoDisciplinaService {
     private final AlunoRepository alunoRepository;
     private final DisciplinaRepository disciplinaRepository;
     private final AlunoDisciplinaValidator validator;
-    private final ResultadoMapper resultadoMapper;
     private final ExameRepository exameRepository;
 
     @Override
@@ -48,18 +47,9 @@ public class AlunoDisciplinaServiceImpl implements AlunoDisciplinaService {
         alunoDisciplina.calculaMedia(aluno.getResultados());
 
         validator.validar(alunoDisciplina);
-        return mapper.toDTO(repository.save(alunoDisciplina));
-    }
+        disciplina.setVagas(disciplina.getVagas() - 1); // decrementa uma vaga
 
-    @Override
-    public AlunoDisciplinaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO) {
-        AlunoDisciplina alunoDisciplina = getAlunoDisciplina(id);
-        Resultado resultado = resultadoMapper.toEntity(resultadoRequestDTO);
-        resultado.setAluno(alunoDisciplina.getAluno());
-        resultado.setExame(getExame(resultadoRequestDTO.getExameId()));
-
-        resultado.setAlunoDisciplina(alunoDisciplina);
-        alunoDisciplina.addResultado(resultado);
+        disciplina.setAlunosMatriculados(disciplina.getAlunosMatriculados() + 1); // acrescenta + 1 aluno matriculado na disciplina
         return mapper.toDTO(repository.save(alunoDisciplina));
     }
 
@@ -71,7 +61,21 @@ public class AlunoDisciplinaServiceImpl implements AlunoDisciplinaService {
 
         Aluno aluno = getAluno(requestDTO.getAlunoId());
         alunoDisciplina.setAluno(aluno);
-        alunoDisciplina.setDisciplina(getDisciplina(requestDTO.getDisciplinaId()));
+        Disciplina disciplina = getDisciplina(requestDTO.getDisciplinaId());
+
+        // se a disciplina for atualizada, vagas e alunos matriculados deverão ser ajustados
+        if(!disciplina.equals(alunoDisciplina.getDisciplina())) {
+
+            Disciplina disciplina2 = alunoDisciplina.getDisciplina();
+            disciplina2.setVagas(disciplina2.getVagas() + 1);
+            disciplina2.setAlunosMatriculados(disciplina2.getAlunosMatriculados() - 1);
+            disciplinaRepository.save(disciplina2);
+
+            disciplina.setVagas(disciplina.getVagas() - 1);
+            disciplina.setAlunosMatriculados(disciplina.getAlunosMatriculados() + 1);
+        }
+
+        alunoDisciplina.setDisciplina(disciplina);
         alunoDisciplina.setFaltas(requestDTO.getFaltas());
         alunoDisciplina.calculaMedia(aluno.getResultados());
         alunoDisciplina.setStatus(requestDTO.getStatus());

@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.config;
 
+import com.sistema_escolar.sistema.escolar.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.HashMap;
@@ -24,17 +26,18 @@ public class SecutityConfiguration {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter filter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/swagger-ui/**", "/v3/api-docs",
-                            "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                            "/v3/api-docs/**", "/swagger-ui.html", "/clients").permitAll()
                             .requestMatchers(HttpMethod.POST,"/auth/usuarios").permitAll()
                             .anyRequest().authenticated();
                 })
+                .addFilterAfter(filter, BearerTokenAuthenticationFilter.class)
                 .oauth2ResourceServer(oauth2Rs -> oauth2Rs.jwt(Customizer.withDefaults()))
 //                .cors(cors -> cors.disable())
                 .build();

@@ -12,6 +12,7 @@ import com.sistema_escolar.sistema.escolar.model.Resultado;
 import com.sistema_escolar.sistema.escolar.repository.AlunoDisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import com.sistema_escolar.sistema.escolar.service.ResultadoService;
+import com.sistema_escolar.sistema.escolar.validator.ResultadoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     private final AlunoDisciplinaMapper mapper;
     private final ResultadoMapper resultadoMapper;
     private final ExameRepository exameRepository;
+    private final ResultadoValidator validator;
 
 
 
@@ -32,9 +34,11 @@ public class ResultadoServiceImpl implements ResultadoService {
         Resultado resultado = resultadoMapper.toEntity(resultadoRequestDTO);
         resultado.setAluno(alunoDisciplina.getAluno());
         resultado.setExame(getExame(resultadoRequestDTO.getExameId()));
+        validator.validar(resultado);
 
         resultado.setAlunoDisciplina(alunoDisciplina);
         alunoDisciplina.addResultado(resultado);
+
         return mapper.toDTO(repository.save(alunoDisciplina));
     }
 
@@ -47,8 +51,9 @@ public class ResultadoServiceImpl implements ResultadoService {
                 resultado.setNota(resultadoRequestDTO.getNota());
                 resultado.setExame(getExame(resultadoRequestDTO.getExameId()));
                 resultado.setAluno(alunoDisciplina.getAluno());
-                resultado.setAlunoDisciplina(alunoDisciplina);
+                validator.validar(resultado);
 
+                resultado.setAlunoDisciplina(alunoDisciplina);
                 alunoDisciplina.calculaMedia(alunoDisciplina.getResultados());
                 return mapper.toDTO(repository.save(alunoDisciplina));
             }

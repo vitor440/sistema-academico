@@ -27,8 +27,6 @@ public class AlunoResponseDTO {
 
     private LocalDate dataNascimento;
 
-    private Integer cursoPeriodo;
-
     private Long cursoId;
 
     private Long usuarioId;

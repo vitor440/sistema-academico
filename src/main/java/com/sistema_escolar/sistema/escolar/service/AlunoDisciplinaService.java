@@ -10,7 +10,6 @@ public interface AlunoDisciplinaService {
 
     AlunoDisciplinaResponseDTO salvar(AlunoDisciplinaRequestDTO requestDTO);
 
-    AlunoDisciplinaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
 
     AlunoDisciplinaResponseDTO atualizar(Long id, AlunoDisciplinaRequestDTO requestDTO);
 

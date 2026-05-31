@@ -31,7 +31,8 @@ public interface AuthControllerDocs extends GenericController {
             @ApiResponse(description = "Unprocessable Entity", responseCode = "422",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Valid UsuarioRequestDTO dto);
+    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Valid UsuarioRequestDTO dto,
+                                                     @RequestParam(value = "role", defaultValue = "ALUNO") String role) ;
 
     @Operation(summary = "listar usuários", description = "Lista todos os usuários")
     @ApiResponse(responseCode = "200")

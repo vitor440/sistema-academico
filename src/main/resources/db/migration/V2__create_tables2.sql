@@ -6,7 +6,6 @@ create table aluno (
                        email varchar(300) not null,
                        telefone varchar(80) not null,
                        data_nascimento date not null,
-                       curso_periodo integer,
                        curso_id bigint references curso(id),
                        user_id bigint references usuario(id),
                        data_criacao timestamp,

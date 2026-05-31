@@ -11,7 +11,7 @@ public interface UsuarioService {
 
     Usuario findByUsername(String username);
 
-    UsuarioResponseDTO salvar(UsuarioRequestDTO requestDTO);
+    UsuarioResponseDTO salvar(UsuarioRequestDTO requestDTO, String role);
 
     UsuarioResponseDTO atualizar(Long id, UsuarioRequestDTO requestDTO);
 

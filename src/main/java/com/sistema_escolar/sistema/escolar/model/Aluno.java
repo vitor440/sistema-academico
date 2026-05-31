@@ -40,9 +40,6 @@ public class Aluno {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
-    @Column(name = "curso_periodo")
-    private Integer cursoPeriodo;
-
     @JoinColumn(name = "curso_id")
     @ManyToOne
     private Curso curso;

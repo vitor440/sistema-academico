@@ -1,10 +1,13 @@
 package com.sistema_escolar.sistema.escolar.controller.handle;
 
+import com.sistema_escolar.sistema.escolar.data.dto.ErroCampo;
 import com.sistema_escolar.sistema.escolar.data.dto.ErroResposta;
 import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroDuplicadoException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,9 +36,17 @@ public class GlobalExceptionHandler {
         return new ErroResposta(e.getMessage(), HttpStatus.CONFLICT.value(), List.of());
     }
 
-    @ExceptionHandler(MethodNotAllowedException.class)
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ErroResposta MethodNotAllowedExceptionHandler(Exception e) {
-        return new ErroResposta(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED.value(), List.of());
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErroResposta MethodArgumentNotValidExceptioHandler(MethodArgumentNotValidException e) {
+
+        List<FieldError> fieldErrors = e.getFieldErrors();
+
+        List<ErroCampo> errosCampos = fieldErrors
+                .stream()
+                .map(fieldError -> new ErroCampo(fieldError.getField(), fieldError.getDefaultMessage()))
+                .toList();
+
+        return new ErroResposta(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY.value(), errosCampos);
     }
 }

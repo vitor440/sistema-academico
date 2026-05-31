@@ -54,8 +54,7 @@ public class AuthorizationServerConfiguration {
                             new LoginUrlAuthenticationEntryPoint("/login"),
                             new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                     );
-                })
-                .oauth2ResourceServer(oauth2Rs -> oauth2Rs.jwt(Customizer.withDefaults()));
+                });
 
         return http.build();
     }

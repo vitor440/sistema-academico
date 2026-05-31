@@ -17,16 +17,12 @@ public class AlunoDisciplinaValidator {
     private final AlunoDisciplinaRepository repository;
 
     public void validar(AlunoDisciplina alunoDisciplina) {
-        if (registroDuplicado(alunoDisciplina)) {
-            throw new RegistroDuplicadoException("");
-        }
-
         if (alunoDisciplina.getDisciplina().getVagas() == 0) {
             throw new RegistroConflitanteException("não há vagas para a disciplina: " + alunoDisciplina.getDisciplina().getNome());
         }
 
         if (verificaConflitoDeHorarios(alunoDisciplina)) {
-            throw new RegistroConflitanteException("Aluno já está matriculado em uma disciplina no horário: " + alunoDisciplina.getDisciplina().getHoraInicio());
+          throw new RegistroConflitanteException("Aluno já está matriculado em uma disciplina no horário: " + alunoDisciplina.getDisciplina().getHoraInicio());
         }
     }
 
@@ -42,8 +38,8 @@ public class AlunoDisciplinaValidator {
     }
 
     public boolean verificaConflitoDeHorarios(AlunoDisciplina alunoDisciplina) {
-        Optional<AlunoDisciplina> alunoDisciplinaOpt = repository.findByAlunoAndDisciplinaAndHorario(alunoDisciplina.getAluno(),
-                alunoDisciplina.getDisciplina(), alunoDisciplina.getDisciplina().getHoraInicio());
+        Optional<AlunoDisciplina> alunoDisciplinaOpt = repository.findByAlunoAndHorario(alunoDisciplina.getAluno(),
+                 alunoDisciplina.getDisciplina().getHoraInicio());
 
         return alunoDisciplinaOpt.isPresent();
     }
