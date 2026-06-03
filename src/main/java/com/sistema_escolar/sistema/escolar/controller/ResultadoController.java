@@ -1,7 +1,7 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoDisciplinaResponseDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDTO;
 import com.sistema_escolar.sistema.escolar.service.ResultadoService;
 import jakarta.validation.Valid;
@@ -20,18 +20,16 @@ public class ResultadoController implements com.sistema_escolar.sistema.escolar.
     @PostMapping("/{id}/resultados")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<AlunoDisciplinaResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto) {
-        AlunoDisciplinaResponseDTO response = service.salvarResultadoExame(id, dto);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<MatriculaResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto) {
+        return ResponseEntity.ok(service.salvarResultadoExame(id, dto));
     }
 
     @PutMapping("/{id}/resultados/{resultadoId}")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<AlunoDisciplinaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto,
-                                                                @PathVariable("resultadoId") Long resultadoId) {
-        AlunoDisciplinaResponseDTO response = service.atualizarResultadoExame(id, dto, resultadoId);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto,
+                                                          @PathVariable("resultadoId") Long resultadoId) {
+        return ResponseEntity.ok(service.atualizarResultadoExame(id, dto, resultadoId));
     }
 
     @DeleteMapping("/{id}/resultados/{resultadoId}")
@@ -46,8 +44,7 @@ public class ResultadoController implements com.sistema_escolar.sistema.escolar.
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE', 'ALUNO')")
     public ResponseEntity<ResultadoResponseDTO> obterResultadoPeloId(@PathVariable("id") Long id, @PathVariable("resultadoId") Long resultadoId) {
-        ResultadoResponseDTO response = service.obterResultadoPeloId(id, resultadoId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(service.obterResultadoPeloId(id, resultadoId));
     }
 
 

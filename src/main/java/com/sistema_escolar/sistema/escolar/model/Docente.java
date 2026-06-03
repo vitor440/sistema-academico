@@ -50,7 +50,7 @@ public class Docente {
     private Departamento departamento;
 
     @JoinColumn(name = "user_id")
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Usuario usuario;
 
     @Column(name = "data_criacao")

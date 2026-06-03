@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class PermissionRequestDTO {
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 100, message = "role deve ter entre 10 à 300 dígitos")
+    @Size(min = 2, max = 100, message = "role deve ter entre 10 à 300 dígitos")
     private String role;
 
 }

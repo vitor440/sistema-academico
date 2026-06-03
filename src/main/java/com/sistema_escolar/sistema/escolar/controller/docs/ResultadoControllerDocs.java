@@ -3,10 +3,7 @@ package com.sistema_escolar.sistema.escolar.controller.docs;
 import com.sistema_escolar.sistema.escolar.controller.GenericController;
 import com.sistema_escolar.sistema.escolar.data.dto.ErroResposta;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoDisciplinaResponseDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +26,7 @@ public interface ResultadoControllerDocs extends GenericController {
             @ApiResponse(description = "Unprocessable Entity", responseCode = "422",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<AlunoDisciplinaResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto);
+    ResponseEntity<MatriculaResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto);
 
 
     @Operation(summary = "atualizar resultado de exame", description = "Atualiza um resultado de exame pelo ID.")
@@ -43,8 +40,8 @@ public interface ResultadoControllerDocs extends GenericController {
             @ApiResponse(description = "resultado não encontrado", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<AlunoDisciplinaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto,
-                                                         @PathVariable("resultadoId") Long resultadoId);
+    ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto,
+                                                   @PathVariable("resultadoId") Long resultadoId);
 
 
     @Operation(summary = "obter resultado de exame", description = "Obtém um resultado de exame pelo ID.")

@@ -6,12 +6,12 @@ import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteExceptio
 import com.sistema_escolar.sistema.escolar.exception.RegistroDuplicadoException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.server.MethodNotAllowedException;
 
 import java.util.List;
 
@@ -32,13 +32,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RegistroConflitanteException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErroResposta RegistroConflitanteExceptionHandler(Exception e) {
+    public ErroResposta registroConflitanteExceptionHandler(Exception e) {
         return new ErroResposta(e.getMessage(), HttpStatus.CONFLICT.value(), List.of());
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErroResposta accessControlExceptionHandler(Exception e) {
+        return new ErroResposta(e.getMessage(), HttpStatus.UNAUTHORIZED.value(), List.of());
+    }
+
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ErroResposta MethodArgumentNotValidExceptioHandler(MethodArgumentNotValidException e) {
+    public ErroResposta methodArgumentNotValidExceptioHandler(MethodArgumentNotValidException e) {
 
         List<FieldError> fieldErrors = e.getFieldErrors();
 
@@ -47,6 +55,6 @@ public class GlobalExceptionHandler {
                 .map(fieldError -> new ErroCampo(fieldError.getField(), fieldError.getDefaultMessage()))
                 .toList();
 
-        return new ErroResposta(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY.value(), errosCampos);
+        return new ErroResposta("Erro de validação", HttpStatus.UNPROCESSABLE_ENTITY.value(), errosCampos);
     }
 }

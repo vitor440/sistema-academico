@@ -18,16 +18,20 @@ public class DocenteRequestDTO {
     private String cpf;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 300, message = "nome deve ter entre 10 à 300 dígitos")
+    @Size(min = 4, max = 300, message = "nome deve ter entre 10 à 300 dígitos")
     private String nome;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 300, message = "email deve ter entre 10 à 300 dígitos")
+    @Size(min = 4, max = 300, message = "email deve ter entre 10 à 300 dígitos")
     private String email;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 300, message = "telefone deve ter entre 8 à 80 dígitos")
+    @Size(min = 8, max = 300, message = "telefone deve ter entre 8 à 80 dígitos")
     private String telefone;
+
+    @NotBlank(message = "campo obrigatório!")
+    @Size(min = 8, max = 300, message = "senha deve ter entre 8 à 80 dígitos")
+    private String senha;
 
     @NotNull(message = "campo obrigatório!")
     @Past
@@ -43,7 +47,4 @@ public class DocenteRequestDTO {
 
     @NotNull(message = "campo obrigatório!")
     private Long departamentoId;
-
-    @NotNull(message = "campo obrigatório!")
-    private Long usuarioId;
 }

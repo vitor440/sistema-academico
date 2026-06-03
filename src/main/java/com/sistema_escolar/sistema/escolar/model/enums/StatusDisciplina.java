@@ -1,7 +1,7 @@
 package com.sistema_escolar.sistema.escolar.model.enums;
 
 public enum StatusDisciplina {
-    PENDENTE,
+    CURSANDO,
     TRANCADO,
     REPROVADO_POR_NOTA,
     REPROVADO_POR_FALTA,

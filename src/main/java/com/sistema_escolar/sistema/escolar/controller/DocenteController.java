@@ -1,6 +1,9 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
+import com.sistema_escolar.sistema.escolar.controller.docs.DocenteControllerDocs;
+import com.sistema_escolar.sistema.escolar.data.dto.request.AlunoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.request.DocenteRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DocenteResponseDTO;
 import com.sistema_escolar.sistema.escolar.service.DocenteService;
 import jakarta.validation.Valid;
@@ -15,7 +18,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/docentes")
 @RequiredArgsConstructor
-public class DocenteController implements com.sistema_escolar.sistema.escolar.controller.docs.DocenteControllerDocs {
+public class DocenteController implements DocenteControllerDocs {
 
     private final DocenteService service;
 
@@ -60,5 +63,19 @@ public class DocenteController implements com.sistema_escolar.sistema.escolar.co
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/me")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<DocenteResponseDTO> atualizarDocenteLogado(DocenteRequestDTO dto) {
+        return ResponseEntity.ok(service.atualizarDocenteLogado(dto));
+    }
+
+    @GetMapping("/me")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<DocenteResponseDTO> obterDocenteLogado() {
+        return ResponseEntity.ok(service.obterDocenteLogado());
     }
 }

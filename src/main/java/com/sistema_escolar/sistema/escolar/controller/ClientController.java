@@ -17,7 +17,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/clients")
 @RequiredArgsConstructor
-// @PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class ClientController implements com.sistema_escolar.sistema.escolar.controller.docs.ClientControllerDocs {
 
     private final ClientService service;

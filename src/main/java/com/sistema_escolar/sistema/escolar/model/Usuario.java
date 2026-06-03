@@ -52,6 +52,12 @@ public class Usuario implements UserDetails {
     @LastModifiedDate
     private LocalDateTime dataAtualizacao;
 
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.EAGER)
+    private Aluno aluno;
+
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.EAGER)
+    private Docente docente;
+
 
     @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "usuario_id"),
@@ -95,5 +101,12 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    public List<String> getRoles() {
+        return this.permissions
+                .stream()
+                .map(permission -> permission.getRole())
+                .toList();
     }
 }

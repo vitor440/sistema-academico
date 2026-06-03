@@ -10,7 +10,9 @@ import com.sistema_escolar.sistema.escolar.model.Docente;
 import com.sistema_escolar.sistema.escolar.repository.DepartamentoRepository;
 import com.sistema_escolar.sistema.escolar.repository.DisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.DocenteRepository;
+import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
+import com.sistema_escolar.sistema.escolar.service.DocenteService;
 import com.sistema_escolar.sistema.escolar.validator.DisciplinaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,15 +27,15 @@ public class DisciplinaServiceImpl implements DisciplinaService {
 
     private final DisciplinaRepository repository;
     private final DisciplinaMapper mapper;
-    private final DocenteRepository docenteRepository;
-    private final DepartamentoRepository departamentoRepository;
+    private final DocenteService docenteService;
+    private final DepartamentoService departamentoService;
     private final DisciplinaValidator validator;
 
     @Override
     public DisciplinaResponseDTO salvar(DisciplinaRequestDTO requestDTO) {
         Disciplina disciplina = mapper.toEntity(requestDTO);
-        Departamento departamento = getDepartamento(requestDTO.getDepartamentoId());
-        Docente docente = getDocente(requestDTO.getDocenteId());
+        Departamento departamento = departamentoService.getDepartamento(requestDTO.getDepartamentoId());
+        Docente docente = docenteService.getDocente(requestDTO.getDocenteId());
         disciplina.setDepartamento(departamento);
         disciplina.setDocente(docente);
         disciplina.setHoraFim(disciplina.getHoraInicio().plusHours(2));
@@ -53,8 +55,8 @@ public class DisciplinaServiceImpl implements DisciplinaService {
         disciplina.setHoraInicio(requestDTO.getHoraInicio());
         disciplina.setHoraFim(disciplina.getHoraInicio().plusHours(2));
         disciplina.setPeriodo(requestDTO.getPeriodo());
-        disciplina.setDepartamento(getDepartamento(requestDTO.getDepartamentoId()));
-        disciplina.setDocente(getDocente(requestDTO.getDocenteId()));
+        disciplina.setDepartamento(departamentoService.getDepartamento(requestDTO.getDepartamentoId()));
+        disciplina.setDocente(docenteService.getDocente(requestDTO.getDocenteId()));
 
         validator.validar(disciplina);
         return mapper.toDTO(repository.save(disciplina));
@@ -79,18 +81,9 @@ public class DisciplinaServiceImpl implements DisciplinaService {
         repository.delete(disciplina);
     }
 
-    private Disciplina getDisciplina(Long id) {
+    @Override
+    public Disciplina getDisciplina(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Disciplina não encontrada!"));
-    }
-
-    private Docente getDocente(Long id) {
-        return docenteRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Docente não encontrado!"));
-    }
-
-    private Departamento getDepartamento(Long id) {
-        return departamentoRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Departamento não encontrado!"));
     }
 }

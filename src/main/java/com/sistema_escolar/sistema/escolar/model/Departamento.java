@@ -41,4 +41,7 @@ public class Departamento {
 
     @OneToMany(mappedBy = "departamento", fetch = FetchType.LAZY)
     private List<Disciplina> disciplinas;
+
+    @OneToMany(mappedBy = "departamento", fetch = FetchType.LAZY)
+    private List<Curso> cursos;
 }

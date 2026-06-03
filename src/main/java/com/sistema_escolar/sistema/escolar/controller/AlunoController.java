@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
+import com.sistema_escolar.sistema.escolar.controller.docs.AlunoControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.AlunoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
 import com.sistema_escolar.sistema.escolar.service.AlunoService;
@@ -15,13 +16,13 @@ import java.net.URI;
 @RestController
 @RequestMapping("/alunos")
 @RequiredArgsConstructor
-public class AlunoController implements com.sistema_escolar.sistema.escolar.controller.docs.AlunoControllerDocs {
+public class AlunoController implements AlunoControllerDocs {
 
     private final AlunoService service;
 
     @PostMapping
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AlunoResponseDTO> salvar(@RequestBody @Valid AlunoRequestDTO dto) {
         AlunoResponseDTO response = service.salvar(dto);
         URI location = getLocation(response.getId());
@@ -30,7 +31,7 @@ public class AlunoController implements com.sistema_escolar.sistema.escolar.cont
 
     @PutMapping("/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AlunoResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid AlunoRequestDTO dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }
@@ -53,12 +54,27 @@ public class AlunoController implements com.sistema_escolar.sistema.escolar.cont
     }
 
 
-
     @DeleteMapping("/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/me")
+    @Override
+    @PreAuthorize("hasRole('ALUNO')")
+    public ResponseEntity<AlunoResponseDTO> atualizarAlunoLogado(AlunoRequestDTO dto) {
+        return ResponseEntity.ok(service.atualizarAlunoLogado(dto));
+    }
+
+    @GetMapping("/me")
+    @Override
+    @PreAuthorize("hasRole('ALUNO')")
+    public ResponseEntity<AlunoResponseDTO> obterAlunoLogado() {
+        return ResponseEntity.ok(service.obterAlunoLogado());
+    }
+
+
 }

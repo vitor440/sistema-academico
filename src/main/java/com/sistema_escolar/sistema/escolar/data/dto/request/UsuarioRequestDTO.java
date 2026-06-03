@@ -15,11 +15,11 @@ public class UsuarioRequestDTO {
     private String username;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 15, max = 100)
+    @Size(min = 8, max = 100)
     private String email;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 4, max = 50)
+    @Size(min = 8, max = 50)
     private String senha;
 
 }

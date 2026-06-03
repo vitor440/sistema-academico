@@ -15,14 +15,14 @@ import java.util.List;
 public class DepartamentoRequestDTO {
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 100, message = "nome do departamento deve ter entre 10 à 100 dígitos")
+    @Size(min = 4, max = 100, message = "nome do departamento deve ter entre 10 à 100 dígitos")
     private String nome;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 60, message = "bloco deve ter entre 10 à 60 dígitos")
+    @Size(min = 4, max = 60, message = "bloco deve ter entre 10 à 60 dígitos")
     private String bloco;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 40, message = "sigla deve ter entre 10 à 40 dígitos")
+    @Size(min = 3, max = 40, message = "sigla deve ter entre 10 à 40 dígitos")
     private String sigla;
 }

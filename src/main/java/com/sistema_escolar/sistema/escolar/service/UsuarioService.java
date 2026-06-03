@@ -11,13 +11,17 @@ public interface UsuarioService {
 
     Usuario findByUsername(String username);
 
-    UsuarioResponseDTO salvar(UsuarioRequestDTO requestDTO, String role);
+    UsuarioResponseDTO salvarUsuarioAdmin(UsuarioRequestDTO requestDTO);
 
-    UsuarioResponseDTO atualizar(Long id, UsuarioRequestDTO requestDTO);
+    Usuario salvarUsuario(Usuario usuario, String role);
+
+    UsuarioResponseDTO atualizarUsuarioAdmin(Long id, UsuarioRequestDTO requestDTO);
 
     UsuarioResponseDTO obterPeloId(Long id);
 
     Page<UsuarioResponseDTO> listar(int pagina, int tamanho, String sortDirection);
 
     void deletarPeloId(Long id);
+
+    Usuario getUsuario(Long id);
 }

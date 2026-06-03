@@ -43,6 +43,7 @@ create table curso (
                        quantidade_alunos integer not null,
                        periodo varchar(50) not null,
                        quantidade_periodos integer not null,
+                       departamento_id bigint references departamento(id),
                        data_criacao timestamp,
                        data_atualizacao timestamp
 

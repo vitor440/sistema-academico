@@ -14,10 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "auth")
 public interface AuthControllerDocs extends GenericController {
@@ -31,8 +28,7 @@ public interface AuthControllerDocs extends GenericController {
             @ApiResponse(description = "Unprocessable Entity", responseCode = "422",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Valid UsuarioRequestDTO dto,
-                                                     @RequestParam(value = "role", defaultValue = "ALUNO") String role) ;
+    ResponseEntity<UsuarioResponseDTO> salvarUsuarioAdmin(@RequestBody @Valid UsuarioRequestDTO dto) ;
 
     @Operation(summary = "listar usuários", description = "Lista todos os usuários")
     @ApiResponse(responseCode = "200")
@@ -40,4 +36,11 @@ public interface AuthControllerDocs extends GenericController {
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+
+
+    ResponseEntity<UsuarioResponseDTO> atualizarUsuarioAdmin(@RequestBody @Valid UsuarioRequestDTO dto, @PathVariable("id") Long id);
+
+    ResponseEntity<UsuarioResponseDTO> obterPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<UsuarioResponseDTO> deletarPeloId(@PathVariable("id") Long id);
 }

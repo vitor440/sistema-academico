@@ -28,6 +28,6 @@ public class UsuarioResponseDTO {
 
     private boolean enabled;
 
-    private List<Permission> permissions;
+    private List<PermissionResponseDTO> permissions;
 
 }

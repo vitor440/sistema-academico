@@ -33,8 +33,7 @@ public class SecutityConfiguration {
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/swagger-ui/**", "/v3/api-docs",
-                            "/v3/api-docs/**", "/swagger-ui.html", "/clients").permitAll()
-                            .requestMatchers(HttpMethod.POST,"/auth/usuarios").permitAll()
+                            "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                             .anyRequest().authenticated();
                 })
                 .addFilterAfter(filter, BearerTokenAuthenticationFilter.class)

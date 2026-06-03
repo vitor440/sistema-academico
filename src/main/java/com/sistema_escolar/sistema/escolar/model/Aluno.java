@@ -45,7 +45,7 @@ public class Aluno {
     private Curso curso;
 
     @JoinColumn(name = "user_id")
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Usuario usuario;
 
     @Column(name = "data_criacao")
@@ -60,7 +60,14 @@ public class Aluno {
     private List<Resultado> resultados;
 
     @OneToMany(mappedBy = "aluno")
-    private List<AlunoDisciplina> alunoDisciplinas;
+    private List<Matricula> matriculas;
 
 
+
+    public List<Disciplina> getDisciplinas() {
+        return this.matriculas
+                .stream()
+                .map(alunoDisciplina -> alunoDisciplina.getDisciplina())
+                .toList();
+    }
 }

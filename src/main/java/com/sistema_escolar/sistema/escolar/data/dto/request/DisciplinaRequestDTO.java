@@ -11,11 +11,11 @@ import java.time.LocalTime;
 public class DisciplinaRequestDTO {
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 100, message = "nome da disciplina deve ter entre 10 à 100 dígitos!")
+    @Size(min = 4, max = 100, message = "nome da disciplina deve ter entre 10 à 100 dígitos!")
     private String nome;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 60, message = "localizacao deve ter entre 10 à 60 dígitos!")
+    @Size(min = 4, max = 60, message = "localizacao deve ter entre 10 à 60 dígitos!")
     private String localizacao;
 
     @NotNull(message = "campo obrigatório!")

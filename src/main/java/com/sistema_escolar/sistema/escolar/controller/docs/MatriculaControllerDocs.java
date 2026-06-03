@@ -2,11 +2,10 @@ package com.sistema_escolar.sistema.escolar.controller.docs;
 
 import com.sistema_escolar.sistema.escolar.controller.GenericController;
 import com.sistema_escolar.sistema.escolar.data.dto.ErroResposta;
-import com.sistema_escolar.sistema.escolar.data.dto.request.AlunoRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.request.DocenteRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.DocenteResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,65 +17,64 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "aluno-disciplina")
+public interface MatriculaControllerDocs extends GenericController {
 
-@Tag(name = "Docentes")
-public interface DocenteControllerDocs extends GenericController {
-
-
-    @Operation(summary = "salvar docente", description = "Salva um docente na base de dados.")
+    @Operation(summary = "registrar matrícula de aluno em uma disciplina", description = "Adiciona matrícula de um aluno em uma disciplina na base de dados.")
     @ApiResponses(value = {
             @ApiResponse(description = "salvo com sucesso", responseCode = "201",
                     content = @Content(schema = @Schema(implementation = DepartamentoResponseDTO.class))),
-            @ApiResponse(description = "registro interno/cpf/email duplicado", responseCode = "409",
+            @ApiResponse(description = "registro com aluno e disciplina duplicado / vagas insuficientes / conflito de horários", responseCode = "409",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class))),
             @ApiResponse(description = "Unprocessable Entity", responseCode = "422",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<DocenteResponseDTO> salvar(@RequestBody @Valid DocenteRequestDTO dto);
+    ResponseEntity<MatriculaResponseDTO> salvar(@RequestBody @Valid MatriculaRequestDTO dto);
 
 
-    @Operation(summary = "atualizar docente", description = "Atualiza um docente pelo ID.")
+    @Operation(summary = "atualizar matricula de aluno em uma disciplina", description = "atualiza a matrícula de um aluno em uma disciplina através do ID.")
     @ApiResponses(value = {
             @ApiResponse(description = "atualizado com sucesso", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = AlunoResponseDTO.class))),
-            @ApiResponse(description = "registro interno/cpf/email duplicado", responseCode = "409",
+                    content = @Content(schema = @Schema(implementation = DepartamentoResponseDTO.class))),
+            @ApiResponse(description = "registro com aluno e disciplina duplicado / vagas insuficientes / conflito de horários", responseCode = "409",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class))),
             @ApiResponse(description = "Unprocessable Entity", responseCode = "422",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class))),
-            @ApiResponse(description = "docente não encontrado", responseCode = "404",
+            @ApiResponse(description = "matricula não encontrado", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<DocenteResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid DocenteRequestDTO dto);
+    ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid MatriculaRequestDTO dto);
 
 
-    @Operation(summary = "obter docente", description = "Obtém um docente pelo ID.")
+    @Operation(summary = "obter departamento", description = "Obtém um departamento pelo ID.")
     @ApiResponses(value = {
-            @ApiResponse(description = "docente encontrado", responseCode = "200",
+            @ApiResponse(description = "matrícula encontrada", responseCode = "200",
                     content = @Content(schema = @Schema(implementation = DepartamentoResponseDTO.class))),
-            @ApiResponse(description = "docente não encontrado", responseCode = "404",
+            @ApiResponse(description = "matricula não encontrada", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<DocenteResponseDTO> obterPeloId(@PathVariable("id") Long id);
+    ResponseEntity<MatriculaResponseDTO> obterPeloId(@PathVariable("id") Long id);
 
-    @Operation(summary = "listar docentes", description = "Lista todos os docentes")
+    @Operation(summary = "listar matriculas", description = "Lista todos as matriculas")
     @ApiResponse(responseCode = "200")
-    ResponseEntity<Page<DocenteResponseDTO>> listar(
+    ResponseEntity<Page<MatriculaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
 
-    @Operation(summary = "deletar docente", description = "Deleta um docente pelo ID.")
+
+    @Operation(summary = "deletar matrícula", description = "Deleta uma matrícula pelo ID.")
     @ApiResponses(value = {
-            @ApiResponse(description = "docente deletado com sucesso", responseCode = "204",
+            @ApiResponse(description = "matrícula deletada com sucesso", responseCode = "204",
                     content = @Content(schema = @Schema)),
-            @ApiResponse(description = "docente não encontrado", responseCode = "404",
+            @ApiResponse(description = "matrícula não encontrada", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
 
+    ResponseEntity<Void> modificaNotaFinal(@RequestParam(value = "nota-final") Double nota);
 
-    ResponseEntity<DocenteResponseDTO> atualizarDocenteLogado(DocenteRequestDTO dto);
+    ResponseEntity<Void> modificaNotaFinal(@RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao);
 
-
-    ResponseEntity<DocenteResponseDTO> obterDocenteLogado();
+    ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id);
 }

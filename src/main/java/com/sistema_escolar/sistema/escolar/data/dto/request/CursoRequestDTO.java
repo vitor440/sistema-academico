@@ -26,5 +26,8 @@ public class CursoRequestDTO {
     @Min(value = 4, message = "quantidade de periodos deve estar entre 4 e 12!")
     @Max(value = 12, message = "quantidade de periodos deve estar entre 4 e 12!")
     private int quantidadePeriodos;
+
+    @NotNull(message = "campo obrigatório!")
+    private Long departamentoId;
 }
 

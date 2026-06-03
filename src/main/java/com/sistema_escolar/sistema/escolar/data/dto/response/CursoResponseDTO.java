@@ -25,4 +25,6 @@ public class CursoResponseDTO {
     private Periodo periodo;
 
     private int quantidadePeriodos;
+
+    private Long departamentoId;
 }

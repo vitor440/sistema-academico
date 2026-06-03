@@ -3,7 +3,9 @@ package com.sistema_escolar.sistema.escolar.controller.docs;
 import com.sistema_escolar.sistema.escolar.controller.GenericController;
 import com.sistema_escolar.sistema.escolar.data.dto.ErroResposta;
 import com.sistema_escolar.sistema.escolar.data.dto.request.DepartamentoRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.CursoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.Curso;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -69,4 +71,5 @@ public interface DepartamentoControllerDocs extends GenericController {
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
+
 }

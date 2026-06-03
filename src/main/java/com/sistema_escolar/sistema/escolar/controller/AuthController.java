@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/usuarios")
 @RequiredArgsConstructor
 public class AuthController implements AuthControllerDocs {
 
     private final UsuarioService service;
 
-    @PostMapping("/usuarios")
+    @PostMapping
     @Override
-    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody @Valid UsuarioRequestDTO dto,
-                                                     @RequestParam(value = "role", defaultValue = "ALUNO") String role) {
-        UsuarioResponseDTO response = service.salvar(dto, role);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioResponseDTO> salvarUsuarioAdmin(@RequestBody @Valid UsuarioRequestDTO dto) {
+        UsuarioResponseDTO response = service.salvarUsuarioAdmin(dto);
         URI location = getLocation(response.getId());
         return ResponseEntity.created(location).body(response);
     }
 
-    @GetMapping("/usuarios")
+    @GetMapping
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<UsuarioResponseDTO>> listar(
@@ -39,4 +39,25 @@ public class AuthController implements AuthControllerDocs {
         return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
     }
 
+    @PutMapping("/{id}")
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuarioAdmin(@RequestBody @Valid UsuarioRequestDTO dto, @PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.atualizarUsuarioAdmin(id, dto));
+    }
+
+    @GetMapping("/{id}")
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioResponseDTO> obterPeloId(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.obterPeloId(id));
+    }
+
+    @DeleteMapping("/{id}")
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioResponseDTO> deletarPeloId(@PathVariable("id") Long id) {
+        service.deletarPeloId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -38,6 +38,10 @@ public class Curso {
     @Column(name = "quantidade_periodos")
     private int quantidadePeriodos;
 
+    @JoinColumn
+    @ManyToOne
+    private Departamento departamento;
+
     @Column(name = "data_criacao")
     @CreatedDate
     private LocalDateTime dataCriacao;

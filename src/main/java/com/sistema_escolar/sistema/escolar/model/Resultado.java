@@ -1,6 +1,5 @@
 package com.sistema_escolar.sistema.escolar.model;
 
-import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,9 +29,9 @@ public class Resultado {
     @Column(name = "nota")
     private Double nota;
 
-    @JoinColumn(name = "aluno_disciplina_id")
+    @JoinColumn(name = "matricula_id")
     @ManyToOne
-    private AlunoDisciplina alunoDisciplina;
+    private Matricula matricula;
 
     @Column(name = "data_criacao")
     @CreatedDate

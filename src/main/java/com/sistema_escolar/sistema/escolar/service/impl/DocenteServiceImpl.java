@@ -1,16 +1,20 @@
 package com.sistema_escolar.sistema.escolar.service.impl;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.DocenteRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.request.UsuarioRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DocenteResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.DocenteMapper;
+import com.sistema_escolar.sistema.escolar.model.Aluno;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.model.Docente;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.DepartamentoRepository;
 import com.sistema_escolar.sistema.escolar.repository.DocenteRepository;
 import com.sistema_escolar.sistema.escolar.repository.UsuarioRepository;
+import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.service.DocenteService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.DocenteValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,18 +31,30 @@ import java.util.UUID;
 public class DocenteServiceImpl implements DocenteService {
 
     private final DocenteRepository repository;
-    private final DepartamentoRepository departamentoRepository;
+    private final DepartamentoService departamentoService;
     private final DocenteMapper mapper;
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
     private final DocenteValidator validator;
+    private final SecurityService securityService;
 
     @Override
     public DocenteResponseDTO salvar(DocenteRequestDTO requestDTO) {
+        Usuario usuario = new Usuario();
+        usuario.setEmail(requestDTO.getEmail());
+        usuario.setUsername(requestDTO.getNome());
+        usuario.setSenha(requestDTO.getSenha());
+        usuario.setEnabled(true);
+        usuario.setAccountNonExpired(true);
+        usuario.setAccountNonLocked(true);
+        usuario.setCredentialsNonExpired(true);
+
+        Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario, "DOCENTE");
+
         Docente docente = mapper.toEntity(requestDTO);
-        Departamento departamento = getDepartamento(requestDTO.getDepartamentoId());
+        Departamento departamento = departamentoService.getDepartamento(requestDTO.getDepartamentoId());
         docente.setRegistroInterno(UUID.randomUUID().toString().substring(10));
         docente.setDepartamento(departamento);
-        docente.setUsuario(getUsuario(requestDTO.getUsuarioId()));
+        docente.setUsuario(usuarioSalvo);
 
         validator.validar(docente);
         return mapper.toDTO(repository.save(docente));
@@ -47,6 +63,12 @@ public class DocenteServiceImpl implements DocenteService {
     @Override
     public DocenteResponseDTO atualizar(Long id, DocenteRequestDTO requestDTO) {
         Docente docente = getDocente(id);
+        Usuario usuario = docente.getUsuario();
+        usuario.setEmail(requestDTO.getEmail());
+        usuario.setUsername(requestDTO.getNome());
+        usuario.setSenha(requestDTO.getSenha());
+
+
         docente.setCpf(requestDTO.getCpf());
         docente.setNome(requestDTO.getNome());
         docente.setEmail(requestDTO.getEmail());
@@ -54,8 +76,7 @@ public class DocenteServiceImpl implements DocenteService {
         docente.setFormacao(requestDTO.getFormacao());
         docente.setDataNascimento(requestDTO.getDataNascimento());
         docente.setSalario(requestDTO.getSalario());
-        docente.setDepartamento(getDepartamento(requestDTO.getDepartamentoId()));
-        docente.setUsuario(getUsuario(requestDTO.getUsuarioId()));
+        docente.setDepartamento(departamentoService.getDepartamento(requestDTO.getDepartamentoId()));
 
         validator.validar(docente);
         return mapper.toDTO(repository.save(docente));
@@ -75,23 +96,47 @@ public class DocenteServiceImpl implements DocenteService {
     }
 
     @Override
+    public DocenteResponseDTO atualizarDocenteLogado(DocenteRequestDTO requestDTO) {
+        Usuario usuarioLogado = securityService.getUsuarioLogado();
+
+        usuarioLogado.setEmail(requestDTO.getEmail());
+        usuarioLogado.setUsername(requestDTO.getNome());
+        usuarioLogado.setSenha(requestDTO.getSenha());
+
+        Docente docente = repository.findByUsuario(usuarioLogado)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
+
+        docente.setCpf(requestDTO.getCpf());
+        docente.setNome(requestDTO.getNome());
+        docente.setEmail(requestDTO.getEmail());
+        docente.setTelefone(requestDTO.getTelefone());
+        docente.setFormacao(requestDTO.getFormacao());
+        docente.setDataNascimento(requestDTO.getDataNascimento());
+        docente.setSalario(requestDTO.getSalario());
+        docente.setDepartamento(departamentoService.getDepartamento(requestDTO.getDepartamentoId()));
+
+        validator.validar(docente);
+        return mapper.toDTO(repository.save(docente));
+    }
+
+    @Override
+    public DocenteResponseDTO obterDocenteLogado() {
+        Usuario usuarioLogado = securityService.getUsuarioLogado();
+        Docente docente = repository.findByUsuario(usuarioLogado)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
+
+        return mapper.toDTO(docente);
+    }
+
+    @Override
     public void deletarPeloId(Long id) {
         Docente docente = getDocente(id);
         repository.delete(docente);
     }
 
-    private Docente getDocente(Long id) {
+    @Override
+    public Docente getDocente(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Docente não encontrado!"));
-    }
-
-    private Departamento getDepartamento(Long id) {
-        return departamentoRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Departamento não encontrado!"));
-    }
-
-    private Usuario getUsuario(Long id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado!"));
     }
 }

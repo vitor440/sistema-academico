@@ -12,7 +12,7 @@ import java.time.LocalTime;
 public class ExameRequestDTO {
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 100, message = "nome do exame deve ter entre 10 à 100 dígitos")
+    @Size(min = 4, max = 100, message = "nome do exame deve ter entre 10 à 100 dígitos")
     private String nome;
 
     @NotNull(message = "campo obrigatório!")

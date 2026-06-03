@@ -8,10 +8,11 @@ import com.sistema_escolar.sistema.escolar.model.Aluno;
 import com.sistema_escolar.sistema.escolar.model.Curso;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.AlunoRepository;
-import com.sistema_escolar.sistema.escolar.repository.CursoRepository;
-import com.sistema_escolar.sistema.escolar.repository.UsuarioRepository;
 import com.sistema_escolar.sistema.escolar.service.AlunoService;
+import com.sistema_escolar.sistema.escolar.service.CursoService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.AlunoValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,24 +20,34 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class AlunoServiceImpl implements AlunoService {
     
     private final AlunoRepository repository;
-    private final UsuarioRepository usuarioRepository;
-    private final CursoRepository cursoRepository;
+    private final CursoService cursoService;
     private final AlunoMapper mapper;
     private final AlunoValidator validator;
-    
+    private final SecurityService securityService;
+    private final UsuarioService usuarioService;
+
     @Override
+    @Transactional
     public AlunoResponseDTO salvar(AlunoRequestDTO requestDTO) {
+        Usuario usuario = new Usuario();
+        usuario.setEmail(requestDTO.getEmail());
+        usuario.setUsername(requestDTO.getNome());
+        usuario.setSenha(requestDTO.getSenha());
+        usuario.setEnabled(true);
+        usuario.setAccountNonExpired(true);
+        usuario.setAccountNonLocked(true);
+        usuario.setCredentialsNonExpired(true);
+
+        Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario, "ALUNO"); // salva usuário
+
         Aluno aluno = mapper.toEntity(requestDTO);
-        Usuario usuario = getUsuario(requestDTO.getUsuarioId());
-        Curso curso = getCurso(requestDTO.getCursoId());
-        aluno.setUsuario(usuario);
+        Curso curso = cursoService.getCurso(requestDTO.getCursoId());
+        aluno.setUsuario(usuarioSalvo);
         aluno.setCurso(curso);
 
         validator.validar(aluno);
@@ -46,15 +57,19 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public AlunoResponseDTO atualizar(Long id, AlunoRequestDTO requestDTO) {
         Aluno aluno = getAluno(id);
+        Usuario usuario = aluno.getUsuario();
+        usuario.setEmail(requestDTO.getEmail());
+        usuario.setUsername(requestDTO.getNome());
+        usuario.setSenha(requestDTO.getSenha());
+
+
         aluno.setCpf(requestDTO.getCpf());
         aluno.setNome(requestDTO.getNome());
         aluno.setEmail(requestDTO.getEmail());
         aluno.setMatricula(requestDTO.getMatricula());
         aluno.setTelefone(requestDTO.getTelefone());
-        aluno.setCursoPeriodo(requestDTO.getCursoPeriodo());
         aluno.setDataNascimento(requestDTO.getDataNascimento());
-        aluno.setCurso(getCurso(requestDTO.getCursoId()));
-        aluno.setUsuario(getUsuario(requestDTO.getUsuarioId()));
+        aluno.setCurso(cursoService.getCurso(requestDTO.getCursoId()));
 
         validator.validar(aluno);
         return mapper.toDTO(repository.save(aluno));
@@ -79,18 +94,44 @@ public class AlunoServiceImpl implements AlunoService {
         repository.delete(aluno);
     }
 
-    private Aluno getAluno(Long id) {
+    @Override
+    public AlunoResponseDTO atualizarAlunoLogado(AlunoRequestDTO requestDTO) {
+
+        Usuario usuarioLogado = securityService.getUsuarioLogado();
+
+        usuarioLogado.setEmail(requestDTO.getEmail());
+        usuarioLogado.setUsername(requestDTO.getNome());
+        usuarioLogado.setSenha(requestDTO.getSenha());
+
+        Aluno aluno = repository.findByUsuario(usuarioLogado)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
+
+        aluno.setCpf(requestDTO.getCpf());
+        aluno.setNome(requestDTO.getNome());
+        aluno.setEmail(requestDTO.getEmail());
+        aluno.setMatricula(requestDTO.getMatricula());
+        aluno.setTelefone(requestDTO.getTelefone());
+        aluno.setDataNascimento(requestDTO.getDataNascimento());
+        aluno.setCurso(cursoService.getCurso(requestDTO.getCursoId()));
+
+        validator.validar(aluno);
+        return mapper.toDTO(repository.save(aluno));
+    }
+
+    @Override
+    public AlunoResponseDTO obterAlunoLogado() {
+        Usuario usuarioLogado = securityService.getUsuarioLogado();
+
+        Aluno aluno = repository.findByUsuario(usuarioLogado)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
+
+        return mapper.toDTO(aluno);
+    }
+
+
+    @Override
+    public Aluno getAluno(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Aluno não encontrado!"));
-    }
-
-    private Usuario getUsuario(Long id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado!"));
-    }
-
-    private Curso getCurso(Long id) {
-        return cursoRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Curso não encontrado!"));
     }
 }

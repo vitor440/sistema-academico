@@ -2,6 +2,7 @@ package com.sistema_escolar.sistema.escolar.service;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.DocenteRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DocenteResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.Docente;
 import org.springframework.data.domain.Page;
 
 public interface DocenteService {
@@ -14,5 +15,11 @@ public interface DocenteService {
 
     Page<DocenteResponseDTO> listar(int pagina, int tamanho, String sortDirection);
 
+    DocenteResponseDTO atualizarDocenteLogado(DocenteRequestDTO requestDTO);
+
+    DocenteResponseDTO obterDocenteLogado();
+
     void deletarPeloId(Long id);
+
+    Docente getDocente(Long id);
 }

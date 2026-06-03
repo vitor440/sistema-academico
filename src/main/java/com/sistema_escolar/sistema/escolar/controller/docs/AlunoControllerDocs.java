@@ -70,4 +70,9 @@ public interface AlunoControllerDocs extends GenericController {
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<AlunoResponseDTO> atualizarAlunoLogado(@RequestBody @Valid AlunoRequestDTO dto);
+
+    ResponseEntity<AlunoResponseDTO> obterAlunoLogado();
+
 }

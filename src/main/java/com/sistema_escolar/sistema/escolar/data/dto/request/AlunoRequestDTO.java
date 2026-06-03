@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.data.dto.request;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
@@ -30,13 +31,13 @@ public class AlunoRequestDTO {
     @Size(min = 8, max = 80, message = "telefone deve ter entre 8 à 80 dígitos")
     private String telefone;
 
+    @NotBlank(message = "campo obrigatório!")
+    private String senha;
+
     @NotNull(message = "campo obrigatório!")
     @Past(message = "data de nascimento deve ser no passado!")
     private LocalDate dataNascimento;
 
     @NotNull(message = "campo obrigatório!")
     private Long cursoId;
-
-    @NotNull(message = "campo obrigatório!")
-    private Long usuarioId;
 }

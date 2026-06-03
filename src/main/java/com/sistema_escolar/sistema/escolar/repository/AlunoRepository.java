@@ -10,4 +10,6 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     Optional<Aluno> findByCpfOrMatriculaOrEmail(String cpf, String matricula, String email);
 
+    Optional<Aluno> findByUsuario(Usuario usuario);
+
 }

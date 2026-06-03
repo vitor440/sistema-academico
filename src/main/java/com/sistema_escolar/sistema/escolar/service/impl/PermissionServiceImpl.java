@@ -59,6 +59,7 @@ public class PermissionServiceImpl implements PermissionService {
         repository.delete(permission);
     }
 
+
     private Permission getPermission(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Permission não encontrada!"));

@@ -9,8 +9,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -72,6 +70,6 @@ public class Disciplina {
     private List<Exame> exames;
 
     @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
-    private List<AlunoDisciplina> alunoDisciplinas;
+    private List<Matricula> matriculas;
 
 }

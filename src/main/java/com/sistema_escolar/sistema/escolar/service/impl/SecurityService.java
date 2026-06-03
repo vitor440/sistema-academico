@@ -17,7 +17,7 @@ public class SecurityService {
     public Usuario getUsuarioLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null) throw new RegistroNaoEncontradoException("");
+        if (authentication == null) throw new RegistroNaoEncontradoException("Usuário não autenticado!");
 
         return service.findByUsername(authentication.getName());
     }

@@ -37,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO salvar(UsuarioRequestDTO requestDTO, String role) {
+    public UsuarioResponseDTO salvarUsuarioAdmin(UsuarioRequestDTO requestDTO) {
         Usuario usuario = mapper.toEntity(requestDTO);
         usuario.setEnabled(true);
         usuario.setAccountNonExpired(true);
@@ -45,8 +45,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setCredentialsNonExpired(true);
         usuario.setSenha(passwordEncoder.encode(usuario.getPassword()));
 
-        Permission permission = permissionRepository.findByRole(role)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Não existe permission com role: " + role));
+        Permission permission = permissionRepository.findByRole("ADMIN")
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Permission não encontrada!"));
 
         usuario.setPermissions(List.of(permission));
         validator.validar(usuario);
@@ -54,7 +54,24 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO atualizar(Long id, UsuarioRequestDTO requestDTO) {
+    public Usuario salvarUsuario(Usuario usuario, String role) {
+        usuario.setSenha(encriptaSenha(usuario.getSenha()));
+
+        Permission permission = permissionRepository.findByRole(role)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Permission não encontrada!"));
+
+        usuario.setPermissions(List.of(permission));
+
+        validator.validar(usuario);
+        return repository.save(usuario);
+    }
+
+    public String encriptaSenha(String senha) {
+        return passwordEncoder.encode(senha);
+    }
+
+    @Override
+    public UsuarioResponseDTO atualizarUsuarioAdmin(Long id, UsuarioRequestDTO requestDTO) {
         Usuario usuario = getUsuario(id);
         usuario.setUsername(requestDTO.getUsername());
         usuario.setEmail(requestDTO.getEmail());
@@ -84,8 +101,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
 
-
-    private Usuario getUsuario(Long id) {
+    @Override
+    public Usuario getUsuario(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado!"));
     }
