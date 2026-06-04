@@ -23,5 +23,9 @@ public interface UsuarioService {
 
     void deletarPeloId(Long id);
 
+    Usuario getUsuarioLogado();
+
     Usuario getUsuario(Long id);
+
+    String encriptaSenha(String senha);
 }

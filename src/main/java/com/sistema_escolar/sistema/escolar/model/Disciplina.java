@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "disciplina")
-@ToString(exclude = {"alunoDisciplinas", "exames"})
+@ToString(exclude = {"matriculas", "exames"})
 @EntityListeners(AuditingEntityListener.class)
 public class Disciplina {
 
@@ -72,4 +72,14 @@ public class Disciplina {
     @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
     private List<Matricula> matriculas;
 
+
+    public void decrementaVaga() {
+        this.vagas -= 1;
+        this.alunosMatriculados += 1;
+    }
+
+    public void acrescentaVaga() {
+        this.vagas += 1;
+        this.alunosMatriculados -= 1;
+    }
 }

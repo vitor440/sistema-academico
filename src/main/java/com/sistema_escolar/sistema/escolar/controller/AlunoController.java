@@ -47,10 +47,12 @@ public class AlunoController implements AlunoControllerDocs {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE')")
     public ResponseEntity<Page<AlunoResponseDTO>> listar(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "id-curso", required = false) Long idCurso,
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+        return ResponseEntity.ok(service.listar(nome, idCurso, pagina, tamanho, sortDirection));
     }
 
 

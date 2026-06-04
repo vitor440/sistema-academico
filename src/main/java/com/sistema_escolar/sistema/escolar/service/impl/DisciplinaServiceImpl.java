@@ -45,6 +45,12 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     }
 
     @Override
+    public void salvarEntidade(Disciplina disciplina) {
+        validator.validar(disciplina);
+        repository.save(disciplina);
+    }
+
+    @Override
     public DisciplinaResponseDTO atualizar(Long id, DisciplinaRequestDTO requestDTO) {
         Disciplina disciplina = getDisciplina(id);
         disciplina.setNome(requestDTO.getNome());

@@ -49,7 +49,7 @@ public class ClientServiceImpl implements ClientService {
         Client clientSalvo = getClientSalvo(id);
 
         clientSalvo.setClientId(requestDTO.getClientId());
-        clientSalvo.setClientSecret(requestDTO.getClientSecret());
+        clientSalvo.setClientSecret(encoder.encode(clientSalvo.getClientSecret()));
         clientSalvo.setRedirectUri(REDIRECT_URI);
 
         validator.validar(clientSalvo);

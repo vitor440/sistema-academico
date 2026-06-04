@@ -13,9 +13,8 @@ import java.util.Optional;
 
 public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
-    Optional<Matricula> findByAlunoAndDisciplina(Aluno aluno, Disciplina disciplina);
 
-    @Query(" SELECT m FROM Matricula m WHERE m.aluno = :aluno AND m.disciplina.horaInicio = :horaInicio")
+    @Query(" SELECT m FROM Matricula m WHERE m.aluno = :aluno AND m.disciplina.horaInicio = :horaInicio ")
     Optional<Matricula> findByAlunoAndHorario(Aluno aluno, LocalTime horaInicio);
 
 
@@ -26,11 +25,11 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     @Modifying
     @Transactional
-    @Query(" UPDATE Matricula m SET m.notaFinal = :notaFinal ")
-    void modificaNotaFinal(Double notaFinal);
+    @Query(" UPDATE Matricula m SET m.notaFinal = :notaFinal WHERE m.id = :matriculaId")
+    void modificaNotaFinal(Long matriculaId, Double notaFinal);
 
     @Modifying
     @Transactional
-    @Query(" UPDATE Matricula m SET m.statusSolicitacao = :statusSolicitacao ")
-    void modificaStatusSolicitacao(StatusSolicitacao statusSolicitacao);
+    @Query(" UPDATE Matricula m SET m.statusSolicitacao = :statusSolicitacao WHERE m.id = :matriculaId ")
+    void modificaStatusSolicitacao(Long matriculaId, StatusSolicitacao statusSolicitacao);
 }

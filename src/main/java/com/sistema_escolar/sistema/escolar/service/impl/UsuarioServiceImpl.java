@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +45,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setAccountNonExpired(true);
         usuario.setAccountNonLocked(true);
         usuario.setCredentialsNonExpired(true);
-        usuario.setSenha(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setSenha(encriptaSenha(usuario.getSenha()));
 
         Permission permission = permissionRepository.findByRole("ADMIN")
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Permission não encontrada!"));
@@ -66,16 +68,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         return repository.save(usuario);
     }
 
-    public String encriptaSenha(String senha) {
-        return passwordEncoder.encode(senha);
-    }
-
     @Override
     public UsuarioResponseDTO atualizarUsuarioAdmin(Long id, UsuarioRequestDTO requestDTO) {
         Usuario usuario = getUsuario(id);
         usuario.setUsername(requestDTO.getUsername());
         usuario.setEmail(requestDTO.getEmail());
-        usuario.setSenha(requestDTO.getSenha());
+        usuario.setSenha(encriptaSenha(requestDTO.getSenha()));
 
         validator.validar(usuario);
         return mapper.toDTO(repository.save(usuario));
@@ -101,9 +99,22 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
 
+    public Usuario getUsuarioLogado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) throw new RegistroNaoEncontradoException("Usuário não autenticado!");
+
+        return findByUsername(authentication.getName());
+    }
+
     @Override
     public Usuario getUsuario(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado!"));
+    }
+
+    @Override
+    public String encriptaSenha(String senha) {
+        return passwordEncoder.encode(senha);
     }
 }

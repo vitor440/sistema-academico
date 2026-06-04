@@ -35,7 +35,6 @@ public class DocenteServiceImpl implements DocenteService {
     private final DocenteMapper mapper;
     private final UsuarioService usuarioService;
     private final DocenteValidator validator;
-    private final SecurityService securityService;
 
     @Override
     public DocenteResponseDTO salvar(DocenteRequestDTO requestDTO) {
@@ -48,16 +47,16 @@ public class DocenteServiceImpl implements DocenteService {
         usuario.setAccountNonLocked(true);
         usuario.setCredentialsNonExpired(true);
 
-        Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario, "DOCENTE");
+        Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario, "DOCENTE"); // salva usuário com a role "DOCENTE"
 
         Docente docente = mapper.toEntity(requestDTO);
         Departamento departamento = departamentoService.getDepartamento(requestDTO.getDepartamentoId());
         docente.setRegistroInterno(UUID.randomUUID().toString().substring(10));
         docente.setDepartamento(departamento);
-        docente.setUsuario(usuarioSalvo);
+        docente.setUsuario(usuarioSalvo); // associa usuário à docente.
 
         validator.validar(docente);
-        return mapper.toDTO(repository.save(docente));
+        return mapper.toDTO(repository.save(docente)); // salva docente.
     }
 
     @Override
@@ -79,7 +78,7 @@ public class DocenteServiceImpl implements DocenteService {
         docente.setDepartamento(departamentoService.getDepartamento(requestDTO.getDepartamentoId()));
 
         validator.validar(docente);
-        return mapper.toDTO(repository.save(docente));
+        return mapper.toDTO(repository.save(docente)); // atualiza docente e usuário em cascata.
     }
 
     @Override
@@ -97,7 +96,7 @@ public class DocenteServiceImpl implements DocenteService {
 
     @Override
     public DocenteResponseDTO atualizarDocenteLogado(DocenteRequestDTO requestDTO) {
-        Usuario usuarioLogado = securityService.getUsuarioLogado();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         usuarioLogado.setEmail(requestDTO.getEmail());
         usuarioLogado.setUsername(requestDTO.getNome());
@@ -121,7 +120,7 @@ public class DocenteServiceImpl implements DocenteService {
 
     @Override
     public DocenteResponseDTO obterDocenteLogado() {
-        Usuario usuarioLogado = securityService.getUsuarioLogado();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         Docente docente = repository.findByUsuario(usuarioLogado)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
 

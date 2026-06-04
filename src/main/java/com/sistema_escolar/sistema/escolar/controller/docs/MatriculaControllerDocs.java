@@ -72,9 +72,9 @@ public interface MatriculaControllerDocs extends GenericController {
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
 
-    ResponseEntity<Void> modificaNotaFinal(@RequestParam(value = "nota-final") Double nota);
+    ResponseEntity<Void> modificaNotaFinal(Long id, @RequestParam(value = "nota-final") Double nota);
 
-    ResponseEntity<Void> modificaNotaFinal(@RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao);
+    ResponseEntity<Void> modificaNotaFinal(Long id, @RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao);
 
     ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id);
 }

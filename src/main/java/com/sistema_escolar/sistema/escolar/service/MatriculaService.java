@@ -21,9 +21,9 @@ public interface MatriculaService {
 
     Matricula getMatricula(Long id);
 
-    void modificaNotaFinal(Double notaFinal);
+    void modificaNotaFinal(Long matriculaId, Double notaFinal);
 
-    void modificaStatusSolicitacao(StatusSolicitacao statusSolicitacao);
+    void modificaStatusSolicitacao(Long matriculaId, StatusSolicitacao statusSolicitacao);
 
     MatriculaResponseDTO efetivarHistorico(Long id);
 

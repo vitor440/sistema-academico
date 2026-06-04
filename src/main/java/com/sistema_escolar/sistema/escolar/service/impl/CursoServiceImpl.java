@@ -6,7 +6,10 @@ import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoExcept
 import com.sistema_escolar.sistema.escolar.mapper.CursoMapper;
 import com.sistema_escolar.sistema.escolar.model.Curso;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
+import com.sistema_escolar.sistema.escolar.model.enums.Areas;
+import com.sistema_escolar.sistema.escolar.model.enums.Periodo;
 import com.sistema_escolar.sistema.escolar.repository.CursoRepository;
+import com.sistema_escolar.sistema.escolar.repository.specs.CursoSpecs;
 import com.sistema_escolar.sistema.escolar.service.CursoService;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.validator.CursoValidator;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,11 +66,22 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Override
-    public Page<CursoResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+    public Page<CursoResponseDTO> listar(String nome, Areas area, Periodo periodo, String nomeDepartamento,
+                                         int pagina, int tamanho, String sortDirection) {
         Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        Specification<Curso> specs = ((root, query, cb) -> cb.disjunction());
+
+        if (nome != null) specs = specs.and(CursoSpecs.findByName(nome));
+
+        if (area != null) specs = specs.and(CursoSpecs.findByArea(area));
+
+        if (periodo != null) specs = specs.and(CursoSpecs.findByPeriodo(periodo));
+
+        if (nomeDepartamento != null) specs = specs.and(CursoSpecs.findByNomeDepartamento(nomeDepartamento));
+
+        return repository.findAll(specs, pageable).map(mapper::toDTO);
     }
 
     @Override
@@ -75,26 +90,10 @@ public class CursoServiceImpl implements CursoService {
         repository.delete(curso);
     }
 
-
-
-
     @Override
     public Curso getCurso(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Curso não encontrado!"));
-    }
-
-    @Override
-    @Transactional
-    public Page<Curso> listarCursoPeloDepartamento(Long id, int pagina, int tamanho, String sortDirection) {
-        Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
-        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
-
-        Departamento departamento = departamentoService.getDepartamento(id);
-        List<Curso> cursos = departamento.getCursos();
-        Page<Curso> cursosPage = new PageImpl<>(cursos, pageable, cursos.size());
-
-        return cursosPage;
     }
 }
 

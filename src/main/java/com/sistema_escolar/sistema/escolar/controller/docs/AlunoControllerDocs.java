@@ -57,6 +57,8 @@ public interface AlunoControllerDocs extends GenericController {
     @Operation(summary = "listar alunos", description = "Lista todos os alunos")
     @ApiResponse(responseCode = "200")
     ResponseEntity<Page<AlunoResponseDTO>> listar(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "id-curso", required = false) Long idCurso,
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);

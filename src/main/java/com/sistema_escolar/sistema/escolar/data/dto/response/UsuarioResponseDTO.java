@@ -18,16 +18,6 @@ public class UsuarioResponseDTO {
 
     private String email;
 
-    private String senha;
-
-    private boolean isAccountNonExpired;
-
-    private boolean isAccountNonLocked;
-
-    private boolean isCredentialsNonExpired;
-
-    private boolean enabled;
-
     private List<PermissionResponseDTO> permissions;
 
 }

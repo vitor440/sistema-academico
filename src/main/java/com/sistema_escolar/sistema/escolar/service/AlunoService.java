@@ -15,7 +15,7 @@ public interface AlunoService {
 
     AlunoResponseDTO obterPeloId(Long id);
 
-    Page<AlunoResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<AlunoResponseDTO> listar(String nome, Long idCurso, int pagina, int tamanho, String sortDirection);
 
     void deletarPeloId(Long id);
 

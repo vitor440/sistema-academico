@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/alunoDisciplinas")
+@RequestMapping("/matriculas")
 @RequiredArgsConstructor
 public class ResultadoController implements com.sistema_escolar.sistema.escolar.controller.docs.ResultadoControllerDocs {
 

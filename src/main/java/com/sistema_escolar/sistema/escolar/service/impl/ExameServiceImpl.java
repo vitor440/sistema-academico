@@ -12,6 +12,7 @@ import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
 import com.sistema_escolar.sistema.escolar.validator.ExameValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.AccessDeniedException;
@@ -70,6 +71,7 @@ public class ExameServiceImpl implements ExameService {
     }
 
     @Override
+    @Transactional
     public Page<ExameResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");

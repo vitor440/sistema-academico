@@ -2,6 +2,8 @@ package com.sistema_escolar.sistema.escolar.controller;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.CursoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.CursoResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.enums.Areas;
+import com.sistema_escolar.sistema.escolar.model.enums.Periodo;
 import com.sistema_escolar.sistema.escolar.service.CursoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,10 +48,14 @@ public class CursoController implements com.sistema_escolar.sistema.escolar.cont
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE', 'ALUNO')")
     public ResponseEntity<Page<CursoResponseDTO>> listar(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "area", required = false) Areas area,
+            @RequestParam(value = "periodo", required = false, defaultValue = "0") Periodo periodo,
+            @RequestParam(value = "nome-departamento", required = false, defaultValue = "0") String nomeDepartamento,
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+        return ResponseEntity.ok(service.listar(nome, area, periodo, nomeDepartamento, pagina, tamanho, sortDirection));
     }
 
 

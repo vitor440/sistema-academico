@@ -4,6 +4,7 @@ import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "matricula")
+@ToString(exclude = {"resultados", "disciplina", "aluno"})
 @EntityListeners(AuditingEntityListener.class)
 public class Matricula {
 

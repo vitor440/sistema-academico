@@ -68,7 +68,7 @@ public class DocenteController implements DocenteControllerDocs {
     @PutMapping("/me")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<DocenteResponseDTO> atualizarDocenteLogado(DocenteRequestDTO dto) {
+    public ResponseEntity<DocenteResponseDTO> atualizarDocenteLogado(@RequestBody @Valid DocenteRequestDTO dto) {
         return ResponseEntity.ok(service.atualizarDocenteLogado(dto));
     }
 

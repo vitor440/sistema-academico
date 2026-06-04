@@ -4,25 +4,30 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.MatriculaMapper;
-import com.sistema_escolar.sistema.escolar.model.*;
+import com.sistema_escolar.sistema.escolar.model.Aluno;
+import com.sistema_escolar.sistema.escolar.model.Disciplina;
+import com.sistema_escolar.sistema.escolar.model.Matricula;
+import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
-import com.sistema_escolar.sistema.escolar.repository.DisciplinaRepository;
-import com.sistema_escolar.sistema.escolar.service.MatriculaService;
 import com.sistema_escolar.sistema.escolar.service.AlunoService;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
+import com.sistema_escolar.sistema.escolar.service.MatriculaService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.MatriculaValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.springframework.data.domain.Sort.*;
+import static org.springframework.data.domain.Sort.Direction;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +36,9 @@ public class MatriculaServiceImpl implements MatriculaService {
     private final MatriculaRepository repository;
     private final MatriculaMapper mapper;
     private final AlunoService alunoService;
-    private final DisciplinaRepository disciplinaRepository;
     private final DisciplinaService disciplinaService;
     private final MatriculaValidator validator;
+    private final UsuarioService usuarioService;
 
     @Override
     @Transactional
@@ -41,18 +46,18 @@ public class MatriculaServiceImpl implements MatriculaService {
         Matricula matricula = mapper.toEntity(requestDTO);
         Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
+
         matricula.setAluno(aluno);
         matricula.setDisciplina(disciplina);
         matricula.setStatus(StatusDisciplina.CURSANDO);
         matricula.setNotaFinal(0.0);
+        matricula.setFaltas(0);
         matricula.setEfetivado(false);
         matricula.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
         matricula.calculaMedia(aluno.getResultados());
 
         validator.validar(matricula);
-        disciplina.setVagas(disciplina.getVagas() - 1); // decrementa uma vaga
-
-        disciplina.setAlunosMatriculados(disciplina.getAlunosMatriculados() + 1); // acrescenta + 1 aluno matriculado na disciplina
+        disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado.
         return mapper.toDTO(repository.save(matricula));
     }
 
@@ -63,23 +68,20 @@ public class MatriculaServiceImpl implements MatriculaService {
         Matricula matricula = getMatricula(id);
 
         Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
-        matricula.setAluno(aluno);
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
 
         // se a disciplina for atualizada, vagas e alunos matriculados deverão ser ajustados
         if(!disciplina.equals(matricula.getDisciplina())) {
 
-            Disciplina disciplina2 = matricula.getDisciplina();
-            disciplina2.setVagas(disciplina2.getVagas() + 1);
-            disciplina2.setAlunosMatriculados(disciplina2.getAlunosMatriculados() - 1);
+            Disciplina disciplinaSubstituida = matricula.getDisciplina();
+            disciplinaSubstituida.acrescentaVaga();
+            disciplinaService.salvarEntidade(disciplinaSubstituida); // atualiza a quantidade de vagas e alunos matriculados da disciplina substituída.
 
-            disciplinaRepository.save(disciplina2);
-
-            disciplina.setVagas(disciplina.getVagas() - 1);
-            disciplina.setAlunosMatriculados(disciplina.getAlunosMatriculados() + 1);
+            disciplina.decrementaVaga();
+            matricula.setDisciplina(disciplina); // salva nova disciplina
         }
 
-        matricula.setDisciplina(disciplina);
+        matricula.setAluno(aluno);
         matricula.setFaltas(requestDTO.getFaltas());
         matricula.calculaMedia(aluno.getResultados());
 
@@ -89,7 +91,7 @@ public class MatriculaServiceImpl implements MatriculaService {
 
     @Override
     public MatriculaResponseDTO obterPeloId(Long id) {
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         Matricula matricula = getMatricula(id);
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
@@ -107,7 +109,7 @@ public class MatriculaServiceImpl implements MatriculaService {
         Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "media");
 
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
 
@@ -131,13 +133,16 @@ public class MatriculaServiceImpl implements MatriculaService {
     }
 
     @Override
-    public void modificaNotaFinal(Double notaFinal) {
-        repository.modificaNotaFinal(notaFinal);
+    public void modificaNotaFinal(Long matriculaId, Double notaFinal) {
+        repository.modificaNotaFinal(matriculaId, notaFinal);
+        Matricula matricula = getMatricula(matriculaId);
+        matricula.calculaMedia(matricula.getResultados());
+        repository.save(matricula);
     }
 
     @Override
-    public void modificaStatusSolicitacao(StatusSolicitacao statusSolicitacao) {
-        repository.modificaStatusSolicitacao(statusSolicitacao);
+    public void modificaStatusSolicitacao(Long matriculaId, StatusSolicitacao statusSolicitacao) {
+        repository.modificaStatusSolicitacao(matriculaId, statusSolicitacao);
     }
 
     @Override
@@ -146,6 +151,6 @@ public class MatriculaServiceImpl implements MatriculaService {
 
         matricula.efetivar();
 
-        return mapper.toDTO(matricula);
+        return mapper.toDTO(repository.save(matricula));
     }
 }
