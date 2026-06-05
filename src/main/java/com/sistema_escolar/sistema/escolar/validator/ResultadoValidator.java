@@ -16,12 +16,12 @@ public class ResultadoValidator {
 
     public void validar(Resultado resultado) {
         if (registroDuplicado(resultado)) {
-            throw new RegistroDuplicadoException("Já existe um resultad");
+            throw new RegistroDuplicadoException("Já existe um resultado para este exame!");
         }
     }
 
     public boolean registroDuplicado(Resultado resultado) {
-        Optional<Resultado> resultadoOpt = repository.findByAlunoAndExame(resultado.getAluno(), resultado.getExame());
+        Optional<Resultado> resultadoOpt = repository.findByMatriculaAndExame(resultado.getMatricula(), resultado.getExame());
 
         if (resultado.getId() == null) {
             resultadoOpt.isPresent();

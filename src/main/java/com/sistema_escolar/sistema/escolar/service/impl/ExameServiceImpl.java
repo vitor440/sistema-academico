@@ -4,9 +4,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.ExameRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.ExameMapper;
-import com.sistema_escolar.sistema.escolar.model.Disciplina;
-import com.sistema_escolar.sistema.escolar.model.Exame;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
+import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
@@ -19,6 +17,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.List;
 
 @Service
@@ -61,12 +60,24 @@ public class ExameServiceImpl implements ExameService {
         Exame exame = getExame(id);
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-            boolean ehMatriculado = matriculaRepository.existsByAlunoAndDisciplina(usuarioLogado.getAluno(), exame.getDisciplina());
+            Aluno aluno = usuarioLogado.getAluno();
+            boolean ehMatriculado = matriculaRepository.existsByAlunoAndDisciplina(aluno, exame.getDisciplina());
 
             if (!ehMatriculado) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver esse exame!");
             }
         }
+
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+            Docente docenteLogado = usuarioLogado.getDocente();
+            Docente docente = exame.getDisciplina().getDocente();
+
+            if (!docente.equals(docenteLogado)) {
+                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver esse exame!");
+            }
+        }
+
+
         return mapper.toDTO(exame);
     }
 
@@ -79,14 +90,28 @@ public class ExameServiceImpl implements ExameService {
         Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
+            Page<Exame> exames = repository.findAll(pageable);
+            Aluno aluno = usuarioLogado.getAluno();
 
-            List<Exame> exames = repository.findAll();
+            List<Disciplina> disciplinasDoAluno = aluno.getDisciplinas();
 
             List<Exame> examesFiltrados = exames
                     .stream()
-                    .filter(exame -> usuarioLogado.getAluno()
-                            .getDisciplinas()
-                            .contains(exame.getDisciplina()))
+                    .filter(exame -> disciplinasDoAluno.contains(exame.getDisciplina())) // verifica se o exame é de uma disciplina matriculada pelo aluno.
+                    .toList();
+
+            return new PageImpl<>(examesFiltrados, pageable, examesFiltrados.size()).map(mapper::toDTO);
+        }
+
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+            Page<Exame> exames = repository.findAll(pageable);
+            Docente docente = usuarioLogado.getDocente();
+
+            List<Disciplina> disciplinasDoDocente = docente.getDisciplinas();
+
+            List<Exame> examesFiltrados = exames
+                    .stream()
+                    .filter(exame -> disciplinasDoDocente.contains(exame.getDisciplina())) // verifica se o exame é de uma disciplina ministrada pelo docente
                     .toList();
 
             return new PageImpl<>(examesFiltrados, pageable, examesFiltrados.size()).map(mapper::toDTO);

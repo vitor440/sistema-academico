@@ -41,19 +41,19 @@ public class DocenteServiceImpl implements DocenteService {
         Usuario usuario = new Usuario();
         usuario.setEmail(requestDTO.getEmail());
         usuario.setUsername(requestDTO.getNome());
-        usuario.setSenha(requestDTO.getSenha());
+        usuario.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
         usuario.setEnabled(true);
         usuario.setAccountNonExpired(true);
         usuario.setAccountNonLocked(true);
         usuario.setCredentialsNonExpired(true);
 
-        Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario, "DOCENTE"); // salva usuário com a role "DOCENTE"
+        usuarioService.addRole(usuario, "DOCENTE");
 
         Docente docente = mapper.toEntity(requestDTO);
         Departamento departamento = departamentoService.getDepartamento(requestDTO.getDepartamentoId());
         docente.setRegistroInterno(UUID.randomUUID().toString().substring(10));
         docente.setDepartamento(departamento);
-        docente.setUsuario(usuarioSalvo); // associa usuário à docente.
+        docente.setUsuario(usuario); // associa usuário à docente.
 
         validator.validar(docente);
         return mapper.toDTO(repository.save(docente)); // salva docente.
@@ -65,7 +65,7 @@ public class DocenteServiceImpl implements DocenteService {
         Usuario usuario = docente.getUsuario();
         usuario.setEmail(requestDTO.getEmail());
         usuario.setUsername(requestDTO.getNome());
-        usuario.setSenha(requestDTO.getSenha());
+        usuario.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
 
 
         docente.setCpf(requestDTO.getCpf());
@@ -100,7 +100,7 @@ public class DocenteServiceImpl implements DocenteService {
 
         usuarioLogado.setEmail(requestDTO.getEmail());
         usuarioLogado.setUsername(requestDTO.getNome());
-        usuarioLogado.setSenha(requestDTO.getSenha());
+        usuarioLogado.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
 
         Docente docente = repository.findByUsuario(usuarioLogado)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));

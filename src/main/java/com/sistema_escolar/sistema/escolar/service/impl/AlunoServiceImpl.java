@@ -42,7 +42,9 @@ public class AlunoServiceImpl implements AlunoService {
         usuario.setEnabled(true);
         usuario.setAccountNonExpired(true);
         usuario.setAccountNonLocked(true);
-        usuario.setCredentialsNonExpired(true);// salva usuário com a role "ALUNO"
+        usuario.setCredentialsNonExpired(true);
+
+        usuarioService.addRole(usuario, "ALUNO");
 
         Aluno aluno = mapper.toEntity(requestDTO);
         Curso curso = cursoService.getCurso(requestDTO.getCursoId());
@@ -107,8 +109,6 @@ public class AlunoServiceImpl implements AlunoService {
         usuarioLogado.setEmail(requestDTO.getEmail());
         usuarioLogado.setUsername(requestDTO.getNome());
         usuarioLogado.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
-
-        usuarioService.salvarUsuario(usuarioLogado, "ALUNO");
 
         Aluno aluno = repository.findByUsuario(usuarioLogado)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));

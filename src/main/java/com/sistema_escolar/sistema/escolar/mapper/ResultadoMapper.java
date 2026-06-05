@@ -11,7 +11,7 @@ public interface ResultadoMapper {
 
     Resultado toEntity(ResultadoRequestDTO requestDTO);
 
-    @Mapping(target = "alunoId", expression = "java( resultado.getAluno().getId() )")
+
     @Mapping(target = "exameId", expression = "java( resultado.getExame().getId() )")
     @Mapping(target = "matriculaId", expression = "java( resultado.getMatricula().getId() )")
     ResultadoResponseDTO toDTO(Resultado resultado);

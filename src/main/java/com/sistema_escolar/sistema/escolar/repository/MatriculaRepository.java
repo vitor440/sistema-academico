@@ -22,12 +22,6 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     List<Matricula> findByAluno(Aluno aluno);
 
-
-    @Modifying
-    @Transactional
-    @Query(" UPDATE Matricula m SET m.notaFinal = :notaFinal WHERE m.id = :matriculaId")
-    void modificaNotaFinal(Long matriculaId, Double notaFinal);
-
     @Modifying
     @Transactional
     @Query(" UPDATE Matricula m SET m.statusSolicitacao = :statusSolicitacao WHERE m.id = :matriculaId ")

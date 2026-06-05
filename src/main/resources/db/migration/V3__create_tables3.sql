@@ -13,10 +13,9 @@ create table matricula(
 
 create table resultado(
                           id bigint primary key generated always as identity,
-                          aluno_id bigint references aluno(id),
+                          matricula_id bigint references matricula(id),
                           exame_id bigint references exame(id),
                           nota numeric not null,
-                          matricula_id bigint references matricula(id),
                           data_criacao timestamp,
                           data_atualizacao timestamp
 );

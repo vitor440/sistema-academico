@@ -16,11 +16,10 @@ public class ResultadoResponseDTO {
 
     private Long id;
 
-    private Long alunoId;
-
     private Long exameId;
+
+    private Long matriculaId;
 
     private Double nota;
 
-    private Long matriculaId;
 }

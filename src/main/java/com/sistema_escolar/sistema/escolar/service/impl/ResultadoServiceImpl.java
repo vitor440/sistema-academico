@@ -6,14 +6,14 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDT
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.MatriculaMapper;
 import com.sistema_escolar.sistema.escolar.mapper.ResultadoMapper;
-import com.sistema_escolar.sistema.escolar.model.Matricula;
-import com.sistema_escolar.sistema.escolar.model.Resultado;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
+import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
+import com.sistema_escolar.sistema.escolar.repository.ResultadoRepository;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
 import com.sistema_escolar.sistema.escolar.service.MatriculaService;
 import com.sistema_escolar.sistema.escolar.service.ResultadoService;
 import com.sistema_escolar.sistema.escolar.validator.ResultadoValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.AccessDeniedException;
@@ -37,13 +37,14 @@ public class ResultadoServiceImpl implements ResultadoService {
 
     @Override
     public MatriculaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO) {
-        Matricula matricula = matriculaService.getMatricula(id);
         Resultado resultado = resultadoMapper.toEntity(resultadoRequestDTO);
-        resultado.setAluno(matricula.getAluno());
-        resultado.setExame(exameService.getExame(resultadoRequestDTO.getExameId()));
-        validator.validar(resultado);
+        Matricula matricula = matriculaService.getMatricula(id);
+        Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
         resultado.setMatricula(matricula);
+        resultado.setExame(exame);
+        validator.validar(resultado);
+
         matricula.addResultado(resultado);
 
         return mapper.toDTO(repository.save(matricula));
@@ -52,15 +53,15 @@ public class ResultadoServiceImpl implements ResultadoService {
     @Override
     public MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO, Long resultadoId) {
         Matricula matricula = matriculaService.getMatricula(id);
+        Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
         for (Resultado resultado : matricula.getResultados()) {
             if (resultado.getId().equals(resultadoId)) {
                 resultado.setNota(resultadoRequestDTO.getNota());
-                resultado.setExame(exameService.getExame(resultadoRequestDTO.getExameId()));
-                resultado.setAluno(matricula.getAluno());
+                resultado.setMatricula(matricula);
+                resultado.setExame(exame);
                 validator.validar(resultado);
 
-                resultado.setMatricula(matricula);
                 matricula.calculaMedia(matricula.getResultados());
                 return mapper.toDTO(repository.save(matricula));
             }
@@ -107,6 +108,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     @Override
+    @Transactional
     public Page<ResultadoResponseDTO> listar(Long id, int pagina, int tamanho, String sortDirection) {
         Matricula matricula = matriculaService.getMatricula(id);
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
@@ -116,9 +118,24 @@ public class ResultadoServiceImpl implements ResultadoService {
 
         Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-            resultados = resultados.
-                    stream()
-                    .filter(resultado -> usuarioLogado.getAluno().getDisciplinas().contains(resultado.getExame().getDisciplina()))
+
+            Aluno aluno = usuarioLogado.getAluno();
+            List<Disciplina> disciplinasDoAluno = aluno.getDisciplinas();
+
+            resultados = resultados
+                    .stream()
+                    .filter(resultado -> disciplinasDoAluno.contains(resultado.getExame().getDisciplina()))
+                    .toList();
+        }
+
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+
+            Docente docente = usuarioLogado.getDocente();
+            List<Disciplina> disciplinasDoDocente = docente.getDisciplinas();
+
+            resultados = resultados
+                    .stream()
+                    .filter(resultado -> disciplinasDoDocente.contains(resultado.getExame().getDisciplina()))
                     .toList();
         }
 

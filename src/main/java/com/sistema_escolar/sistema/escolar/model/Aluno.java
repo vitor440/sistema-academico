@@ -57,9 +57,6 @@ public class Aluno {
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "aluno")
-    private List<Resultado> resultados;
-
-    @OneToMany(mappedBy = "aluno")
     private List<Matricula> matriculas;
 
 
@@ -67,7 +64,7 @@ public class Aluno {
     public List<Disciplina> getDisciplinas() {
         return this.matriculas
                 .stream()
-                .map(alunoDisciplina -> alunoDisciplina.getDisciplina())
+                .map(matricula -> matricula.getDisciplina())
                 .toList();
     }
 }

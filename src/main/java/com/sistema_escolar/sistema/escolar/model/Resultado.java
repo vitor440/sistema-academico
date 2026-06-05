@@ -18,20 +18,16 @@ public class Resultado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "aluno_id")
+    @JoinColumn(name = "matricula_id")
     @ManyToOne
-    private Aluno aluno;
+    private Matricula matricula;
 
     @JoinColumn(name = "exame_id")
-    @OneToOne
+    @ManyToOne
     private Exame exame;
 
     @Column(name = "nota")
     private Double nota;
-
-    @JoinColumn(name = "matricula_id")
-    @ManyToOne
-    private Matricula matricula;
 
     @Column(name = "data_criacao")
     @CreatedDate

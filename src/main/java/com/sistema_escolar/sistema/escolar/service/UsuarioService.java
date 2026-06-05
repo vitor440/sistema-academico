@@ -28,4 +28,6 @@ public interface UsuarioService {
     Usuario getUsuario(Long id);
 
     String encriptaSenha(String senha);
+
+    void addRole(Usuario usuario, String role);
 }

@@ -89,8 +89,8 @@ public class Matricula {
     }
 
 
-    public void calculaMediaFinal(Double media) {
-        this.mediaFinal = ((2*media) + this.notaFinal) / 3;
+    public void calculaMediaFinal(Double notaFinal) {
+        this.mediaFinal = ((2*this.media) + notaFinal) / 3;
     }
 
 
@@ -114,5 +114,7 @@ public class Matricula {
         else {
             this.status = StatusDisciplina.REPROVADO_POR_NOTA;
         }
+
+        this.efetivado = true;
     }
 }

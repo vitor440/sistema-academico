@@ -117,4 +117,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     public String encriptaSenha(String senha) {
         return passwordEncoder.encode(senha);
     }
+
+    @Override
+    public void addRole(Usuario usuario, String role) {
+        Permission permission = permissionRepository.findByRole(role)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Permission não encontrada!"));
+
+        usuario.setPermissions(List.of(permission));
+        repository.save(usuario);
+    }
 }
