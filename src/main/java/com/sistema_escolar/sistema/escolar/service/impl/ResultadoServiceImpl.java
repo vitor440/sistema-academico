@@ -43,6 +43,9 @@ public class ResultadoServiceImpl implements ResultadoService {
         Matricula matricula = matriculaService.getMatricula(id);
         Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
+        Docente docente = exame.getDisciplina().getDocente();
+        validarDocenteLogado(docente);
+
         resultado.setMatricula(matricula);
         resultado.setExame(exame);
         validator.validar(resultado);
@@ -55,6 +58,9 @@ public class ResultadoServiceImpl implements ResultadoService {
     @Override
     public MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO) {
         Resultado resultado = getResultado(id);
+
+        Docente docente = resultado.getExame().getDisciplina().getDocente();
+        validarDocenteLogado(docente);
 
         Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
@@ -79,6 +85,10 @@ public class ResultadoServiceImpl implements ResultadoService {
     @Override
     public void deletarResultadoExame(Long id) {
         Resultado resultado = getResultado(id);
+
+        Docente docente = resultado.getExame().getDisciplina().getDocente();
+        validarDocenteLogado(docente);
+
         Matricula matricula = resultado.getMatricula();
         matricula.getResultados().remove(resultado);
         matricula.calculaMedia(matricula.getResultados());
@@ -93,8 +103,19 @@ public class ResultadoServiceImpl implements ResultadoService {
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             boolean ehMatriculado = repository.existsByAlunoAndDisciplina(usuarioLogado.getAluno(), resultado.getMatricula().getDisciplina());
 
-            if (!ehMatriculado) throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
+            if (!ehMatriculado) {
+                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
+            }
         }
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+            Docente docenteLogado = usuarioLogado.getDocente();
+            Docente docente = resultado.getMatricula().getDisciplina().getDocente();
+
+            if (!docente.getId().equals(docenteLogado.getId())) {
+                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
+            }
+        }
+
         return resultadoMapper.toDTO(resultado);
     }
 
@@ -105,8 +126,8 @@ public class ResultadoServiceImpl implements ResultadoService {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
         List<Resultado> resultados = List.of();
-
         Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioLogado.getAluno();
             resultados = repository.obterResultadosDeAluno(aluno);
@@ -134,4 +155,12 @@ public class ResultadoServiceImpl implements ResultadoService {
 
         return new PageImpl<>(resultados, pageable, resultados.size()).map(resultadoMapper::toDTO);
     }
+
+    private void validarDocenteLogado(Docente docente) {
+        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Docente docenteLogado = usuarioLogado.getDocente();
+
+        if (!docenteLogado.getId().equals(docente.getId())) {
+            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para alterar esse resultado!");
+        }}
 }

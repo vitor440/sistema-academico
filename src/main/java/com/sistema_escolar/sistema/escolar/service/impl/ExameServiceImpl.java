@@ -34,6 +34,10 @@ public class ExameServiceImpl implements ExameService {
     public ExameResponseDTO salvar(ExameRequestDTO requestDTO) {
         Exame exame = mapper.toEntity(requestDTO);
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
+        Docente docente = disciplina.getDocente();
+
+        validarDocenteLogado(docente);
+
         exame.setDisciplina(disciplina);
 
         validator.validar(exame);
@@ -43,6 +47,10 @@ public class ExameServiceImpl implements ExameService {
     @Override
     public ExameResponseDTO atualizar(Long id, ExameRequestDTO requestDTO) {
         Exame exame = getExame(id);
+
+        Docente docente = exame.getDisciplina().getDocente();
+        validarDocenteLogado(docente);
+
         exame.setNome(requestDTO.getNome());
         exame.setDisciplina(disciplinaService.getDisciplina(requestDTO.getDisciplinaId()));
         exame.setData(requestDTO.getData());
@@ -53,6 +61,7 @@ public class ExameServiceImpl implements ExameService {
         validator.validar(exame);
         return mapper.toDTO(repository.save(exame));
     }
+
 
     @Override
     public ExameResponseDTO obterPeloId(Long id) {
@@ -109,6 +118,10 @@ public class ExameServiceImpl implements ExameService {
     @Override
     public void deletarPeloId(Long id) {
         Exame exame = getExame(id);
+
+        Docente docente = exame.getDisciplina().getDocente();
+        validarDocenteLogado(docente);
+
         repository.delete(exame);
     }
 
@@ -116,6 +129,16 @@ public class ExameServiceImpl implements ExameService {
     public Exame getExame(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Exame não encontrado!"));
+    }
+
+    public void validarDocenteLogado(Docente docente) {
+
+        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Docente docenteLogado = usuarioLogado.getDocente();
+
+        if (!docenteLogado.getId().equals(docente.getId())) {
+            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para alterar esse exame!");
+        }
     }
 }
 
