@@ -2,6 +2,7 @@ package com.sistema_escolar.sistema.escolar.service.impl;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
+import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.MatriculaMapper;
 import com.sistema_escolar.sistema.escolar.model.Aluno;
@@ -73,27 +74,26 @@ public class MatriculaServiceImpl implements MatriculaService {
         // se a disciplina for atualizada, vagas e alunos matriculados deverão ser ajustados
         if(!disciplina.equals(matricula.getDisciplina())) {
 
-            if (matricula.getResultados().size() > 0) throw new RuntimeException();
+            if (matricula.getResultados().size() > 0) throw new RegistroConflitanteException("não é possivel atualizar uma disciplina " +
+                    "de uma matrícula que possui uma lista de resultados!");
 
             Disciplina disciplinaSubstituida = matricula.getDisciplina();
             disciplinaSubstituida.acrescentaVaga();
             disciplinaService.salvarEntidade(disciplinaSubstituida); // atualiza a quantidade de vagas e alunos matriculados da disciplina substituída.
 
-            disciplina.decrementaVaga();
-//            matricula.setResultados(aluno.getResultadosDeDisciplinas(disciplina));
-//            matricula.calculaMedia(matricula.getResultados());
         }
 
         if (!aluno.equals(matricula.getAluno())) {
 
-            if (matricula.getResultados() != null) throw new RuntimeException();
-
+            if (matricula.getResultados().size() > 0) throw new RegistroConflitanteException("não é possivel atualizar um aluno " +
+                    "de uma matrícula que possui uma lista de resultados!");
             matricula.setAluno(aluno);
         }
 
         matricula.setFaltas(requestDTO.getFaltas());
 
         validator.validar(matricula, disciplina);
+        disciplina.decrementaVaga();
         matricula.setDisciplina(disciplina);
         return mapper.toDTO(repository.save(matricula));
     }
@@ -104,9 +104,10 @@ public class MatriculaServiceImpl implements MatriculaService {
         Matricula matricula = getMatricula(id);
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-            boolean ehMatriculado = repository.existsByAlunoAndDisciplina(usuarioLogado.getAluno(), matricula.getDisciplina());
+            Aluno aluno = usuarioLogado.getAluno();
+            boolean matriculaPertenceAoAluno = aluno.equals(matricula.getAluno());
 
-            if (!ehMatriculado) {
+            if (!matriculaPertenceAoAluno) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver essa matrícula!");
             }
         }

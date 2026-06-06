@@ -18,11 +18,11 @@ public class MatriculaValidator {
 
     public void validar(Matricula matricula, Disciplina disciplina) {
         if (disciplina.getVagas() == 0) {
-            throw new RegistroConflitanteException("não há vagas para a disciplina: " + matricula.getDisciplina().getNome());
+            throw new RegistroConflitanteException("não há vagas para a disciplina: " + disciplina.getNome());
         }
 
         if (verificaConflitoDeHorarios(matricula, disciplina)) {
-          throw new RegistroConflitanteException("Aluno já está matriculado em uma disciplina no horário: " + matricula.getDisciplina().getHoraInicio());
+          throw new RegistroConflitanteException("Aluno já está matriculado em uma disciplina no horário: " + disciplina.getHoraInicio());
         }
     }
 
