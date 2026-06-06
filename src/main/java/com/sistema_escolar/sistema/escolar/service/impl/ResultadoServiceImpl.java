@@ -12,13 +12,12 @@ import com.sistema_escolar.sistema.escolar.repository.ResultadoRepository;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
 import com.sistema_escolar.sistema.escolar.service.MatriculaService;
 import com.sistema_escolar.sistema.escolar.service.ResultadoService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.ResultadoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +33,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     private final ExameService exameService;
     private final ResultadoValidator validator;
     private final ResultadoRepository resultadoRepository;
+    private final UsuarioService usuarioService;
 
 
 
@@ -98,7 +98,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     @Override
     public ResultadoResponseDTO obterResultadoPeloId(Long id) {
         Resultado resultado = getResultado(id);
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             boolean ehMatriculado = repository.existsByAlunoAndDisciplina(usuarioLogado.getAluno(), resultado.getMatricula().getDisciplina());
@@ -126,22 +126,21 @@ public class ResultadoServiceImpl implements ResultadoService {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
         List<Resultado> resultados = List.of();
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioLogado.getAluno();
-            resultados = resultadoRepository.obterResultadosDeAluno(aluno);
+            return resultadoRepository.obterResultadosDeAluno(aluno, pageable).map(resultadoMapper::toDTO);
         }
 
         else if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docente = usuarioLogado.getDocente();
-            resultados = resultadoRepository.obterResultadosDaDisciplinaDoDocente(docente);
+            return resultadoRepository.obterResultadosDaDisciplinaDoDocente(docente, pageable).map(resultadoMapper::toDTO);
         }
 
         else {
-            resultados = resultadoRepository.findAll();
+            return resultadoRepository.findAll(pageable).map(resultadoMapper::toDTO);
         }
-        return new PageImpl<>(resultados, pageable, resultados.size()).map(resultadoMapper::toDTO);
     }
 
     @Override
@@ -157,7 +156,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     private void validarDocenteLogado(Docente docente) {
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         Docente docenteLogado = usuarioLogado.getDocente();
 
         if (!docenteLogado.getId().equals(docente.getId())) {

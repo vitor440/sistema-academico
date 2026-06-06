@@ -3,6 +3,8 @@ package com.sistema_escolar.sistema.escolar.repository;
 import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,10 +22,10 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     boolean existsByAlunoAndDisciplina(Aluno aluno, Disciplina disciplina);
 
-    List<Matricula> findByAluno(Aluno aluno);
+    Page<Matricula> findByAluno(Aluno aluno, Pageable pageable);
 
     @Query(" SELECT m FROM Matricula m where m.disciplina.docente = :docente ")
-    List<Matricula> obterMatriculasDoDocente(Docente docente);
+    Page<Matricula> obterMatriculasDoDocente(Docente docente, Pageable pageable);
 
     @Modifying
     @Transactional

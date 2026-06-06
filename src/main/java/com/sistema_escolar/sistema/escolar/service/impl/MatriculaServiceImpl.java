@@ -17,13 +17,10 @@ import com.sistema_escolar.sistema.escolar.validator.MatriculaValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static org.springframework.data.domain.Sort.Direction;
 
@@ -129,15 +126,11 @@ public class MatriculaServiceImpl implements MatriculaService {
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-
-            List<Matricula> matriculas = repository.findByAluno(usuarioLogado.getAluno());
-            return new PageImpl<>(matriculas, pageable, matriculas.size()).map(mapper::toDTO);
+            return repository.findByAluno(usuarioLogado.getAluno(), pageable).map(mapper::toDTO);
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            List<Matricula> matriculas = repository.obterMatriculasDoDocente(usuarioLogado.getDocente());
-            return new PageImpl<>(matriculas, pageable, matriculas.size()).map(mapper::toDTO);
-
+            return repository.obterMatriculasDoDocente(usuarioLogado.getDocente(), pageable).map(mapper::toDTO);
         }
 
         return repository.findAll(pageable).map(mapper::toDTO);

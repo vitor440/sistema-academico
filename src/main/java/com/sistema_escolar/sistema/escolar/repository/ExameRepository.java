@@ -1,6 +1,8 @@
 package com.sistema_escolar.sistema.escolar.repository;
 
 import com.sistema_escolar.sistema.escolar.model.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,10 +16,10 @@ public interface ExameRepository extends JpaRepository<Exame, Long> {
     Optional<Exame> findByDisciplinaAndDataAndHora(Disciplina disciplina, LocalDate data, LocalTime hora);
 
     @Query(" SELECT e FROM Exame e JOIN Matricula m ON e.disciplina.id = m.disciplina.id WHERE m.aluno = :aluno ")
-    List<Exame> obterExamesDeAluno(Aluno aluno);
+    Page<Exame> obterExamesDeAluno(Aluno aluno, Pageable pageable);
 
 
     @Query(" SELECT e FROM Exame e JOIN Disciplina d ON e.disciplina.id = d.id WHERE d.docente = :docente ")
-    List<Exame> obterExamesDoDocente(Docente docente);
+    Page<Exame> obterExamesDoDocente(Docente docente, Pageable pageable);
 
 }

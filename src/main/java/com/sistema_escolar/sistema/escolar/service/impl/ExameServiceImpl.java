@@ -5,20 +5,20 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.ExameMapper;
 import com.sistema_escolar.sistema.escolar.model.*;
-import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
+import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.ExameValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import javax.print.Doc;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class ExameServiceImpl implements ExameService {
     private final DisciplinaService disciplinaService;
     private final ExameValidator validator;
     private final MatriculaRepository matriculaRepository;
+    private final UsuarioService usuarioService;
 
     @Override
     public ExameResponseDTO salvar(ExameRequestDTO requestDTO) {
@@ -65,7 +66,7 @@ public class ExameServiceImpl implements ExameService {
 
     @Override
     public ExameResponseDTO obterPeloId(Long id) {
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         Exame exame = getExame(id);
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
@@ -98,21 +99,21 @@ public class ExameServiceImpl implements ExameService {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
 
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioLogado.getAluno();
-            List<Exame> exames = repository.obterExamesDeAluno(aluno);
-            return new PageImpl<>(exames, pageable, exames.size()).map(mapper::toDTO);
+            return repository.obterExamesDeAluno(aluno, pageable).map(mapper::toDTO);
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docente = usuarioLogado.getDocente();
-            List<Exame> exames = repository.obterExamesDoDocente(docente);
-            return new PageImpl<>(exames, pageable, exames.size()).map(mapper::toDTO);
+            return repository.obterExamesDoDocente(docente, pageable).map(mapper::toDTO);
+        }
+        else {
+            return repository.findAll(pageable).map(mapper::toDTO);
         }
 
-        return repository.findAll(pageable).map(mapper::toDTO);
     }
 
     @Override
@@ -133,7 +134,7 @@ public class ExameServiceImpl implements ExameService {
 
     public void validarDocenteLogado(Docente docente) {
 
-        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         Docente docenteLogado = usuarioLogado.getDocente();
 
         if (!docenteLogado.getId().equals(docente.getId())) {
