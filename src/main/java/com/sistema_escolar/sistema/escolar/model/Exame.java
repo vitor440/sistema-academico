@@ -3,6 +3,7 @@ package com.sistema_escolar.sistema.escolar.model;
 import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "exame")
+@ToString(exclude = {"disciplina", "resultado"})
 @EntityListeners(AuditingEntityListener.class)
 public class Exame {
 

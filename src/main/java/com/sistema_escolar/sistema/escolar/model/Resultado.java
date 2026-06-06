@@ -2,6 +2,7 @@ package com.sistema_escolar.sistema.escolar.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "resultado")
+@ToString(exclude = {"matricula", "exame"})
 @EntityListeners(AuditingEntityListener.class)
 public class Resultado {
 

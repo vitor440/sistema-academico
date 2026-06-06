@@ -9,11 +9,13 @@ public interface ResultadoService {
 
     MatriculaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
 
-    MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO, Long resultadoId);
+    MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
 
-    void deletarResultadoExame(Long id, Long resultadoId);
+    void deletarResultadoExame(Long id);
 
-    ResultadoResponseDTO obterResultadoPeloId(Long id, Long resultadoId);
+    ResultadoResponseDTO obterResultadoPeloId(Long id);
 
-    Page<ResultadoResponseDTO> listar(Long id, int pagina, int tamanho, String sortDirection);
+    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+
+    Page<ResultadoResponseDTO> listarPeloIdDaMatricula(Long id, int pagina, int tamanho, String sortDirection);
 }

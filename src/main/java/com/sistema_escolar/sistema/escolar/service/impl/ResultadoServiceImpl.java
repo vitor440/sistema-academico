@@ -15,6 +15,7 @@ import com.sistema_escolar.sistema.escolar.service.ResultadoService;
 import com.sistema_escolar.sistema.escolar.validator.ResultadoValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +33,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     private final ResultadoMapper resultadoMapper;
     private final ExameService exameService;
     private final ResultadoValidator validator;
+    private final ResultadoRepository resultadoRepository;
 
 
 
@@ -51,93 +53,84 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     @Override
-    public MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO, Long resultadoId) {
-        Matricula matricula = matriculaService.getMatricula(id);
+    public MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO) {
+        Resultado resultado = getResultado(id);
+
         Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
-        for (Resultado resultado : matricula.getResultados()) {
-            if (resultado.getId().equals(resultadoId)) {
-                resultado.setNota(resultadoRequestDTO.getNota());
-                resultado.setMatricula(matricula);
-                resultado.setExame(exame);
-                validator.validar(resultado);
+        resultado.setNota(resultadoRequestDTO.getNota());
+        resultado.setExame(exame);
+        validator.validar(resultado);
 
-                matricula.calculaMedia(matricula.getResultados());
-                return mapper.toDTO(repository.save(matricula));
-            }
+        Matricula matricula = resultado.getMatricula();
+        matricula.getResultados().add(resultado);
+        matricula.calculaMedia(matricula.getResultados());
+        return mapper.toDTO(repository.save(matricula));
+
         }
 
-        throw new RegistroNaoEncontradoException("Não existe resultado com ID: " + resultadoId);
+    public Resultado getResultado(Long id) {
+        return resultadoRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Resultado não encontrado"));
+    }
+
+
+
+    @Override
+    public void deletarResultadoExame(Long id) {
+        Resultado resultado = getResultado(id);
+        Matricula matricula = resultado.getMatricula();
+        matricula.getResultados().remove(resultado);
+        matricula.calculaMedia(matricula.getResultados());
+        repository.save(matricula);
     }
 
     @Override
-    public void deletarResultadoExame(Long id, Long resultadoId) {
-        Matricula matricula = matriculaService.getMatricula(id);
+    public ResultadoResponseDTO obterResultadoPeloId(Long id) {
+        Resultado resultado = getResultado(id);
+        Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        for (Resultado resultado : matricula.getResultados()) {
-            if (resultado.getId().equals(resultadoId)) {
+        if (usuarioLogado.getRoles().contains("ALUNO")) {
+            boolean ehMatriculado = repository.existsByAlunoAndDisciplina(usuarioLogado.getAluno(), resultado.getMatricula().getDisciplina());
 
-                matricula.getResultados().remove(resultado);
-                matricula.calculaMedia(matricula.getResultados());
-                repository.save(matricula);
-                return;
-            }
+            if (!ehMatriculado) throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
         }
-
-        throw new RegistroNaoEncontradoException("Não existe resultado com ID: " + resultadoId);
-    }
-
-    @Override
-    public ResultadoResponseDTO obterResultadoPeloId(Long id, Long resultadoId) {
-        Matricula matricula = matriculaService.getMatricula(id);
-
-        for (Resultado resultado : matricula.getResultados()) {
-            if (resultado.getId().equals(resultadoId)) {
-
-                Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                if (usuarioLogado.getRoles().contains("ALUNO")) {
-                    boolean ehMatriculado = repository.existsByAlunoAndDisciplina(usuarioLogado.getAluno(), matricula.getDisciplina());
-
-                    if (!ehMatriculado) throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
-                }
-                return resultadoMapper.toDTO(resultado);
-            }
-        }
-
-        throw new RegistroNaoEncontradoException("Não existe resultado com ID: " + resultadoId);
+        return resultadoMapper.toDTO(resultado);
     }
 
     @Override
     @Transactional
-    public Page<ResultadoResponseDTO> listar(Long id, int pagina, int tamanho, String sortDirection) {
-        Matricula matricula = matriculaService.getMatricula(id);
+    public Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
-
-        List<Resultado> resultados = matricula.getResultados();
+        List<Resultado> resultados = List.of();
 
         Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-
             Aluno aluno = usuarioLogado.getAluno();
-            List<Disciplina> disciplinasDoAluno = aluno.getDisciplinas();
-
-            resultados = resultados
-                    .stream()
-                    .filter(resultado -> disciplinasDoAluno.contains(resultado.getExame().getDisciplina()))
-                    .toList();
+            resultados = repository.obterResultadosDeAluno(aluno);
         }
 
-        if (usuarioLogado.getRoles().contains("DOCENTE")) {
-
+        else if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docente = usuarioLogado.getDocente();
-            List<Disciplina> disciplinasDoDocente = docente.getDisciplinas();
-
-            resultados = resultados
-                    .stream()
-                    .filter(resultado -> disciplinasDoDocente.contains(resultado.getExame().getDisciplina()))
-                    .toList();
+            resultados = repository.obterResultadosDaDisciplinaDoDocente(docente);
         }
+
+        else {
+            resultados = resultadoRepository.findAll();
+        }
+        return new PageImpl<>(resultados, pageable, resultados.size()).map(resultadoMapper::toDTO);
+    }
+
+    @Override
+    @Transactional
+    public Page<ResultadoResponseDTO> listarPeloIdDaMatricula(Long id, int pagina, int tamanho, String sortDirection) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
+
+        Matricula matricula = matriculaService.getMatricula(id);
+        List<Resultado> resultados = matricula.getResultados();
 
         return new PageImpl<>(resultados, pageable, resultados.size()).map(resultadoMapper::toDTO);
     }

@@ -72,7 +72,9 @@ public class ExameServiceImpl implements ExameService {
             Docente docenteLogado = usuarioLogado.getDocente();
             Docente docente = exame.getDisciplina().getDocente();
 
-            if (!docente.equals(docenteLogado)) {
+            boolean flag = docenteLogado.getId().equals(docente.getId());
+
+            if (!flag) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver esse exame!");
             }
         }
@@ -90,31 +92,15 @@ public class ExameServiceImpl implements ExameService {
         Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-            Page<Exame> exames = repository.findAll(pageable);
             Aluno aluno = usuarioLogado.getAluno();
-
-            List<Disciplina> disciplinasDoAluno = aluno.getDisciplinas();
-
-            List<Exame> examesFiltrados = exames
-                    .stream()
-                    .filter(exame -> disciplinasDoAluno.contains(exame.getDisciplina())) // verifica se o exame é de uma disciplina matriculada pelo aluno.
-                    .toList();
-
-            return new PageImpl<>(examesFiltrados, pageable, examesFiltrados.size()).map(mapper::toDTO);
+            List<Exame> exames = repository.obterExamesDeAluno(aluno);
+            return new PageImpl<>(exames, pageable, exames.size()).map(mapper::toDTO);
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            Page<Exame> exames = repository.findAll(pageable);
             Docente docente = usuarioLogado.getDocente();
-
-            List<Disciplina> disciplinasDoDocente = docente.getDisciplinas();
-
-            List<Exame> examesFiltrados = exames
-                    .stream()
-                    .filter(exame -> disciplinasDoDocente.contains(exame.getDisciplina())) // verifica se o exame é de uma disciplina ministrada pelo docente
-                    .toList();
-
-            return new PageImpl<>(examesFiltrados, pageable, examesFiltrados.size()).map(mapper::toDTO);
+            List<Exame> exames = repository.obterExamesDoDocente(docente);
+            return new PageImpl<>(exames, pageable, exames.size()).map(mapper::toDTO);
         }
 
         return repository.findAll(pageable).map(mapper::toDTO);

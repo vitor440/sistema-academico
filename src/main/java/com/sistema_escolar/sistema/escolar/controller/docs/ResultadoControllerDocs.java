@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +41,7 @@ public interface ResultadoControllerDocs extends GenericController {
             @ApiResponse(description = "resultado não encontrado", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto,
-                                                   @PathVariable("resultadoId") Long resultadoId);
+    ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto);
 
 
     @Operation(summary = "obter resultado de exame", description = "Obtém um resultado de exame pelo ID.")
@@ -51,7 +51,7 @@ public interface ResultadoControllerDocs extends GenericController {
             @ApiResponse(description = "resultado não encontrado", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<Void> deletar(@PathVariable("id") Long id, @PathVariable("resultadoId") Long resultadoId);
+    ResponseEntity<Void> deletar(@PathVariable("id") Long id);
 
 
 
@@ -62,5 +62,16 @@ public interface ResultadoControllerDocs extends GenericController {
             @ApiResponse(description = "resultado não encontrado", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<ResultadoResponseDTO> obterResultadoPeloId(@PathVariable("id") Long id, @PathVariable("resultadoId") Long resultadoId);
+    ResponseEntity<ResultadoResponseDTO> obterResultadoPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<Page<ResultadoResponseDTO>> listar(
+            @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
+            @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+
+    ResponseEntity<Page<ResultadoResponseDTO>> listarPeloIdDaMatricula(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
+            @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
 }

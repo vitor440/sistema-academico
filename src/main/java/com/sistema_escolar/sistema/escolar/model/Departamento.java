@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "departamento")
+@ToString(exclude = {"docentes", "disciplinas", "cursos"})
 @EntityListeners(AuditingEntityListener.class)
 public class Departamento {
 
