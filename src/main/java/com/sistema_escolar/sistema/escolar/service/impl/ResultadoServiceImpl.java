@@ -130,12 +130,12 @@ public class ResultadoServiceImpl implements ResultadoService {
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioLogado.getAluno();
-            resultados = repository.obterResultadosDeAluno(aluno);
+            resultados = resultadoRepository.obterResultadosDeAluno(aluno);
         }
 
         else if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docente = usuarioLogado.getDocente();
-            resultados = repository.obterResultadosDaDisciplinaDoDocente(docente);
+            resultados = resultadoRepository.obterResultadosDaDisciplinaDoDocente(docente);
         }
 
         else {

@@ -5,10 +5,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDT
 import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.MatriculaMapper;
-import com.sistema_escolar.sistema.escolar.model.Aluno;
-import com.sistema_escolar.sistema.escolar.model.Disciplina;
-import com.sistema_escolar.sistema.escolar.model.Matricula;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
+import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
@@ -111,6 +108,16 @@ public class MatriculaServiceImpl implements MatriculaService {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver essa matrícula!");
             }
         }
+
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+            Docente docenteLogado = usuarioLogado.getDocente();
+            Docente docente = matricula.getDisciplina().getDocente();
+
+            if (!docenteLogado.getId().equals(docente.getId())) {
+                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver essa matrícula!");
+            }
+        }
+
         return mapper.toDTO(matricula);
     }
 
@@ -125,6 +132,12 @@ public class MatriculaServiceImpl implements MatriculaService {
 
             List<Matricula> matriculas = repository.findByAluno(usuarioLogado.getAluno());
             return new PageImpl<>(matriculas, pageable, matriculas.size()).map(mapper::toDTO);
+        }
+
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+            List<Matricula> matriculas = repository.obterMatriculasDoDocente(usuarioLogado.getDocente());
+            return new PageImpl<>(matriculas, pageable, matriculas.size()).map(mapper::toDTO);
+
         }
 
         return repository.findAll(pageable).map(mapper::toDTO);

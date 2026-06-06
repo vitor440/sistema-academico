@@ -22,17 +22,16 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     List<Matricula> findByAluno(Aluno aluno);
 
+    @Query(" SELECT m FROM Matricula m where m.disciplina.docente = :docente ")
+    List<Matricula> obterMatriculasDoDocente(Docente docente);
+
     @Modifying
     @Transactional
     @Query(" UPDATE Matricula m SET m.statusSolicitacao = :statusSolicitacao WHERE m.id = :matriculaId ")
     void modificaStatusSolicitacao(Long matriculaId, StatusSolicitacao statusSolicitacao);
 
 
-    @Query(" SELECT r FROM Resultado r JOIN Matricula m ON r.matricula.id = m.id where m.aluno = :aluno  ")
-    List<Resultado> obterResultadosDeAluno(Aluno aluno);
 
-    @Query(" SELECT r FROM Resultado r JOIN Disciplina d ON r.matricula.disciplina.id = d.id where d.docente = :docente  ")
-    List<Resultado> obterResultadosDaDisciplinaDoDocente(Docente docente);
 
 
 }
