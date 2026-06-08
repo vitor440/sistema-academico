@@ -74,7 +74,7 @@ public class ExameServiceImpl implements ExameService {
             boolean ehMatriculado = matriculaRepository.existsByAlunoAndDisciplina(aluno, exame.getDisciplina());
 
             if (!ehMatriculado) {
-                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver esse exame!");
+                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar esse exame!");
             }
         }
 

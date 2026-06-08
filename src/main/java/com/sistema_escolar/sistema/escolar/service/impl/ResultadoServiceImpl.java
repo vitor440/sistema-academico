@@ -3,6 +3,7 @@ package com.sistema_escolar.sistema.escolar.service.impl;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDTO;
+import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.MatriculaMapper;
 import com.sistema_escolar.sistema.escolar.mapper.ResultadoMapper;
@@ -46,6 +47,12 @@ public class ResultadoServiceImpl implements ResultadoService {
         Docente docente = exame.getDisciplina().getDocente();
         validarDocenteLogado(docente);
 
+        if(!matricula.getDisciplina().getId().equals(exame.getDisciplina().getId())) {
+            throw new RegistroConflitanteException("Você está tentando atribuir resultado de um examde de "
+                    + exame.getDisciplina().getNome()
+                    + " para uma matrícula da disciplina de " + matricula.getDisciplina().getNome());
+        }
+
         resultado.setMatricula(matricula);
         resultado.setExame(exame);
         validator.validar(resultado);
@@ -65,10 +72,17 @@ public class ResultadoServiceImpl implements ResultadoService {
         Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
         resultado.setNota(resultadoRequestDTO.getNota());
+        Matricula matricula = resultado.getMatricula();
         resultado.setExame(exame);
+
+        if(!matricula.getDisciplina().getId().equals(exame.getDisciplina().getId())) {
+            throw new RegistroConflitanteException("Você está tentando atribuir resultado de um examde de "
+                    + exame.getDisciplina().getNome()
+                    + " para uma matrícula da disciplina de " + matricula.getDisciplina().getNome());
+        }
+
         validator.validar(resultado);
 
-        Matricula matricula = resultado.getMatricula();
         matricula.getResultados().add(resultado);
         matricula.calculaMedia(matricula.getResultados());
         return mapper.toDTO(repository.save(matricula));
@@ -160,6 +174,6 @@ public class ResultadoServiceImpl implements ResultadoService {
         Docente docenteLogado = usuarioLogado.getDocente();
 
         if (!docenteLogado.getId().equals(docente.getId())) {
-            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para alterar esse resultado!");
+            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar/alterar esse resultado!");
         }}
 }

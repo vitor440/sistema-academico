@@ -40,7 +40,7 @@ public class ResultadoController implements ResultadoControllerDocs {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/resultados/{resultadoId}")
+    @GetMapping("/resultados/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE', 'ALUNO')")
     public ResponseEntity<ResultadoResponseDTO> obterResultadoPeloId(@PathVariable("id") Long id) {
