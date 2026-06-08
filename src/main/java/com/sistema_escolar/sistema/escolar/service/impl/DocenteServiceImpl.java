@@ -1,17 +1,13 @@
 package com.sistema_escolar.sistema.escolar.service.impl;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.DocenteRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.request.UsuarioRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DocenteResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.DocenteMapper;
-import com.sistema_escolar.sistema.escolar.model.Aluno;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.model.Docente;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
-import com.sistema_escolar.sistema.escolar.repository.DepartamentoRepository;
 import com.sistema_escolar.sistema.escolar.repository.DocenteRepository;
-import com.sistema_escolar.sistema.escolar.repository.UsuarioRepository;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.service.DocenteService;
 import com.sistema_escolar.sistema.escolar.service.UsuarioService;
@@ -22,7 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.UUID;
 

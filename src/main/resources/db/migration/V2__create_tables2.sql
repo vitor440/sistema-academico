@@ -38,10 +38,6 @@ create table disciplina(
        localizacao varchar(60) not null,
        alunos_matriculados integer not null,
        vagas integer not null,
-       periodo varchar(60) not null,
-       dias_semana varchar(60) not null,
-       hora_inicio time not null,
-       hora_fim time not null,
        data_criacao timestamp,
        data_atualizacao timestamp
 );

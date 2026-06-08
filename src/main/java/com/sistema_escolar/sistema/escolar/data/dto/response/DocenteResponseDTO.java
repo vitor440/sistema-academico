@@ -1,15 +1,9 @@
 package com.sistema_escolar.sistema.escolar.data.dto.response;
 
-import com.sistema_escolar.sistema.escolar.model.Departamento;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
-import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 public class DocenteResponseDTO {

@@ -7,9 +7,7 @@ import com.sistema_escolar.sistema.escolar.mapper.DisciplinaMapper;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import com.sistema_escolar.sistema.escolar.model.Docente;
-import com.sistema_escolar.sistema.escolar.repository.DepartamentoRepository;
 import com.sistema_escolar.sistema.escolar.repository.DisciplinaRepository;
-import com.sistema_escolar.sistema.escolar.repository.DocenteRepository;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
 import com.sistema_escolar.sistema.escolar.service.DocenteService;
@@ -38,7 +36,6 @@ public class DisciplinaServiceImpl implements DisciplinaService {
         Docente docente = docenteService.getDocente(requestDTO.getDocenteId());
         disciplina.setDepartamento(departamento);
         disciplina.setDocente(docente);
-        disciplina.setHoraFim(disciplina.getHoraInicio().plusHours(2));
 
         validator.validar(disciplina);
         return mapper.toDTO(repository.save(disciplina));
@@ -53,14 +50,11 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     @Override
     public DisciplinaResponseDTO atualizar(Long id, DisciplinaRequestDTO requestDTO) {
         Disciplina disciplina = getDisciplina(id);
+
         disciplina.setNome(requestDTO.getNome());
         disciplina.setLocalizacao(requestDTO.getLocalizacao());
         disciplina.setAlunosMatriculados(requestDTO.getAlunosMatriculados());
         disciplina.setVagas(requestDTO.getVagas());
-        disciplina.setDiaSemana(requestDTO.getDiaSemana());
-        disciplina.setHoraInicio(requestDTO.getHoraInicio());
-        disciplina.setHoraFim(disciplina.getHoraInicio().plusHours(2));
-        disciplina.setPeriodo(requestDTO.getPeriodo());
         disciplina.setDepartamento(departamentoService.getDepartamento(requestDTO.getDepartamentoId()));
         disciplina.setDocente(docenteService.getDocente(requestDTO.getDocenteId()));
 

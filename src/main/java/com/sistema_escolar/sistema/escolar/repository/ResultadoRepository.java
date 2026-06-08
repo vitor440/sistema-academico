@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ResultadoRepository extends JpaRepository<Resultado, Long> {
@@ -18,4 +17,6 @@ public interface ResultadoRepository extends JpaRepository<Resultado, Long> {
 
     @Query(" SELECT r FROM Resultado r JOIN Disciplina d ON r.matricula.disciplina.id = d.id where d.docente = :docente  ")
     Page<Resultado> obterResultadosDaDisciplinaDoDocente(Docente docente, Pageable pageable);
+
+    Page<Resultado> findByMatricula(Matricula matricula, Pageable pageable);
 }

@@ -1,25 +1,19 @@
 package com.sistema_escolar.sistema.escolar.service.impl;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.DepartamentoRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.CursoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.CursoMapper;
 import com.sistema_escolar.sistema.escolar.mapper.DepartamentoMapper;
-import com.sistema_escolar.sistema.escolar.model.Curso;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.repository.DepartamentoRepository;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.validator.DepartamentoValidator;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static org.springframework.data.domain.Sort.Direction;
 

@@ -1,7 +1,6 @@
 package com.sistema_escolar.sistema.escolar.security;
 
 import com.sistema_escolar.sistema.escolar.service.UsuarioService;
-import com.sistema_escolar.sistema.escolar.service.impl.UsuarioServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

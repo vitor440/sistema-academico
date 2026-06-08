@@ -1,7 +1,5 @@
 package com.sistema_escolar.sistema.escolar.data.dto.request;
 
-import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;

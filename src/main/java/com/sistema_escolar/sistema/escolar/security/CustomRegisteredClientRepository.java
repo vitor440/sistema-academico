@@ -2,7 +2,6 @@ package com.sistema_escolar.sistema.escolar.security;
 
 import com.sistema_escolar.sistema.escolar.model.Client;
 import com.sistema_escolar.sistema.escolar.service.ClientService;
-import com.sistema_escolar.sistema.escolar.service.impl.ClientServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;

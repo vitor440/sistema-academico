@@ -1,7 +1,6 @@
 package com.sistema_escolar.sistema.escolar.repository;
 
 import com.sistema_escolar.sistema.escolar.model.Curso;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

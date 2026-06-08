@@ -2,11 +2,8 @@ package com.sistema_escolar.sistema.escolar.controller;
 
 import com.sistema_escolar.sistema.escolar.controller.docs.DepartamentoControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.DepartamentoRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.CursoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
-import com.sistema_escolar.sistema.escolar.model.Curso;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

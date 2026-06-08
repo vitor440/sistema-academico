@@ -1,7 +1,5 @@
 package com.sistema_escolar.sistema.escolar.model;
 
-import com.sistema_escolar.sistema.escolar.model.enums.DiasSemana;
-import com.sistema_escolar.sistema.escolar.model.enums.Periodo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -10,13 +8,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "disciplina")
-@ToString(exclude = {"matriculas", "exames", "departamento", "docente"})
+@ToString(exclude = {"matriculas", "exames", "departamento", "docente", "horarios"})
 @EntityListeners(AuditingEntityListener.class)
 public class Disciplina {
 
@@ -36,20 +33,6 @@ public class Disciplina {
     @Column(name = "vagas")
     private int vagas;
 
-    @Column(name = "dias_semana")
-    @Enumerated(EnumType.STRING)
-    private DiasSemana diaSemana;
-
-    @Column(name = "periodo")
-    @Enumerated(EnumType.STRING)
-    private Periodo periodo;
-
-    @Column(name = "hora_inicio")
-    private LocalTime horaInicio;
-
-    @Column(name = "hora_fim")
-    private LocalTime horaFim;
-
     @JoinColumn(name = "departamento_id")
     @ManyToOne
     private Departamento departamento;
@@ -66,11 +49,15 @@ public class Disciplina {
     @LastModifiedDate
     private LocalDateTime dataAtualizacao;
 
+
     @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
     private List<Exame> exames;
 
     @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
     private List<Matricula> matriculas;
+
+    @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
+    private List<HorarioDisciplina> horarios;
 
 
     public void decrementaVaga() {

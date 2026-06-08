@@ -1,11 +1,8 @@
 package com.sistema_escolar.sistema.escolar.data.dto.request;
 
-import com.sistema_escolar.sistema.escolar.model.Permission;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class UsuarioRequestDTO {

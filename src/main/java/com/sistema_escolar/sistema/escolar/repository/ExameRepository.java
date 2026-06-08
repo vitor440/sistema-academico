@@ -1,6 +1,9 @@
 package com.sistema_escolar.sistema.escolar.repository;
 
-import com.sistema_escolar.sistema.escolar.model.*;
+import com.sistema_escolar.sistema.escolar.model.Aluno;
+import com.sistema_escolar.sistema.escolar.model.Disciplina;
+import com.sistema_escolar.sistema.escolar.model.Docente;
+import com.sistema_escolar.sistema.escolar.model.Exame;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 public interface ExameRepository extends JpaRepository<Exame, Long> {

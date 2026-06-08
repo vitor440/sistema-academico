@@ -2,7 +2,6 @@ package com.sistema_escolar.sistema.escolar.controller.docs;
 
 import com.sistema_escolar.sistema.escolar.controller.GenericController;
 import com.sistema_escolar.sistema.escolar.data.dto.ErroResposta;
-import com.sistema_escolar.sistema.escolar.data.dto.request.AlunoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.request.DocenteRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
@@ -16,7 +15,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Tag(name = "Docentes")

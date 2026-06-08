@@ -2,8 +2,6 @@ package com.sistema_escolar.sistema.escolar.data.dto.response;
 
 import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;

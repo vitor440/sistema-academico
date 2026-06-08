@@ -1,6 +1,5 @@
 package com.sistema_escolar.sistema.escolar.data.dto.request;
 
-import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import jakarta.validation.constraints.*;
 import lombok.Data;

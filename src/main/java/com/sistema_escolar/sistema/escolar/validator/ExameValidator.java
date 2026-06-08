@@ -1,13 +1,9 @@
 package com.sistema_escolar.sistema.escolar.validator;
 
 import com.sistema_escolar.sistema.escolar.exception.RegistroDuplicadoException;
-import com.sistema_escolar.sistema.escolar.model.Docente;
 import com.sistema_escolar.sistema.escolar.model.Exame;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

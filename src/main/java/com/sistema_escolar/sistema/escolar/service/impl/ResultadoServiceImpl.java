@@ -164,9 +164,8 @@ public class ResultadoServiceImpl implements ResultadoService {
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
 
         Matricula matricula = matriculaService.getMatricula(id);
-        List<Resultado> resultados = matricula.getResultados();
 
-        return new PageImpl<>(resultados, pageable, resultados.size()).map(resultadoMapper::toDTO);
+        return resultadoRepository.findByMatricula(matricula, pageable).map(resultadoMapper::toDTO);
     }
 
     private void validarDocenteLogado(Docente docente) {

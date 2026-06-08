@@ -1,9 +1,7 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
 import com.sistema_escolar.sistema.escolar.controller.docs.DocenteControllerDocs;
-import com.sistema_escolar.sistema.escolar.data.dto.request.AlunoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.request.DocenteRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DocenteResponseDTO;
 import com.sistema_escolar.sistema.escolar.service.DocenteService;
 import jakarta.validation.Valid;

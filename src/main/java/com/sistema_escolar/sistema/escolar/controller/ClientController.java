@@ -2,11 +2,9 @@ package com.sistema_escolar.sistema.escolar.controller;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.ClientRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ClientResponseDTO;
-import com.sistema_escolar.sistema.escolar.model.Client;
 import com.sistema_escolar.sistema.escolar.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -3,7 +3,10 @@ package com.sistema_escolar.sistema.escolar.controller.docs;
 import com.sistema_escolar.sistema.escolar.controller.GenericController;
 import com.sistema_escolar.sistema.escolar.data.dto.ErroResposta;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.*;
+import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,7 +16,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Resultados")
 public interface ResultadoControllerDocs extends GenericController {

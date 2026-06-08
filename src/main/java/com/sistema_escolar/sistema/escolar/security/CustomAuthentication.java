@@ -1,6 +1,5 @@
 package com.sistema_escolar.sistema.escolar.security;
 
-import com.sistema_escolar.sistema.escolar.model.Permission;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

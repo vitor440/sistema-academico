@@ -13,16 +13,12 @@ import com.sistema_escolar.sistema.escolar.repository.specs.CursoSpecs;
 import com.sistema_escolar.sistema.escolar.service.CursoService;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.validator.CursoValidator;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static org.springframework.data.domain.Sort.Direction;
 
