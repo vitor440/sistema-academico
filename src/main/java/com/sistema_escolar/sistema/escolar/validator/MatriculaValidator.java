@@ -1,12 +1,12 @@
 package com.sistema_escolar.sistema.escolar.validator;
 
 import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
-import com.sistema_escolar.sistema.escolar.model.Disciplina;
-import com.sistema_escolar.sistema.escolar.model.HorarioDisciplina;
-import com.sistema_escolar.sistema.escolar.model.Matricula;
+import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.repository.HorarioDisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,6 +16,8 @@ import java.util.List;
 public class MatriculaValidator {
 
     private final HorarioDisciplinaRepository horarioDisciplinaRepository;
+    private final MatriculaRepository matriculaRepository;
+    private final UsuarioService usuarioService;
 
     public void validar(Matricula matricula, Disciplina disciplina) {
         if (disciplina.getVagas() == 0) {
@@ -26,6 +28,31 @@ public class MatriculaValidator {
          throw new RegistroConflitanteException("Aluno já está matriculado em uma disciplina no horário: " + disciplina.getHorarios());
        }
     }
+
+
+    public void validaAcesso(Matricula matricula) {
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+
+        if (usuarioLogado.getRoles().contains("ALUNO")) {
+            Aluno aluno = usuarioLogado.getAluno();
+            boolean matriculaPertenceAoAluno = aluno.equals(matricula.getAluno());
+
+            if (!matriculaPertenceAoAluno) {
+                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver essa matrícula!");
+            }
+        }
+
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+            Docente docenteLogado = usuarioLogado.getDocente();
+            Docente docente = matricula.getDisciplina().getDocente();
+
+            if (!docenteLogado.getId().equals(docente.getId())) {
+                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver essa matrícula!");
+            }
+        }
+    }
+
+
 
 
     private boolean verificaConflitoDeHorarios(Matricula matricula, Disciplina disciplina) {

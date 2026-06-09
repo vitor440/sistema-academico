@@ -18,7 +18,4 @@ public class HorarioDisciplinaRequestDTO {
 
     @NotNull(message = "campo obrigatório!")
     private Periodo periodo;
-
-    @NotNull(message = "campo obrigatório!")
-    private Long disciplinaId;
 }

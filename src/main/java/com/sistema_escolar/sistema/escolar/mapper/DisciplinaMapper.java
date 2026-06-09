@@ -6,7 +6,7 @@ import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = HorarioDisciplinaMapper.class)
 public interface DisciplinaMapper {
 
     Disciplina toEntity(DisciplinaRequestDTO requestDTO);

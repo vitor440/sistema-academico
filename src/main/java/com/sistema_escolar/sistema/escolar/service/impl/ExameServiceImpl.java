@@ -28,7 +28,6 @@ public class ExameServiceImpl implements ExameService {
     private final ExameMapper mapper;
     private final DisciplinaService disciplinaService;
     private final ExameValidator validator;
-    private final MatriculaRepository matriculaRepository;
     private final UsuarioService usuarioService;
 
     @Override
@@ -36,9 +35,7 @@ public class ExameServiceImpl implements ExameService {
         Exame exame = mapper.toEntity(requestDTO);
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
         Docente docente = disciplina.getDocente();
-
-        validarDocenteLogado(docente);
-
+        validator.validarDocenteLogado(docente);
         exame.setDisciplina(disciplina);
 
         validator.validar(exame);
@@ -50,7 +47,7 @@ public class ExameServiceImpl implements ExameService {
         Exame exame = getExame(id);
 
         Docente docente = exame.getDisciplina().getDocente();
-        validarDocenteLogado(docente);
+        validator.validarDocenteLogado(docente);
 
         exame.setNome(requestDTO.getNome());
         exame.setDisciplina(disciplinaService.getDisciplina(requestDTO.getDisciplinaId()));
@@ -66,30 +63,8 @@ public class ExameServiceImpl implements ExameService {
 
     @Override
     public ExameResponseDTO obterPeloId(Long id) {
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         Exame exame = getExame(id);
-
-        if (usuarioLogado.getRoles().contains("ALUNO")) {
-            Aluno aluno = usuarioLogado.getAluno();
-            boolean ehMatriculado = matriculaRepository.existsByAlunoAndDisciplina(aluno, exame.getDisciplina());
-
-            if (!ehMatriculado) {
-                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar esse exame!");
-            }
-        }
-
-        if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            Docente docenteLogado = usuarioLogado.getDocente();
-            Docente docente = exame.getDisciplina().getDocente();
-
-            boolean flag = docenteLogado.getId().equals(docente.getId());
-
-            if (!flag) {
-                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver esse exame!");
-            }
-        }
-
-
+        validator.validarAcesso(exame);
         return mapper.toDTO(exame);
     }
 
@@ -121,7 +96,7 @@ public class ExameServiceImpl implements ExameService {
         Exame exame = getExame(id);
 
         Docente docente = exame.getDisciplina().getDocente();
-        validarDocenteLogado(docente);
+        validator.validarDocenteLogado(docente);
 
         repository.delete(exame);
     }
@@ -130,16 +105,6 @@ public class ExameServiceImpl implements ExameService {
     public Exame getExame(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Exame não encontrado!"));
-    }
-
-    public void validarDocenteLogado(Docente docente) {
-
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
-        Docente docenteLogado = usuarioLogado.getDocente();
-
-        if (!docenteLogado.getId().equals(docente.getId())) {
-            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para alterar esse exame!");
-        }
     }
 }
 

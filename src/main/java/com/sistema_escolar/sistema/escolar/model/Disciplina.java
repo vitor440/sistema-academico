@@ -56,7 +56,7 @@ public class Disciplina {
     @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
     private List<Matricula> matriculas;
 
-    @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<HorarioDisciplina> horarios;
 
 

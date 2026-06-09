@@ -45,13 +45,7 @@ public class ResultadoServiceImpl implements ResultadoService {
         Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
         Docente docente = exame.getDisciplina().getDocente();
-        validarDocenteLogado(docente);
-
-        if(!matricula.getDisciplina().getId().equals(exame.getDisciplina().getId())) {
-            throw new RegistroConflitanteException("Você está tentando atribuir resultado de um examde de "
-                    + exame.getDisciplina().getNome()
-                    + " para uma matrícula da disciplina de " + matricula.getDisciplina().getNome());
-        }
+        validator.validarDocenteLogado(docente);
 
         resultado.setMatricula(matricula);
         resultado.setExame(exame);
@@ -67,7 +61,7 @@ public class ResultadoServiceImpl implements ResultadoService {
         Resultado resultado = getResultado(id);
 
         Docente docente = resultado.getExame().getDisciplina().getDocente();
-        validarDocenteLogado(docente);
+        validator.validarDocenteLogado(docente);
 
         Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
 
@@ -75,23 +69,12 @@ public class ResultadoServiceImpl implements ResultadoService {
         Matricula matricula = resultado.getMatricula();
         resultado.setExame(exame);
 
-        if(!matricula.getDisciplina().getId().equals(exame.getDisciplina().getId())) {
-            throw new RegistroConflitanteException("Você está tentando atribuir resultado de um examde de "
-                    + exame.getDisciplina().getNome()
-                    + " para uma matrícula da disciplina de " + matricula.getDisciplina().getNome());
-        }
-
         validator.validar(resultado);
 
         matricula.getResultados().add(resultado);
         matricula.calculaMedia(matricula.getResultados());
         return mapper.toDTO(repository.save(matricula));
 
-        }
-
-    public Resultado getResultado(Long id) {
-        return resultadoRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Resultado não encontrado"));
     }
 
 
@@ -101,7 +84,7 @@ public class ResultadoServiceImpl implements ResultadoService {
         Resultado resultado = getResultado(id);
 
         Docente docente = resultado.getExame().getDisciplina().getDocente();
-        validarDocenteLogado(docente);
+        validator.validarDocenteLogado(docente);
 
         Matricula matricula = resultado.getMatricula();
         matricula.getResultados().remove(resultado);
@@ -112,34 +95,15 @@ public class ResultadoServiceImpl implements ResultadoService {
     @Override
     public ResultadoResponseDTO obterResultadoPeloId(Long id) {
         Resultado resultado = getResultado(id);
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
-
-        if (usuarioLogado.getRoles().contains("ALUNO")) {
-            boolean ehMatriculado = repository.existsByAlunoAndDisciplina(usuarioLogado.getAluno(), resultado.getMatricula().getDisciplina());
-
-            if (!ehMatriculado) {
-                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
-            }
-        }
-        if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            Docente docenteLogado = usuarioLogado.getDocente();
-            Docente docente = resultado.getMatricula().getDisciplina().getDocente();
-
-            if (!docente.getId().equals(docenteLogado.getId())) {
-                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
-            }
-        }
-
+        validator.validarAcesso(resultado);
         return resultadoMapper.toDTO(resultado);
     }
 
     @Override
-    @Transactional
     public Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
 
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
-        List<Resultado> resultados = List.of();
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
@@ -168,11 +132,8 @@ public class ResultadoServiceImpl implements ResultadoService {
         return resultadoRepository.findByMatricula(matricula, pageable).map(resultadoMapper::toDTO);
     }
 
-    private void validarDocenteLogado(Docente docente) {
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
-        Docente docenteLogado = usuarioLogado.getDocente();
-
-        if (!docenteLogado.getId().equals(docente.getId())) {
-            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar/alterar esse resultado!");
-        }}
+    public Resultado getResultado(Long id) {
+        return resultadoRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Resultado não encontrado"));
+    }
 }

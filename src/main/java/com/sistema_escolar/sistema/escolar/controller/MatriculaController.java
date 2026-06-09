@@ -38,14 +38,14 @@ public class MatriculaController implements MatriculaControllerDocs {
 
     @GetMapping("/matriculas/{id}")
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
     public ResponseEntity<MatriculaResponseDTO> obterPeloId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.obterPeloId(id));
     }
 
     @GetMapping("/matriculas")
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
     public ResponseEntity<Page<MatriculaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,

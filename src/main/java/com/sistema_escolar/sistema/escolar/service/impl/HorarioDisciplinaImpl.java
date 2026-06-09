@@ -31,8 +31,9 @@ public class HorarioDisciplinaImpl implements HorarioDisciplinaService {
 
     @Override
     public DisciplinaResponseDTO salvar(Long id, HorarioDisciplinaRequestDTO requestDTO) {
-        Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
+        Disciplina disciplina = disciplinaService.getDisciplina(id);
         HorarioDisciplina horarioDisciplina = mapper.toEntity(requestDTO);
+        horarioDisciplina.setDisciplina(disciplina);
         disciplina.getHorarios().add(horarioDisciplina);
 
         return disciplinaMapper.toDTO(disciplinaRepository.save(disciplina));
@@ -41,9 +42,7 @@ public class HorarioDisciplinaImpl implements HorarioDisciplinaService {
     @Override
     public HorarioDisciplinaResponseDTO atualizar(Long id, HorarioDisciplinaRequestDTO requestDTO) {
         HorarioDisciplina horarioDisciplina = getHorarioDisciplina(id);
-        Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
 
-        horarioDisciplina.setDisciplina(disciplina);
         horarioDisciplina.setHorario(requestDTO.getHorario());
         horarioDisciplina.setDiaSemana(requestDTO.getDiaSemana());
         horarioDisciplina.setPeriodo(requestDTO.getPeriodo());

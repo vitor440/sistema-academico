@@ -42,14 +42,8 @@ public class MatriculaServiceImpl implements MatriculaService {
         Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
 
+        matricula.inicializaMatricula();
         matricula.setAluno(aluno);
-        matricula.setStatus(StatusDisciplina.CURSANDO);
-        matricula.setNotaFinal(0.0);
-        matricula.setFaltas(0);
-        matricula.setNotaFinal(0.0);
-        matricula.setMedia(0.0);
-        matricula.setEfetivado(false);
-        matricula.setStatusSolicitacao(StatusSolicitacao.PENDENTE);
 
         validator.validar(matricula, disciplina);
         disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado.
@@ -94,27 +88,8 @@ public class MatriculaServiceImpl implements MatriculaService {
 
     @Override
     public MatriculaResponseDTO obterPeloId(Long id) {
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         Matricula matricula = getMatricula(id);
-
-        if (usuarioLogado.getRoles().contains("ALUNO")) {
-            Aluno aluno = usuarioLogado.getAluno();
-            boolean matriculaPertenceAoAluno = aluno.equals(matricula.getAluno());
-
-            if (!matriculaPertenceAoAluno) {
-                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver essa matrícula!");
-            }
-        }
-
-        if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            Docente docenteLogado = usuarioLogado.getDocente();
-            Docente docente = matricula.getDisciplina().getDocente();
-
-            if (!docenteLogado.getId().equals(docente.getId())) {
-                throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver essa matrícula!");
-            }
-        }
-
+        validator.validaAcesso(matricula);
         return mapper.toDTO(matricula);
     }
 
@@ -151,6 +126,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public void modificaNotaFinal(Long matriculaId, Double notaFinal) {
         Matricula matricula = getMatricula(matriculaId);
+
         matricula.setNotaFinal(notaFinal);
         matricula.calculaMediaFinal(notaFinal);
         repository.save(matricula);
@@ -164,6 +140,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public MatriculaResponseDTO efetivarHistorico(Long id) {
         Matricula matricula = getMatricula(id);
+
 
         matricula.efetivar();
 

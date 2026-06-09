@@ -117,4 +117,15 @@ public class Matricula {
 
         this.efetivado = true;
     }
+
+
+    public void inicializaMatricula() {
+        this.status = StatusDisciplina.CURSANDO;
+        this.notaFinal = 0.0;
+        this.faltas = 0;
+        this.media = 0.0;
+        this.mediaFinal = 0.0;
+        this.efetivado = false;
+        this.statusSolicitacao = StatusSolicitacao.PENDENTE;
+    }
 }
