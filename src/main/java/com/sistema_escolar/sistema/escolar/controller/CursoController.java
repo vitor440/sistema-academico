@@ -50,8 +50,8 @@ public class CursoController implements com.sistema_escolar.sistema.escolar.cont
     public ResponseEntity<Page<CursoResponseDTO>> listar(
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "area", required = false) Areas area,
-            @RequestParam(value = "periodo", required = false, defaultValue = "0") Periodo periodo,
-            @RequestParam(value = "nome-departamento", required = false, defaultValue = "0") String nomeDepartamento,
+            @RequestParam(value = "periodo", required = false) Periodo periodo,
+            @RequestParam(value = "nome-departamento", required = false) String nomeDepartamento,
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {

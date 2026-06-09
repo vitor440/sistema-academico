@@ -28,6 +28,7 @@ public class ResultadoValidator {
         }
     }
 
+    // verifica se há duplicidade (mesmo resultado para matrícula e exame)
     public boolean registroDuplicado(Resultado resultado) {
         Optional<Resultado> resultadoOpt = repository.findByMatriculaAndExame(resultado.getMatricula(), resultado.getExame());
 
@@ -38,6 +39,8 @@ public class ResultadoValidator {
         return resultadoOpt.map(Resultado::getId).stream().anyMatch(id -> !id.equals(resultado.getId()));
     }
 
+    // valida se docente tem permissão para salvar ou atualizar um resultado
+    // - um docente só pode salvar/alterar um resultado de uma disciplina lecionada por ele
     public void validarDocenteLogado(Docente docente) {
         Docente docenteLogado = usuarioService.getUsuarioLogado().getDocente();
 
@@ -46,6 +49,9 @@ public class ResultadoValidator {
         }
     }
 
+    // valida se um aluno ou docente tem permissão para visualizar um resultado
+    // - aluno só pode ver resultados de disciplinas matriculas por ele.
+    // - docente só pode ver resultados de disciplinas que ele leciona.
     public void validarAcesso(Resultado resultado) {
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 

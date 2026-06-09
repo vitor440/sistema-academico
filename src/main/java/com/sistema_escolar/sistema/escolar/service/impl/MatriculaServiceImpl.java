@@ -42,6 +42,7 @@ public class MatriculaServiceImpl implements MatriculaService {
         Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
 
+        validator.validaAlunoLogado(matricula);
         matricula.inicializaMatricula();
         matricula.setAluno(aluno);
 
@@ -56,33 +57,20 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Transactional
     public MatriculaResponseDTO atualizar(Long id, MatriculaRequestDTO requestDTO) {
         Matricula matricula = getMatricula(id);
+        validator.validaAlunoLogado(matricula);
         Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
 
-        // se a disciplina for atualizada, vagas e alunos matriculados deverão ser ajustados
-        if(!disciplina.equals(matricula.getDisciplina())) {
-
-            if (matricula.getResultados().size() > 0) throw new RegistroConflitanteException("não é possivel atualizar uma disciplina " +
-                    "de uma matrícula que possui uma lista de resultados!");
-
-            Disciplina disciplinaSubstituida = matricula.getDisciplina();
-            disciplinaSubstituida.acrescentaVaga();
-            disciplinaService.salvarEntidade(disciplinaSubstituida); // atualiza a quantidade de vagas e alunos matriculados da disciplina substituída.
-
-        }
-
-        if (!aluno.equals(matricula.getAluno())) {
-
-            if (matricula.getResultados().size() > 0) throw new RegistroConflitanteException("não é possivel atualizar um aluno " +
-                    "de uma matrícula que possui uma lista de resultados!");
-            matricula.setAluno(aluno);
-        }
+        // se a disciplina ou aluno for atualizada
+        validator.validaAtualizacao(matricula, disciplina, aluno);
 
         matricula.setFaltas(requestDTO.getFaltas());
-
         validator.validar(matricula, disciplina);
         disciplina.decrementaVaga();
         matricula.setDisciplina(disciplina);
+        matricula.setAluno(aluno);
+
+        validator.validaAlunoLogado(matricula);
         return mapper.toDTO(repository.save(matricula));
     }
 
@@ -114,6 +102,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public void deletarPeloId(Long id) {
         Matricula matricula = getMatricula(id);
+        validator.validaAlunoLogado(matricula);
         repository.delete(matricula);
     }
 
@@ -127,6 +116,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     public void modificaNotaFinal(Long matriculaId, Double notaFinal) {
         Matricula matricula = getMatricula(matriculaId);
 
+        validator.validaDocenteLogado(matricula);
         matricula.setNotaFinal(notaFinal);
         matricula.calculaMediaFinal(notaFinal);
         repository.save(matricula);
@@ -134,6 +124,8 @@ public class MatriculaServiceImpl implements MatriculaService {
 
     @Override
     public void modificaStatusSolicitacao(Long matriculaId, StatusSolicitacao statusSolicitacao) {
+        Matricula matricula = getMatricula(matriculaId);
+        validator.validaDocenteLogado(matricula);
         repository.modificaStatusSolicitacao(matriculaId, statusSolicitacao);
     }
 
@@ -141,7 +133,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     public MatriculaResponseDTO efetivarHistorico(Long id) {
         Matricula matricula = getMatricula(id);
 
-
+        validator.validaDocenteLogado(matricula);
         matricula.efetivar();
 
         return mapper.toDTO(repository.save(matricula));

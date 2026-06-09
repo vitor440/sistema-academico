@@ -24,7 +24,7 @@ public class HorarioDisciplinaValidator {
 
     public void validar(HorarioDisciplina horarioDisciplina) {
         if (verificaDuplicacao(horarioDisciplina)) {
-            throw new RegistroDuplicadoException("Já existe um horário");
+            throw new RegistroDuplicadoException("Já existe um horário para essa disciplina neste dia da semana e horário!");
         }
 
         if (HORARIOS.contains(horarioDisciplina.getHorario())) {

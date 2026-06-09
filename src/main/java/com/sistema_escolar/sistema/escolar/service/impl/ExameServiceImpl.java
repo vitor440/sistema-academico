@@ -50,7 +50,10 @@ public class ExameServiceImpl implements ExameService {
         validator.validarDocenteLogado(docente);
 
         exame.setNome(requestDTO.getNome());
-        exame.setDisciplina(disciplinaService.getDisciplina(requestDTO.getDisciplinaId()));
+        Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
+        validator.validarDocenteLogado(disciplina.getDocente());
+        exame.setDisciplina(disciplina);
+
         exame.setData(requestDTO.getData());
         exame.setHora(requestDTO.getHora());
         exame.setTipo(requestDTO.getTipo());

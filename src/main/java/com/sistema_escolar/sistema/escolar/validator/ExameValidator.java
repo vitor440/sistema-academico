@@ -29,6 +29,7 @@ public class ExameValidator {
         }
     }
 
+    // verifica se há duplicidade (mesmo exame de uma disciplina na mesma data e hora)
     private boolean registroDuplicado(Exame exame) {
         Optional<Exame> exameOpt = repository.findByDisciplinaAndDataAndHora(exame.getDisciplina(),
                 exame.getData(), exame.getHora());
@@ -40,6 +41,8 @@ public class ExameValidator {
         return exameOpt.map(Exame::getId).stream().anyMatch(id -> !id.equals(exame.getId()));
     }
 
+    // valida se docente tem permissão para salvar ou atualizar um exame
+    // - um docente só pode salvar/alterar um exame de uma disciplina lecionada por ele
     public void validarDocenteLogado(Docente docente) {
 
         Docente docenteLogado = usuarioService.getUsuarioLogado().getDocente();
@@ -49,6 +52,9 @@ public class ExameValidator {
         }
     }
 
+    // valida se um aluno ou docente tem permissão para visualizar um exame
+    // - aluno só pode ver exame de disciplinas matriculas por ele.
+    // - docente só pode ver exame de disciplinas que ele leciona.
     public void validarAcesso(Exame exame) {
 
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
