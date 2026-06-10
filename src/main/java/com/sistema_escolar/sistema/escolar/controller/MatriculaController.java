@@ -29,13 +29,6 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.created(location).body(response);
     }
 
-    @PutMapping("/matriculas/{id}")
-    @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
-    public ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid MatriculaRequestDTO dto) {
-        return ResponseEntity.ok(service.atualizar(id, dto));
-    }
-
     @GetMapping("/matriculas/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
@@ -77,12 +70,28 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/matriculas/{id}/efetivarHistorico")
+    @PatchMapping("/matriculas/{id}/efetivarHistorico")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.efetivarHistorico(id));
     }
 
+    @PatchMapping("/matriculas/{id}/acrescentaFaltas")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<Void> acrescentaFaltas(@PathVariable("id") Long id,
+                                                                  @RequestParam(value = "faltas") int faltas) {
+        service.acrescentaFaltas(id, faltas);
+        return ResponseEntity.noContent().build();
+    }
 
+    @PatchMapping("/matriculas/{id}/decrementaFaltas")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<Void> decrementaFaltas(@PathVariable("id") Long id,
+                                                  @RequestParam(value = "faltas") int faltas) {
+        service.decrementaFaltas(id, faltas);
+        return ResponseEntity.noContent().build();
+    }
 }

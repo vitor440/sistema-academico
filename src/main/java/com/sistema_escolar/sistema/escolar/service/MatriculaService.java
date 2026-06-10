@@ -10,9 +10,6 @@ public interface MatriculaService {
 
     MatriculaResponseDTO salvar(MatriculaRequestDTO requestDTO);
 
-
-    MatriculaResponseDTO atualizar(Long id, MatriculaRequestDTO requestDTO);
-
     MatriculaResponseDTO obterPeloId(Long id);
 
     Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection);
@@ -27,4 +24,7 @@ public interface MatriculaService {
 
     MatriculaResponseDTO efetivarHistorico(Long id);
 
+    void acrescentaFaltas(Long id, int x);
+
+    void decrementaFaltas(Long id, int x);
 }

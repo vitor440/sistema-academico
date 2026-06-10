@@ -30,6 +30,32 @@ public class MatriculaValidator {
     }
 
 
+
+    // verifica se já existe uma matrícula de um aluno com horário e dia conflitante com outra matrícula
+
+    private boolean verificaConflitoDeHorarios(Matricula matricula, Disciplina disciplina) {
+
+        if(matricula.getDisciplina().getId().equals(disciplina.getId())) {
+            return false;
+        }
+
+        List<HorarioDisciplina> horariosNovaDisciplina = horarioDisciplinaRepository.findByDisciplina(disciplina);
+        List<HorarioDisciplina> horariosDoAluno = horarioDisciplinaRepository.obterHorariosDeAluno(matricula.getAluno());
+
+
+        for (HorarioDisciplina horarioDisciplina : horariosNovaDisciplina) {
+            for (HorarioDisciplina horarioAluno : horariosDoAluno) {
+                if (horarioDisciplina.getHorario().equals(horarioAluno.getHorario())
+                        && horarioDisciplina.getDiaSemana() == horarioAluno.getDiaSemana()) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     // valida se um aluno ou docente tem permissão para visualizar uma matrícula
     // - aluno só pode ver matrículas pertencentes a ele.
     // - docente só pode ver matrículas de disciplinas que ele leciona.
@@ -56,56 +82,13 @@ public class MatriculaValidator {
     }
 
 
-    // verifica se já existe uma matrícula de um aluno com horário e dia conflitante com outra matrícula
-    private boolean verificaConflitoDeHorarios(Matricula matricula, Disciplina disciplina) {
-
-        List<HorarioDisciplina> horariosNovaDisciplina = horarioDisciplinaRepository.findByDisciplina(disciplina);
-        List<HorarioDisciplina> horariosDoAluno = horarioDisciplinaRepository.obterHorariosDeAluno(matricula.getAluno());
-
-
-        for (HorarioDisciplina horarioDisciplina : horariosNovaDisciplina) {
-            for (HorarioDisciplina horarioAluno : horariosDoAluno) {
-                if (horarioDisciplina.getHorario().equals(horarioAluno.getHorario())
-                        && horarioDisciplina.getDiaSemana() == horarioAluno.getDiaSemana()) {
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    // se uma matrícula já possui resultados de exames então não é possível atualizar os campos aluno e disciplina.
-    public void validaAtualizacao(Matricula matricula, Disciplina disciplina, Aluno aluno) {
-        if (!disciplina.equals(matricula.getDisciplina())) {
-
-            if (matricula.getResultados().isEmpty())
-                throw new RegistroConflitanteException("não é possivel atualizar uma disciplina " +
-                        "de uma matrícula que possui uma lista de resultados!");
-
-            Disciplina disciplinaSubstituida = matricula.getDisciplina();
-            disciplinaSubstituida.acrescentaVaga();
-            disciplinaService.salvarEntidade(disciplinaSubstituida); // atualiza a quantidade de vagas e alunos matriculados da disciplina substituída.
-
-        }
-
-        if (!aluno.equals(matricula.getAluno())) {
-
-            if (matricula.getResultados().isEmpty())
-                throw new RegistroConflitanteException("não é possivel atualizar um aluno " +
-                        "de uma matrícula que possui uma lista de resultados!");
-            matricula.setAluno(aluno);
-        }
-    }
-
     // valida se o aluno logado tem permissão para salvar ou atualizar uma matrícula
     // - um aluno só pode salvar/alterar uma matrícula que pertence a ele
     public void validaAlunoLogado(Matricula matricula) {
         if (usuarioService.getUsuarioLogado().getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioService.getUsuarioLogado().getAluno();
 
-            if (!aluno.equals(matricula.getAluno())) {
+            if (!aluno.getId().equals(matricula.getAluno().getId())) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar/alterar essa matrícula!");
             }
         }
@@ -116,7 +99,7 @@ public class MatriculaValidator {
     public void validaDocenteLogado(Matricula matricula) {
         Docente docente = usuarioService.getUsuarioLogado().getDocente();
 
-        if (!docente.equals(matricula.getDisciplina().getDocente())) {
+        if (!docente.getId().equals(matricula.getDisciplina().getDocente().getId())) {
             throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar/alterar essa matrícula!");
         }
     }

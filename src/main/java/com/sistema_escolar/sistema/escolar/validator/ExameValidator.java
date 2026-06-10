@@ -72,9 +72,8 @@ public class ExameValidator {
             Docente docenteLogado = usuarioLogado.getDocente();
             Docente docente = exame.getDisciplina().getDocente();
 
-            boolean flag = docenteLogado.getId().equals(docente.getId());
 
-            if (!flag) {
+            if (!docenteLogado.getId().equals(docente.getId())) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver esse exame!");
             }
         }

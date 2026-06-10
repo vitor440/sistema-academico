@@ -34,20 +34,6 @@ public interface MatriculaControllerDocs extends GenericController {
     ResponseEntity<MatriculaResponseDTO> salvar(@RequestBody @Valid MatriculaRequestDTO dto);
 
 
-    @Operation(summary = "atualizar matricula de aluno em uma disciplina", description = "atualiza a matrícula de um aluno em uma disciplina através do ID.")
-    @ApiResponses(value = {
-            @ApiResponse(description = "atualizado com sucesso", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = DepartamentoResponseDTO.class))),
-            @ApiResponse(description = "registro com aluno e disciplina duplicado / vagas insuficientes / conflito de horários", responseCode = "409",
-                    content = @Content(schema = @Schema(implementation = ErroResposta.class))),
-            @ApiResponse(description = "Unprocessable Entity", responseCode = "422",
-                    content = @Content(schema = @Schema(implementation = ErroResposta.class))),
-            @ApiResponse(description = "matricula não encontrado", responseCode = "404",
-                    content = @Content(schema = @Schema(implementation = ErroResposta.class)))
-    })
-    ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid MatriculaRequestDTO dto);
-
-
     @Operation(summary = "obter departamento", description = "Obtém um departamento pelo ID.")
     @ApiResponses(value = {
             @ApiResponse(description = "matrícula encontrada", responseCode = "200",
@@ -79,4 +65,8 @@ public interface MatriculaControllerDocs extends GenericController {
     ResponseEntity<Void> modificaNotaFinal(Long id, @RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao);
 
     ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id);
+
+    ResponseEntity<Void> acrescentaFaltas(@PathVariable("id") Long id, @RequestParam(value = "faltas") int faltas);
+
+    ResponseEntity<Void> decrementaFaltas(@PathVariable("id") Long id, @RequestParam(value = "faltas") int faltas);
 }

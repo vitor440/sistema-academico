@@ -42,9 +42,9 @@ public class MatriculaServiceImpl implements MatriculaService {
         Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
         Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
 
+        matricula.setAluno(aluno);
         validator.validaAlunoLogado(matricula);
         matricula.inicializaMatricula();
-        matricula.setAluno(aluno);
 
         validator.validar(matricula, disciplina);
         disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado.
@@ -52,27 +52,6 @@ public class MatriculaServiceImpl implements MatriculaService {
         return mapper.toDTO(repository.save(matricula));
     }
 
-
-    @Override
-    @Transactional
-    public MatriculaResponseDTO atualizar(Long id, MatriculaRequestDTO requestDTO) {
-        Matricula matricula = getMatricula(id);
-        validator.validaAlunoLogado(matricula);
-        Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
-        Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
-
-        // se a disciplina ou aluno for atualizada
-        validator.validaAtualizacao(matricula, disciplina, aluno);
-
-        matricula.setFaltas(requestDTO.getFaltas());
-        validator.validar(matricula, disciplina);
-        disciplina.decrementaVaga();
-        matricula.setDisciplina(disciplina);
-        matricula.setAluno(aluno);
-
-        validator.validaAlunoLogado(matricula);
-        return mapper.toDTO(repository.save(matricula));
-    }
 
     @Override
     public MatriculaResponseDTO obterPeloId(Long id) {
@@ -137,5 +116,24 @@ public class MatriculaServiceImpl implements MatriculaService {
         matricula.efetivar();
 
         return mapper.toDTO(repository.save(matricula));
+    }
+
+    @Override
+    public void acrescentaFaltas(Long id, int x) {
+        Matricula matricula = getMatricula(id);
+        matricula.setFaltas(matricula.getFaltas() + x);
+        repository.save(matricula);
+    }
+
+    @Override
+    public void decrementaFaltas(Long id, int x) {
+        Matricula matricula = getMatricula(id);
+        matricula.setFaltas(matricula.getFaltas() - x);
+
+        if (matricula.getFaltas() < 0)  {
+            throw new RuntimeException("faltas menor que 0");
+        }
+        repository.save(matricula);
+
     }
 }
