@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "aluno")
-@ToString(exclude = {"resultados", "matriculas"})
+@ToString(exclude = {"usuario", "matriculas", "curso"})
 @EntityListeners(AuditingEntityListener.class)
 public class Aluno {
 

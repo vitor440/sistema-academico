@@ -28,28 +28,29 @@ import static org.springframework.data.domain.Sort.Direction;
 @RequiredArgsConstructor
 public class MatriculaServiceImpl implements MatriculaService {
 
-    private final MatriculaRepository repository;
+    private final MatriculaRepository matriculaRepository;
     private final MatriculaMapper mapper;
+    private final MatriculaValidator validator;
     private final AlunoService alunoService;
     private final DisciplinaService disciplinaService;
-    private final MatriculaValidator validator;
     private final UsuarioService usuarioService;
 
     @Override
-    @Transactional
     public MatriculaResponseDTO salvar(MatriculaRequestDTO requestDTO) {
-        Matricula matricula = mapper.toEntity(requestDTO);
+        Matricula matricula = new Matricula();
         Aluno aluno = alunoService.getAluno(requestDTO.getAlunoId());
-        Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
 
+        validator.validaAlunoLogado(aluno);
         matricula.setAluno(aluno);
-        validator.validaAlunoLogado(matricula);
-        matricula.inicializaMatricula();
 
-        validator.validar(matricula, disciplina);
-        disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado.
+        Disciplina disciplina = disciplinaService.getDisciplina(requestDTO.getDisciplinaId());
         matricula.setDisciplina(disciplina);
-        return mapper.toDTO(repository.save(matricula));
+        validator.validar(matricula);
+
+        matricula.inicializaMatricula(); // inicializa dados de notas, nota final e média com valor 0.
+
+        disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado.
+        return mapper.toDTO(matriculaRepository.save(matricula));
     }
 
 
@@ -60,6 +61,7 @@ public class MatriculaServiceImpl implements MatriculaService {
         return mapper.toDTO(matricula);
     }
 
+
     @Override
     public Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
         Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
@@ -68,26 +70,26 @@ public class MatriculaServiceImpl implements MatriculaService {
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-            return repository.findByAluno(usuarioLogado.getAluno(), pageable).map(mapper::toDTO);
+            return matriculaRepository.findByAluno(usuarioLogado.getAluno(), pageable).map(mapper::toDTO);
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            return repository.obterMatriculasDoDocente(usuarioLogado.getDocente(), pageable).map(mapper::toDTO);
+            return matriculaRepository.obterMatriculasDoDocente(usuarioLogado.getDocente(), pageable).map(mapper::toDTO);
         }
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        return matriculaRepository.findAll(pageable).map(mapper::toDTO);
     }
 
     @Override
     public void deletarPeloId(Long id) {
         Matricula matricula = getMatricula(id);
-        validator.validaAlunoLogado(matricula);
-        repository.delete(matricula);
+        validator.validaAlunoLogado(matricula.getAluno());
+        matriculaRepository.delete(matricula);
     }
 
     @Override
     public Matricula getMatricula(Long id) {
-        return repository.findById(id)
+        return matriculaRepository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Registro não encontrado!"));
     }
 
@@ -95,45 +97,47 @@ public class MatriculaServiceImpl implements MatriculaService {
     public void modificaNotaFinal(Long matriculaId, Double notaFinal) {
         Matricula matricula = getMatricula(matriculaId);
 
-        validator.validaDocenteLogado(matricula);
+        validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
         matricula.setNotaFinal(notaFinal);
         matricula.calculaMediaFinal(notaFinal);
-        repository.save(matricula);
+        matriculaRepository.save(matricula);
     }
 
     @Override
     public void modificaStatusSolicitacao(Long matriculaId, StatusSolicitacao statusSolicitacao) {
         Matricula matricula = getMatricula(matriculaId);
-        validator.validaDocenteLogado(matricula);
-        repository.modificaStatusSolicitacao(matriculaId, statusSolicitacao);
+
+        validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
+        matriculaRepository.modificaStatusSolicitacao(matriculaId, statusSolicitacao);
     }
 
     @Override
     public MatriculaResponseDTO efetivarHistorico(Long id) {
         Matricula matricula = getMatricula(id);
-
-        validator.validaDocenteLogado(matricula);
+        validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
         matricula.efetivar();
 
-        return mapper.toDTO(repository.save(matricula));
+        return mapper.toDTO(matriculaRepository.save(matricula));
     }
 
     @Override
     public void acrescentaFaltas(Long id, int x) {
         Matricula matricula = getMatricula(id);
+        validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
         matricula.setFaltas(matricula.getFaltas() + x);
-        repository.save(matricula);
+        matriculaRepository.save(matricula);
     }
 
     @Override
     public void decrementaFaltas(Long id, int x) {
         Matricula matricula = getMatricula(id);
+        validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
         matricula.setFaltas(matricula.getFaltas() - x);
 
         if (matricula.getFaltas() < 0)  {
             throw new RuntimeException("faltas menor que 0");
         }
-        repository.save(matricula);
+        matriculaRepository.save(matricula);
 
     }
 }

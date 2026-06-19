@@ -21,7 +21,7 @@ public interface HorarioDisciplinaRepository extends JpaRepository<HorarioDiscip
     List<HorarioDisciplina> findByDisciplina(Disciplina disciplina);
 
     @Query(" SELECT h FROM HorarioDisciplina h JOIN Matricula m ON h.disciplina = m.disciplina WHERE m.aluno = :aluno ")
-    List<HorarioDisciplina> obterHorariosDeAluno(Aluno aluno);
+    List<HorarioDisciplina> obterHorariosDoAluno(Aluno aluno);
 
     Optional<HorarioDisciplina> findByHorarioAndDiaSemanaAndDisciplina(LocalTime horario, DiasSemana diasSemana, Disciplina disciplina);
 }

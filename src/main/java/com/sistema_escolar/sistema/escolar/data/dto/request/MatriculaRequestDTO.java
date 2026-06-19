@@ -12,8 +12,4 @@ public class MatriculaRequestDTO {
 
     @NotNull(message = "campo obrigatório!")
     private Long disciplinaId;
-
-    @NotNull(message = "campo obrigatório!")
-    @PositiveOrZero
-    private Integer faltas;
 }
