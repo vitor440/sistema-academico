@@ -53,8 +53,8 @@ public class MatriculaValidator {
     }
 
     // - valida se um aluno ou docente tem permissão para visualizar uma matrícula
-    // - aluno só pode ver matrículas pertencentes a ele.
-    // - docente só pode ver matrículas de disciplinas que ele leciona.
+    // - Aluno: verifica se a matrícula a ser visualizada pertence ao aluno.
+    // - docente: verifica se a matrícula pertence a uma disciplina lecionada pelo docente.
     public void validaAcesso(Matricula matricula) {
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
@@ -91,7 +91,7 @@ public class MatriculaValidator {
     }
 
     // - valida se o docente logado tem permissão para alterar dados de uma matrícula
-    // - um docente só pode salvar/alterar uma matrícula de uma disciplina que ele leciona
+    // - um docente só pode alterar dados de uma matrícula de uma disciplina que ele leciona
     public void validaDocenteLogado(Docente docente) {
         if (usuarioService.getUsuarioLogado().getRoles().contains("DOCENTE")) {
             Docente docenteLogado = usuarioService.getUsuarioLogado().getDocente();

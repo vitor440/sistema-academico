@@ -1,10 +1,8 @@
 package com.sistema_escolar.sistema.escolar.validator;
 
+import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroDuplicadoException;
-import com.sistema_escolar.sistema.escolar.model.Aluno;
-import com.sistema_escolar.sistema.escolar.model.Docente;
-import com.sistema_escolar.sistema.escolar.model.Resultado;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
+import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
 import com.sistema_escolar.sistema.escolar.repository.ResultadoRepository;
 import com.sistema_escolar.sistema.escolar.service.UsuarioService;
@@ -46,6 +44,15 @@ public class ResultadoValidator {
 
         if (!docenteLogado.getId().equals(docente.getId())) {
             throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar/alterar esse resultado!");
+        }
+    }
+
+    public void validaMatricula(Matricula matricula, Exame exame) {
+        Disciplina disciplinaMatricula = matricula.getDisciplina();
+        Disciplina disciplinaExame = exame.getDisciplina();
+
+        if (!disciplinaMatricula.getId().equals(disciplinaExame.getId())) {
+            throw new RegistroConflitanteException("não é permitido salvar um resultado de um exame para uma matrícula de disciplinas diferentes.");
         }
     }
 

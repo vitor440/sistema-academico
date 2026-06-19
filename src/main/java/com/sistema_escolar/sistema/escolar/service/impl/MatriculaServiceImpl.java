@@ -49,7 +49,7 @@ public class MatriculaServiceImpl implements MatriculaService {
 
         matricula.inicializaMatricula(); // inicializa dados de notas, nota final e média com valor 0.
 
-        disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado.
+        disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado na disciplina.
         return mapper.toDTO(matriculaRepository.save(matricula));
     }
 
@@ -74,7 +74,7 @@ public class MatriculaServiceImpl implements MatriculaService {
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            return matriculaRepository.obterMatriculasDoDocente(usuarioLogado.getDocente(), pageable).map(mapper::toDTO);
+            return matriculaRepository.obterMatriculasDocente(usuarioLogado.getDocente(), pageable).map(mapper::toDTO);
         }
 
         return matriculaRepository.findAll(pageable).map(mapper::toDTO);
@@ -85,12 +85,6 @@ public class MatriculaServiceImpl implements MatriculaService {
         Matricula matricula = getMatricula(id);
         validator.validaAlunoLogado(matricula.getAluno());
         matriculaRepository.delete(matricula);
-    }
-
-    @Override
-    public Matricula getMatricula(Long id) {
-        return matriculaRepository.findById(id)
-                .orElseThrow(() -> new RegistroNaoEncontradoException("Registro não encontrado!"));
     }
 
     @Override
@@ -139,5 +133,11 @@ public class MatriculaServiceImpl implements MatriculaService {
         }
         matriculaRepository.save(matricula);
 
+    }
+
+    @Override
+    public Matricula getMatricula(Long id) {
+        return matriculaRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Registro não encontrado!"));
     }
 }

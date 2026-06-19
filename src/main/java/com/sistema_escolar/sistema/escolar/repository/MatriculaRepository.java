@@ -27,7 +27,7 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
     Page<Matricula> findByAluno(Aluno aluno, Pageable pageable);
 
     @Query(" SELECT m FROM Matricula m where m.disciplina.docente = :docente ")
-    Page<Matricula> obterMatriculasDoDocente(Docente docente, Pageable pageable);
+    Page<Matricula> obterMatriculasDocente(Docente docente, Pageable pageable);
 
     @Modifying
     @Transactional

@@ -43,11 +43,13 @@ public class ResultadoServiceImpl implements ResultadoService {
         Resultado resultado = resultadoMapper.toEntity(resultadoRequestDTO);
         Matricula matricula = matriculaService.getMatricula(id);
         Exame exame = exameService.getExame(resultadoRequestDTO.getExameId());
+        validator.validaMatricula(matricula, exame);
+
         Docente docente = exame.getDisciplina().getDocente();
         validator.validarDocenteLogado(docente);
+        resultado.setExame(exame);
 
         resultado.setMatricula(matricula);
-        resultado.setExame(exame);
         validator.validar(resultado);
 
         matricula.addResultado(resultado);
