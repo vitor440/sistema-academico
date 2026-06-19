@@ -7,9 +7,12 @@ import org.springframework.data.domain.Page;
 
 public interface ResultadoService {
 
-    MatriculaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
+//    MatriculaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
+    ResultadoResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
 
-    MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
+    //MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
+
+    ResultadoResponseDTO atualizaNota(Long id, Double nota);
 
     void deletarResultadoExame(Long id);
 

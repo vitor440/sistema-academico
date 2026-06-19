@@ -21,7 +21,7 @@ public class Resultado {
     private Long id;
 
     @JoinColumn(name = "matricula_id")
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Matricula matricula;
 
     @JoinColumn(name = "exame_id")

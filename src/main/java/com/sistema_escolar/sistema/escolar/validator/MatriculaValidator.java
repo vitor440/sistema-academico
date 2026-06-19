@@ -29,12 +29,7 @@ public class MatriculaValidator {
 
 
     // verifica se já existe uma matrícula de um aluno com horário e dia conflitante com outra matrícula
-
     private void verificaConflitoDeHorarios(Matricula matricula) {
-
-//        if(matricula.getDisciplina().getId().equals(disciplina.getId())) {
-//            return false;
-//        }
 
         List<HorarioDisciplina> horariosNovaDisciplina = horarioDisciplinaRepository.findByDisciplina(matricula.getDisciplina());
         List<HorarioDisciplina> horariosDoAluno = horarioDisciplinaRepository.obterHorariosDoAluno(matricula.getAluno());

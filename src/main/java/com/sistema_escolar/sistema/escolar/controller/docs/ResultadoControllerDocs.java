@@ -32,7 +32,7 @@ public interface ResultadoControllerDocs extends GenericController {
             @ApiResponse(description = "Unprocessable Entity", responseCode = "422",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<MatriculaResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto);
+    ResponseEntity<ResultadoResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto);
 
 
     @Operation(summary = "atualizar resultado de exame", description = "Atualiza um resultado de exame pelo ID.")
@@ -46,7 +46,7 @@ public interface ResultadoControllerDocs extends GenericController {
             @ApiResponse(description = "resultado não encontrado", responseCode = "404",
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
-    ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto);
+    ResponseEntity<ResultadoResponseDTO> atualizar(@PathVariable("id") Long id, @RequestParam(value = "nota") Double nota);
 
 
     @Operation(summary = "obter resultado de exame", description = "Obtém um resultado de exame pelo ID.")

@@ -50,7 +50,7 @@ public class Disciplina {
     private LocalDateTime dataAtualizacao;
 
 
-    @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Exame> exames;
 
     @OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY)

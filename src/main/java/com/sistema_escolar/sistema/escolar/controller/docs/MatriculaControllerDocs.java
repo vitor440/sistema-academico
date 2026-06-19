@@ -3,6 +3,7 @@ package com.sistema_escolar.sistema.escolar.controller.docs;
 import com.sistema_escolar.sistema.escolar.controller.GenericController;
 import com.sistema_escolar.sistema.escolar.data.dto.ErroResposta;
 import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
@@ -62,11 +63,12 @@ public interface MatriculaControllerDocs extends GenericController {
 
     ResponseEntity<Void> modificaNotaFinal(Long id, @RequestParam(value = "nota-final") Double nota);
 
-    ResponseEntity<Void> modificaNotaFinal(Long id, @RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao);
+    ResponseEntity<Void> modificaStatusSolicitacao(Long id, @RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao);
 
     ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id);
 
     ResponseEntity<Void> acrescentaFaltas(@PathVariable("id") Long id, @RequestParam(value = "faltas") int faltas);
 
     ResponseEntity<Void> decrementaFaltas(@PathVariable("id") Long id, @RequestParam(value = "faltas") int faltas);
+
 }

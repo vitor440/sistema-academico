@@ -1,18 +1,17 @@
 package com.sistema_escolar.sistema.escolar.service.impl;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.MatriculaMapper;
+import com.sistema_escolar.sistema.escolar.mapper.ResultadoMapper;
 import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
-import com.sistema_escolar.sistema.escolar.service.AlunoService;
-import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
-import com.sistema_escolar.sistema.escolar.service.MatriculaService;
-import com.sistema_escolar.sistema.escolar.service.UsuarioService;
+import com.sistema_escolar.sistema.escolar.service.*;
 import com.sistema_escolar.sistema.escolar.validator.MatriculaValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +33,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     private final AlunoService alunoService;
     private final DisciplinaService disciplinaService;
     private final UsuarioService usuarioService;
+
 
     @Override
     public MatriculaResponseDTO salvar(MatriculaRequestDTO requestDTO) {

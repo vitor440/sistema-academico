@@ -19,4 +19,6 @@ public interface ResultadoRepository extends JpaRepository<Resultado, Long> {
     Page<Resultado> obterResultadosDaDisciplinaDoDocente(Docente docente, Pageable pageable);
 
     Page<Resultado> findByMatricula(Matricula matricula, Pageable pageable);
+
+    boolean existsByExame(Exame exame);
 }

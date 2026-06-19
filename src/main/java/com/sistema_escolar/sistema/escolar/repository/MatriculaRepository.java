@@ -34,4 +34,8 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
     @Query(" UPDATE Matricula m SET m.statusSolicitacao = :statusSolicitacao WHERE m.id = :matriculaId ")
     void modificaStatusSolicitacao(Long matriculaId, StatusSolicitacao statusSolicitacao);
 
+
+    boolean existsByAluno(Aluno aluno);
+
+    boolean existsByDisciplina(Disciplina disciplina);
 }

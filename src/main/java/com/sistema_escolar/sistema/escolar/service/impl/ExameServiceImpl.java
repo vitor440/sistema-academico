@@ -101,6 +101,7 @@ public class ExameServiceImpl implements ExameService {
         Docente docente = exame.getDisciplina().getDocente();
         validator.validarDocenteLogado(docente);
 
+        validator.validaDelecao(exame);
         repository.delete(exame);
     }
 

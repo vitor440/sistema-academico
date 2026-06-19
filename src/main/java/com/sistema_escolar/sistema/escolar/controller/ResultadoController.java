@@ -21,18 +21,18 @@ public class ResultadoController implements ResultadoControllerDocs {
     @PostMapping("/matriculas/{id}/resultados")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<MatriculaResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto) {
+    public ResponseEntity<ResultadoResponseDTO> salvar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto) {
         return ResponseEntity.ok(service.salvarResultadoExame(id, dto));
     }
 
-    @PutMapping("/resultados/{resultadoId}")
+    @PutMapping("/resultados/{id}")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<MatriculaResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid ResultadoRequestDTO dto) {
-        return ResponseEntity.ok(service.atualizarResultadoExame(id, dto));
+    public ResponseEntity<ResultadoResponseDTO> atualizar(@PathVariable("id") Long id, @RequestParam(value = "nota") Double nota) {
+        return ResponseEntity.ok(service.atualizaNota(id, nota));
     }
 
-    @DeleteMapping("/resultados/{resultadoId}")
+    @DeleteMapping("/resultados/{id}")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<Void> deletar(@PathVariable("id") Long id) {
@@ -63,4 +63,5 @@ public class ResultadoController implements ResultadoControllerDocs {
     public ResponseEntity<Page<ResultadoResponseDTO>> listarPeloIdDaMatricula(Long id, int pagina, int tamanho, String sortDirection) {
         return ResponseEntity.ok(service.listarPeloIdDaMatricula(id, pagina, tamanho, sortDirection));
     }
+
 }

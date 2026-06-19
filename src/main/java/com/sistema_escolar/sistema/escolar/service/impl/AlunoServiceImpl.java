@@ -98,6 +98,7 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public void deletarPeloId(Long id) {
         Aluno aluno = getAluno(id);
+        validator.validaDelecao(aluno);
         repository.delete(aluno);
     }
 

@@ -83,6 +83,7 @@ public class CursoServiceImpl implements CursoService {
     @Override
     public void deletarPeloId(Long id) {
         Curso curso = getCurso(id);
+        validator.validaDelecao(curso);
         repository.delete(curso);
     }
 

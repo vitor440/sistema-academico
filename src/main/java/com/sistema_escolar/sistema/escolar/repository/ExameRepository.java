@@ -24,4 +24,5 @@ public interface ExameRepository extends JpaRepository<Exame, Long> {
     @Query(" SELECT e FROM Exame e JOIN Disciplina d ON e.disciplina.id = d.id WHERE d.docente = :docente ")
     Page<Exame> obterExamesDoDocente(Docente docente, Pageable pageable);
 
+
 }

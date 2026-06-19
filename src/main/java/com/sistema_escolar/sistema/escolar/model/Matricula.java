@@ -97,7 +97,9 @@ public class Matricula {
 
 
     public void addResultado(Resultado resultado) {
-        if(this.getResultados() == null) this.setResultados(List.of());
+        if(this.getResultados() == null) {
+            this.setResultados(List.of());
+        }
 
         this.getResultados().add(resultado);
         calculaMedia(this.resultados);

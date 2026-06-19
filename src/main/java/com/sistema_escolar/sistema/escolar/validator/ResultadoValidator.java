@@ -37,17 +37,18 @@ public class ResultadoValidator {
         return resultadoOpt.map(Resultado::getId).stream().anyMatch(id -> !id.equals(resultado.getId()));
     }
 
-    // valida se docente tem permissão para salvar ou atualizar um resultado
+    // - valida se docente tem permissão para salvar ou atualizar um resultado
     // - um docente só pode salvar/alterar um resultado de uma disciplina lecionada por ele
     public void validarDocenteLogado(Docente docente) {
         Docente docenteLogado = usuarioService.getUsuarioLogado().getDocente();
 
         if (!docenteLogado.getId().equals(docente.getId())) {
-            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar/alterar esse resultado!");
+            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar ou alterar esse resultado!");
         }
     }
 
-    public void validaMatricula(Matricula matricula, Exame exame) {
+    // - verifica se a matricula e o exame pertencem a mesma disciplina.
+    public void verificaSeExameEMatriculaSaoDaMesmaDisciplina(Matricula matricula, Exame exame) {
         Disciplina disciplinaMatricula = matricula.getDisciplina();
         Disciplina disciplinaExame = exame.getDisciplina();
 
@@ -56,27 +57,27 @@ public class ResultadoValidator {
         }
     }
 
-    // valida se um aluno ou docente tem permissão para visualizar um resultado
-    // - aluno só pode ver resultados de disciplinas matriculas por ele.
+    // - valida se um aluno ou docente tem permissão para visualizar um resultado
+    // - aluno só pode ver resultados de disciplinas em que ele está matriculado.
     // - docente só pode ver resultados de disciplinas que ele leciona.
     public void validarAcesso(Resultado resultado) {
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-            Aluno aluno = usuarioLogado.getAluno();
-            boolean ehMatriculado = matriculaRepository.existsByAlunoAndDisciplina(aluno, resultado.getMatricula().getDisciplina());
+            Aluno alunoLogado = usuarioLogado.getAluno();
+            Aluno alunoResultado = resultado.getMatricula().getAluno();
 
-            if (!ehMatriculado) {
+            if (!alunoResultado.getId().equals(alunoLogado.getId())) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
             }
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docenteLogado = usuarioLogado.getDocente();
-            Docente docente = resultado.getMatricula().getDisciplina().getDocente();
+            Docente docenteResultado = resultado.getMatricula().getDisciplina().getDocente();
 
-            if (!docente.getId().equals(docenteLogado.getId())) {
+            if (!docenteResultado.getId().equals(docenteLogado.getId())) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para acessar esse resultado!");
             }
         }

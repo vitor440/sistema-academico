@@ -7,6 +7,7 @@ import com.sistema_escolar.sistema.escolar.model.Exame;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
+import com.sistema_escolar.sistema.escolar.repository.ResultadoRepository;
 import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,9 +19,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ExameValidator {
 
-    private final ExameRepository repository;
+    private final ExameRepository exameRepository;
     private final UsuarioService usuarioService;
     private final MatriculaRepository matriculaRepository;
+    private final ResultadoRepository resultadoRepository;
 
     public void validar(Exame exame) {
         if (registroDuplicado(exame)) {
@@ -31,7 +33,7 @@ public class ExameValidator {
 
     // verifica se há duplicidade (mesmo exame de uma disciplina na mesma data e hora)
     private boolean registroDuplicado(Exame exame) {
-        Optional<Exame> exameOpt = repository.findByDisciplinaAndDataAndHora(exame.getDisciplina(),
+        Optional<Exame> exameOpt = exameRepository.findByDisciplinaAndDataAndHora(exame.getDisciplina(),
                 exame.getData(), exame.getHora());
 
         if (exame.getId() == null) {
@@ -48,7 +50,7 @@ public class ExameValidator {
         Docente docenteLogado = usuarioService.getUsuarioLogado().getDocente();
 
         if (!docenteLogado.getId().equals(docente.getId())) {
-            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar/alterar esse exame!");
+            throw new AccessDeniedException("Acesso Negado: Você não tem permissão para salvar ou alterar esse exame!");
         }
     }
 
@@ -76,6 +78,12 @@ public class ExameValidator {
             if (!docenteLogado.getId().equals(docente.getId())) {
                 throw new AccessDeniedException("Acesso Negado: Você não tem permissão para ver esse exame!");
             }
+        }
+    }
+
+    public void validaDelecao(Exame exame) {
+        if (resultadoRepository.existsByExame(exame)) {
+            throw new RuntimeException("Deleção não permitida!");
         }
     }
 }

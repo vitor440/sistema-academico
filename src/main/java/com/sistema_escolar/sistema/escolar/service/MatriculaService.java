@@ -1,6 +1,7 @@
 package com.sistema_escolar.sistema.escolar.service;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.Matricula;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;

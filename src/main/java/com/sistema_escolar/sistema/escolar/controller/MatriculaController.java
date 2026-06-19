@@ -2,6 +2,7 @@ package com.sistema_escolar.sistema.escolar.controller;
 
 import com.sistema_escolar.sistema.escolar.controller.docs.MatriculaControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import com.sistema_escolar.sistema.escolar.service.MatriculaService;
@@ -15,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
+@RequestMapping("/matriculas")
 @RequiredArgsConstructor
 public class MatriculaController implements MatriculaControllerDocs {
 
     private final MatriculaService service;
 
-    @PostMapping("/matriculas")
+    @PostMapping
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
     public ResponseEntity<MatriculaResponseDTO> salvar(@RequestBody @Valid MatriculaRequestDTO dto) {
@@ -29,14 +31,14 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.created(location).body(response);
     }
 
-    @GetMapping("/matriculas/{id}")
+    @GetMapping("/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
     public ResponseEntity<MatriculaResponseDTO> obterPeloId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.obterPeloId(id));
     }
 
-    @GetMapping("/matriculas")
+    @GetMapping
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
     public ResponseEntity<Page<MatriculaResponseDTO>> listar(
@@ -46,7 +48,7 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
     }
 
-    @DeleteMapping("/matriculas/{id}")
+    @DeleteMapping("/{id}")
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
@@ -54,7 +56,7 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/matriculas/{id}/notaFinal")
+    @PatchMapping("/{id}/notaFinal")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<Void> modificaNotaFinal(@PathVariable("id") Long id, @RequestParam(value = "nota-final") Double nota) {
@@ -62,22 +64,22 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/matriculas/{id}/statusSolicitacao")
+    @PatchMapping("/{id}/statusSolicitacao")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<Void> modificaNotaFinal(@PathVariable("id") Long id, @RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao) {
+    public ResponseEntity<Void> modificaStatusSolicitacao(@PathVariable("id") Long id, @RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao) {
         service.modificaStatusSolicitacao(id, statusSolicitacao);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/matriculas/{id}/efetivarHistorico")
+    @PatchMapping("/{id}/efetivarHistorico")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.efetivarHistorico(id));
     }
 
-    @PatchMapping("/matriculas/{id}/acrescentaFaltas")
+    @PatchMapping("/{id}/acrescentaFaltas")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<Void> acrescentaFaltas(@PathVariable("id") Long id,
@@ -86,7 +88,7 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/matriculas/{id}/decrementaFaltas")
+    @PatchMapping("/{id}/decrementaFaltas")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<Void> decrementaFaltas(@PathVariable("id") Long id,

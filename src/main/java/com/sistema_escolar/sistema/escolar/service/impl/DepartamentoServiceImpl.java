@@ -61,6 +61,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     @Override
     public void deletarPeloId(Long id) {
         Departamento departamento = getDepartamento(id);
+        validator.validaDelecao(departamento);
         repository.delete(departamento);
     }
 

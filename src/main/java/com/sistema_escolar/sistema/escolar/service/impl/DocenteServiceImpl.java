@@ -125,6 +125,7 @@ public class DocenteServiceImpl implements DocenteService {
     @Override
     public void deletarPeloId(Long id) {
         Docente docente = getDocente(id);
+        validator.validaDelecao(docente);
         repository.delete(docente);
     }
 

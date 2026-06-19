@@ -78,6 +78,7 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     @Override
     public void deletarPeloId(Long id) {
         Disciplina disciplina = getDisciplina(id);
+        validator.validaDelecao(disciplina);
         repository.delete(disciplina);
     }
 
