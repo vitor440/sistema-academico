@@ -49,8 +49,10 @@ public class DocenteController implements DocenteControllerDocs {
     public ResponseEntity<Page<DocenteResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "departamento-id", required = false) Long departamentoId) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, nome, departamentoId));
     }
 
 
@@ -75,5 +77,11 @@ public class DocenteController implements DocenteControllerDocs {
     @PreAuthorize("hasRole('DOCENTE')")
     public ResponseEntity<DocenteResponseDTO> obterDocenteLogado() {
         return ResponseEntity.ok(service.obterDocenteLogado());
+    }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> docenteCount() {
+        return ResponseEntity.ok(service.countDocente());
     }
 }

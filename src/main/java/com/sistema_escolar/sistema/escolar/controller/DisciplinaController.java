@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
+import com.sistema_escolar.sistema.escolar.controller.docs.DisciplinaControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.DisciplinaRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DisciplinaResponseDTO;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
@@ -11,11 +12,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/disciplinas")
 @RequiredArgsConstructor
-public class DisciplinaController implements com.sistema_escolar.sistema.escolar.controller.docs.DisciplinaControllerDocs {
+public class DisciplinaController implements DisciplinaControllerDocs {
 
     private final DisciplinaService service;
 
@@ -48,8 +50,9 @@ public class DisciplinaController implements com.sistema_escolar.sistema.escolar
     public ResponseEntity<Page<DisciplinaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nome", required = false) String nome) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, nome));
     }
 
 
@@ -60,5 +63,17 @@ public class DisciplinaController implements com.sistema_escolar.sistema.escolar
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> disciplinaCount() {
+        return ResponseEntity.ok(service.countDisciplina());
+    }
+
+    @GetMapping("/topDisciplinas")
+    @Override
+    public ResponseEntity<List<DisciplinaResponseDTO>> topCincoDisciplinas() {
+        return ResponseEntity.ok(service.topCincoDisciplinas());
     }
 }

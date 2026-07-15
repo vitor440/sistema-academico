@@ -6,6 +6,9 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.UsuarioResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+import java.util.List;
+
 
 public interface UsuarioService {
 
@@ -30,4 +33,8 @@ public interface UsuarioService {
     String encriptaSenha(String senha);
 
     void addRole(Usuario usuario, String role);
+
+    Long countUsuario();
+
+
 }

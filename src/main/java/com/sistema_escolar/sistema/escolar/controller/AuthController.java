@@ -60,4 +60,10 @@ public class AuthController implements AuthControllerDocs {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> usuarioCount() {
+        return ResponseEntity.ok(service.countUsuario());
+    }
 }

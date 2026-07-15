@@ -49,8 +49,9 @@ public class DepartamentoController implements DepartamentoControllerDocs {
     public ResponseEntity<Page<DepartamentoResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
+            @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+        return ResponseEntity.ok(service.listar(pagina, nome, tamanho, sortDirection));
     }
 
 
@@ -61,5 +62,11 @@ public class DepartamentoController implements DepartamentoControllerDocs {
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> departamentoCount() {
+        return ResponseEntity.ok(service.countDepartamento());
     }
 }

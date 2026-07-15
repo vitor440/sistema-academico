@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
+import com.sistema_escolar.sistema.escolar.controller.docs.HorarioDisciplinaControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.HorarioDisciplinaRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DisciplinaResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.HorarioDisciplinaResponseDTO;
@@ -15,7 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-public class HorarioDisciplinaController implements com.sistema_escolar.sistema.escolar.controller.docs.HorarioDisciplinaControllerDocs {
+public class HorarioDisciplinaController implements HorarioDisciplinaControllerDocs {
 
     private final HorarioDisciplinaService service;
 
@@ -72,6 +73,11 @@ public class HorarioDisciplinaController implements com.sistema_escolar.sistema.
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
         return ResponseEntity.ok(service.obterHorariosPeloIdDaDisciplina(id, pagina, tamanho, sortDirection));
+    }
+
+    @Override
+    public ResponseEntity<Page<HorarioDisciplinaResponseDTO>> obterHorarioAlunoPeloSemestreEAno(Long alunoId, Integer semestre, Integer ano, int pagina, int tamanho, String sortDirection) {
+        return ResponseEntity.ok(service.obterHorariosAlunoPeloSemestreEAno(alunoId, semestre, ano, pagina, tamanho, sortDirection));
     }
 
 

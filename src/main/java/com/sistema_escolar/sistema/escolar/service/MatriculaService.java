@@ -4,6 +4,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.Matricula;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import org.springframework.data.domain.Page;
 
@@ -13,7 +14,14 @@ public interface MatriculaService {
 
     MatriculaResponseDTO obterPeloId(Long id);
 
-    Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection,
+                                      String nomeAluno,
+                                      String nomeDisciplina,
+                                      StatusSolicitacao statusSolicitacao,
+                                      StatusDisciplina statusDisciplina,
+                                      Boolean efetivado,
+                                      Integer semestre,
+                                      Integer ano) ;
 
     void deletarPeloId(Long id);
 
@@ -28,4 +36,6 @@ public interface MatriculaService {
     void acrescentaFaltas(Long id, int x);
 
     void decrementaFaltas(Long id, int x);
+
+    Long countMatriculas();
 }

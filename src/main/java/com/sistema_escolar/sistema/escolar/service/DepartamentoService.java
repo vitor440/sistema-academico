@@ -13,9 +13,11 @@ public interface DepartamentoService {
 
     DepartamentoResponseDTO obterPeloId(Long id);
 
-    Page<DepartamentoResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<DepartamentoResponseDTO> listar(int pagina, String nome, int tamanho, String sortDirection);
 
     void deletarPeloId(Long id);
 
     Departamento getDepartamento(Long id);
+
+    Long countDepartamento();
 }

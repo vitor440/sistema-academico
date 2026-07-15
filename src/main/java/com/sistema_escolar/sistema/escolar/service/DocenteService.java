@@ -13,7 +13,7 @@ public interface DocenteService {
 
     DocenteResponseDTO obterPeloId(Long id);
 
-    Page<DocenteResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<DocenteResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome, Long departamentoId);
 
     DocenteResponseDTO atualizarDocenteLogado(DocenteRequestDTO requestDTO);
 
@@ -22,4 +22,6 @@ public interface DocenteService {
     void deletarPeloId(Long id);
 
     Docente getDocente(Long id);
+
+    Long countDocente();
 }

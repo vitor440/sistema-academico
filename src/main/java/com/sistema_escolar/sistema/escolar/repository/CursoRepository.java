@@ -4,7 +4,9 @@ import com.sistema_escolar.sistema.escolar.model.Curso;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CursoRepository extends JpaRepository<Curso, Long>, JpaSpecificationExecutor<Curso> {
@@ -12,5 +14,11 @@ public interface CursoRepository extends JpaRepository<Curso, Long>, JpaSpecific
     Optional<Curso> findByNome(String nome);
 
     boolean existsByDepartamento(Departamento departamento);
+
+    @Query("select c.area, count(c) from Curso c group by c.area")
+    List<Object[]> quantidadeDeAreas();
+
+    @Query(" select c.nome, count(c) from Curso c join Aluno a on a.curso.id  = c.id group by c.nome ")
+    List<Object[]> alunosPorCurso();
 
 }

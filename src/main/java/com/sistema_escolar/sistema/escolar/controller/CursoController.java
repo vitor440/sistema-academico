@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
+import com.sistema_escolar.sistema.escolar.controller.docs.CursoControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.CursoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.CursoResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.enums.Areas;
@@ -13,11 +14,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cursos")
 @RequiredArgsConstructor
-public class CursoController implements com.sistema_escolar.sistema.escolar.controller.docs.CursoControllerDocs {
+public class CursoController implements CursoControllerDocs {
 
     private final CursoService service;
 
@@ -51,11 +53,12 @@ public class CursoController implements com.sistema_escolar.sistema.escolar.cont
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "area", required = false) Areas area,
             @RequestParam(value = "periodo", required = false) Periodo periodo,
-            @RequestParam(value = "nome-departamento", required = false) String nomeDepartamento,
+            @RequestParam(value = "quantidade-periodos", required = false) Integer quantidadePeriodos,
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(nome, area, periodo, nomeDepartamento, pagina, tamanho, sortDirection));
+        Page<CursoResponseDTO> response = service.listar(nome, area, periodo, quantidadePeriodos, pagina, tamanho, sortDirection);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -66,5 +69,23 @@ public class CursoController implements com.sistema_escolar.sistema.escolar.cont
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/areas-count")
+    @Override
+    public ResponseEntity<List<Object[]>> quantidadeDeAreas() {
+        return ResponseEntity.ok(service.quantidadeDeAreas());
+    }
+
+    @GetMapping("/alunos-curso")
+    @Override
+    public ResponseEntity<List<Object[]>> alunosPorCurso() {
+        return ResponseEntity.ok(service.alunosPorCurso());
+    }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> cursoCount() {
+        return ResponseEntity.ok(service.countCurso());
     }
 }

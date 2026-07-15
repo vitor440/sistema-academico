@@ -5,6 +5,8 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.Exame;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+
 public interface ExameService {
 
     ExameResponseDTO salvar(ExameRequestDTO requestDTO);
@@ -13,9 +15,11 @@ public interface ExameService {
 
     ExameResponseDTO obterPeloId(Long id);
 
-    Page<ExameResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<ExameResponseDTO> listar(int pagina, int tamanho, String sortDirection, LocalDate data);
 
     void deletarPeloId(Long id);
 
     Exame getExame(Long id);
+
+    Long countExame();
 }

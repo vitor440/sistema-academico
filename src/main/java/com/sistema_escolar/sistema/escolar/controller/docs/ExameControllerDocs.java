@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+
 @Tag(name = "Exames")
 public interface ExameControllerDocs extends GenericController {
 
@@ -64,7 +66,8 @@ public interface ExameControllerDocs extends GenericController {
     ResponseEntity<Page<ExameResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "data", required = false) LocalDate data);
 
 
 
@@ -76,4 +79,6 @@ public interface ExameControllerDocs extends GenericController {
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<Long> exameCount();
 }

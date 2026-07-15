@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -30,6 +31,9 @@ public class MatriculaValidator {
 
     // verifica se já existe uma matrícula de um aluno com horário e dia conflitante com outra matrícula
     private void verificaConflitoDeHorarios(Matricula matricula) {
+
+        int anoAtual = LocalDate.now().getYear();
+        int periodoAtual = LocalDate.now().getMonth().getValue() <= 7 ? 1 : 2;
 
         List<HorarioDisciplina> horariosNovaDisciplina = horarioDisciplinaRepository.findByDisciplina(matricula.getDisciplina());
         List<HorarioDisciplina> horariosDoAluno = horarioDisciplinaRepository.obterHorariosDoAluno(matricula.getAluno());

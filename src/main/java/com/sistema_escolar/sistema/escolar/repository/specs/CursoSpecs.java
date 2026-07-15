@@ -23,6 +23,11 @@ public class CursoSpecs {
                 cb.equal(root.get("periodo"), periodo));
     }
 
+    public static Specification<Curso> findByQuantidadePeriodo(Integer quantidadePeriodos) {
+        return ((root, query, cb) ->
+                cb.equal(root.get("quantidadePeriodos"), quantidadePeriodos));
+    }
+
     public static Specification<Curso> findByNomeDepartamento(String nomeDepartamento) {
         return (root, query, cb) ->{
             Join<Object, Object> departamento = root.join("departamento");

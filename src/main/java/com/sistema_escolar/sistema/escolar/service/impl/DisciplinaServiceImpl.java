@@ -7,17 +7,23 @@ import com.sistema_escolar.sistema.escolar.mapper.DisciplinaMapper;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import com.sistema_escolar.sistema.escolar.model.Docente;
+import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.DisciplinaRepository;
+import com.sistema_escolar.sistema.escolar.repository.specs.DisciplinaSpecs;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
 import com.sistema_escolar.sistema.escolar.service.DocenteService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.DisciplinaValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +34,7 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     private final DocenteService docenteService;
     private final DepartamentoService departamentoService;
     private final DisciplinaValidator validator;
+    private final UsuarioService usuarioService;
 
     @Override
     public DisciplinaResponseDTO salvar(DisciplinaRequestDTO requestDTO) {
@@ -68,11 +75,14 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     }
 
     @Override
-    public Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+    public Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome) {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
-        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
+        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "alunosMatriculados");
+        Specification<Disciplina> specs = (root, query, cb) -> cb.conjunction();
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        if (nome != null) specs = specs.and(DisciplinaSpecs.findByNome(nome));
+
+        return repository.findAll(specs, pageable).map(mapper::toDTO);
     }
 
     @Override
@@ -86,5 +96,16 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     public Disciplina getDisciplina(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Disciplina não encontrada!"));
+    }
+
+    @Override
+    public Long countDisciplina() {
+        return repository.count();
+    }
+
+    @Override
+    public List<DisciplinaResponseDTO> topCincoDisciplinas() {
+        Long docenteId = usuarioService.getUsuarioLogado().getDocente().getId();
+        return repository.topCincoDisciplinas(docenteId).stream().map(mapper::toDTO).toList();
     }
 }

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
-    private final String REDIRECT_URI = "http://localhost:8080/authorized";
+    private final String REDIRECT_URI = "http://localhost:5173/callback";
 
     private final ClientRepository repository;
     private final ClientValidator validator;

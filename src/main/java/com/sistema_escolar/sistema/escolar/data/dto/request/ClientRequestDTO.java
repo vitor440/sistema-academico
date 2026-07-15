@@ -8,11 +8,11 @@ import lombok.Data;
 public class ClientRequestDTO {
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 300, message = "clientId deve ter entre 10 a 300 dígitos!")
+    @Size(min = 4, max = 300, message = "clientId deve ter entre 10 a 300 dígitos!")
     private String clientId;
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 500, message = "clientSecret deve ter entre 10 a 500 dígitos!")
+    @Size(min = 4, max = 500, message = "clientSecret deve ter entre 4 a 500 dígitos!")
     private String clientSecret;
 
 

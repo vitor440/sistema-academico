@@ -142,4 +142,9 @@ public class AlunoServiceImpl implements AlunoService {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Aluno não encontrado!"));
     }
+
+    @Override
+    public Long countAluno() {
+        return repository.count();
+    }
 }

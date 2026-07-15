@@ -64,7 +64,9 @@ public interface DocenteControllerDocs extends GenericController {
     ResponseEntity<Page<DocenteResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "departamento-id", required = false) Long departamentoId);
 
     @Operation(summary = "deletar docente", description = "Deleta um docente pelo ID.")
     @ApiResponses(value = {
@@ -80,4 +82,6 @@ public interface DocenteControllerDocs extends GenericController {
 
 
     ResponseEntity<DocenteResponseDTO> obterDocenteLogado();
+
+    ResponseEntity<Long> docenteCount();
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Tag(name = "Disciplinas")
 public interface DisciplinaControllerDocs extends GenericController {
 
@@ -62,7 +64,8 @@ public interface DisciplinaControllerDocs extends GenericController {
     ResponseEntity<Page<DisciplinaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nome", required = false) String nome);
 
 
     @Operation(summary = "deletar disciplina", description = "Deleta uma disciplina pelo ID.")
@@ -73,4 +76,8 @@ public interface DisciplinaControllerDocs extends GenericController {
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<Long> disciplinaCount();
+
+    ResponseEntity<List<DisciplinaResponseDTO>> topCincoDisciplinas();
 }

@@ -8,14 +8,16 @@ import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalTime;
 import java.util.Optional;
 
-public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
+public interface MatriculaRepository extends JpaRepository<Matricula, Long>, JpaSpecificationExecutor<Matricula> {
 
 
 //    @Query(" SELECT m FROM Matricula m WHERE m.aluno = :aluno AND m.disciplina.horario = :horaInicio ")
@@ -24,10 +26,10 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     boolean existsByAlunoAndDisciplina(Aluno aluno, Disciplina disciplina);
 
-    Page<Matricula> findByAluno(Aluno aluno, Pageable pageable);
+    Page<Matricula> findByAluno(Aluno aluno, Pageable pageable, Specification<Matricula> specs);
 
     @Query(" SELECT m FROM Matricula m where m.disciplina.docente = :docente ")
-    Page<Matricula> obterMatriculasDocente(Docente docente, Pageable pageable);
+    Page<Matricula> obterMatriculasDocente(Docente docente, Pageable pageable, Specification<Matricula> specs);
 
     @Modifying
     @Transactional
@@ -38,4 +40,6 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
     boolean existsByAluno(Aluno aluno);
 
     boolean existsByDisciplina(Disciplina disciplina);
+
+//    boolean existsByPeriodoAndAnoAndHorarioAndDiaSemana()
 }

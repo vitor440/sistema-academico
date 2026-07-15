@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.controller;
 
+import com.sistema_escolar.sistema.escolar.controller.docs.ExameControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ExameRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
@@ -11,11 +12,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/exames")
 @RequiredArgsConstructor
-public class ExameController implements com.sistema_escolar.sistema.escolar.controller.docs.ExameControllerDocs {
+public class ExameController implements ExameControllerDocs {
 
     private final ExameService service;
 
@@ -47,9 +49,10 @@ public class ExameController implements com.sistema_escolar.sistema.escolar.cont
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE', 'ALUNO')")
     public ResponseEntity<Page<ExameResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
-            @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+        @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "data", required = false) LocalDate data) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, data));
     }
 
 
@@ -60,5 +63,11 @@ public class ExameController implements com.sistema_escolar.sistema.escolar.cont
     public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> exameCount() {
+        return ResponseEntity.ok(service.countExame());
     }
 }

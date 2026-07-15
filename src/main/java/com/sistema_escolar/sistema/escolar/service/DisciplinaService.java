@@ -5,6 +5,8 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.DisciplinaResponseD
 import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface DisciplinaService {
 
     DisciplinaResponseDTO salvar(DisciplinaRequestDTO requestDTO);
@@ -15,9 +17,13 @@ public interface DisciplinaService {
 
     DisciplinaResponseDTO obterPeloId(Long id);
 
-    Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome);
 
     void deletarPeloId(Long id);
 
     Disciplina getDisciplina(Long id);
+
+    Long countDisciplina();
+
+    List<DisciplinaResponseDTO> topCincoDisciplinas();
 }

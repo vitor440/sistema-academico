@@ -4,6 +4,7 @@ import com.sistema_escolar.sistema.escolar.controller.docs.MatriculaControllerDo
 import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import com.sistema_escolar.sistema.escolar.service.MatriculaService;
 import jakarta.validation.Valid;
@@ -44,8 +45,16 @@ public class MatriculaController implements MatriculaControllerDocs {
     public ResponseEntity<Page<MatriculaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nome-aluno", required = false) String nomeAluno,
+            @RequestParam(value = "nome-disciplina", required = false) String nomeDisciplina,
+            @RequestParam(value = "status-disciplina", required = false) StatusDisciplina statusDisciplina,
+            @RequestParam(value = "status-solicitacao", required = false) StatusSolicitacao statusSolicitacao,
+            @RequestParam(value = "efetivado", required = false) Boolean efetivado,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, nomeAluno,
+                nomeDisciplina, statusSolicitacao, statusDisciplina, efetivado, semestre, ano));
     }
 
     @DeleteMapping("/{id}")
@@ -95,5 +104,11 @@ public class MatriculaController implements MatriculaControllerDocs {
                                                   @RequestParam(value = "faltas") int faltas) {
         service.decrementaFaltas(id, faltas);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> matriculaCount() {
+        return ResponseEntity.ok(service.countMatriculas());
     }
 }

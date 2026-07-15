@@ -6,12 +6,15 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.HorarioDisciplinaRe
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.DisciplinaMapper;
 import com.sistema_escolar.sistema.escolar.mapper.HorarioDisciplinaMapper;
+import com.sistema_escolar.sistema.escolar.model.Aluno;
 import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import com.sistema_escolar.sistema.escolar.model.HorarioDisciplina;
+import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.DisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.HorarioDisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
 import com.sistema_escolar.sistema.escolar.service.HorarioDisciplinaService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +31,7 @@ public class HorarioDisciplinaImpl implements HorarioDisciplinaService {
     private final DisciplinaService disciplinaService;
     private final DisciplinaMapper disciplinaMapper;
     private final DisciplinaRepository disciplinaRepository;
+    private final UsuarioService usuarioService;
 
     @Override
     public DisciplinaResponseDTO salvar(Long id, HorarioDisciplinaRequestDTO requestDTO) {
@@ -57,8 +61,18 @@ public class HorarioDisciplinaImpl implements HorarioDisciplinaService {
 
     @Override
     public Page<HorarioDisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "horario");
+
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        if(usuario.getRoles().contains("ALUNO")) {
+            return repository.obterHorariosDoAlunoPaginado(usuario.getAluno(), pageable).map(mapper::toDTO);
+        }
+
+        if (usuario.getRoles().contains("DOCENTE")) {
+            return repository.obterHorariosDoDocente(usuario.getDocente(), pageable).map(mapper::toDTO);
+        }
 
         return repository.findAll(pageable).map(mapper::toDTO);
     }
@@ -82,5 +96,18 @@ public class HorarioDisciplinaImpl implements HorarioDisciplinaService {
         Disciplina disciplina = disciplinaService.getDisciplina(id);
 
         return repository.findByDisciplina(disciplina, pageable).map(mapper::toDTO);
+    }
+
+    @Override
+    public Page<HorarioDisciplinaResponseDTO> obterHorariosAlunoPeloSemestreEAno(Long alunoId, Integer semestre,
+                                                                                 Integer ano,
+                                                                                 Integer pagina,
+                                                                                 Integer tamanho,
+                                                                                 String sortDirection) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "horario");
+
+        return repository.obterHorariosAlunoPorSemestreEAno(alunoId, semestre, ano, pageable)
+                .map(mapper::toDTO);
     }
 }

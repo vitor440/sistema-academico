@@ -22,4 +22,6 @@ public interface AlunoService {
     AlunoResponseDTO obterAlunoLogado();
 
     Aluno getAluno(Long id);
+
+    Long countAluno();
 }

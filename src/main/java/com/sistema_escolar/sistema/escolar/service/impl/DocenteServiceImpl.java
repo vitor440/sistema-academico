@@ -8,6 +8,7 @@ import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.model.Docente;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.DocenteRepository;
+import com.sistema_escolar.sistema.escolar.repository.specs.DocenteSpecs;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.service.DocenteService;
 import com.sistema_escolar.sistema.escolar.service.UsuarioService;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -82,11 +84,16 @@ public class DocenteServiceImpl implements DocenteService {
     }
 
     @Override
-    public Page<DocenteResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+    public Page<DocenteResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome, Long departamentoId) {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
+        Specification<Docente> specs = (root, query, cb) -> cb.conjunction();
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        if (nome != null) specs = specs.and(DocenteSpecs.findByNome(nome));
+
+        if (departamentoId != null) specs = specs.and(DocenteSpecs.findBydepartamentoId(departamentoId));
+
+        return repository.findAll(specs, pageable).map(mapper::toDTO);
     }
 
     @Override
@@ -133,5 +140,10 @@ public class DocenteServiceImpl implements DocenteService {
     public Docente getDocente(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Docente não encontrado!"));
+    }
+
+    @Override
+    public Long countDocente() {
+        return repository.count();
     }
 }

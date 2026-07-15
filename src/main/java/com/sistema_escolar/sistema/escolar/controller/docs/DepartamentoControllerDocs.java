@@ -61,6 +61,7 @@ public interface DepartamentoControllerDocs extends GenericController {
     ResponseEntity<Page<DepartamentoResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
+            @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
 
     @Operation(summary = "deletar departamento", description = "Deleta um departamento pelo ID.")
@@ -72,4 +73,6 @@ public interface DepartamentoControllerDocs extends GenericController {
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
 
+
+    ResponseEntity<Long> departamentoCount();
 }

@@ -78,5 +78,11 @@ public class AlunoController implements AlunoControllerDocs {
         return ResponseEntity.ok(service.obterAlunoLogado());
     }
 
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> alunoCount() {
+        return ResponseEntity.ok(service.countAluno());
+    }
+
 
 }

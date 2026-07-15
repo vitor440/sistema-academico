@@ -55,6 +55,12 @@ public class Matricula {
     @Column(name = "efetivado")
     private boolean efetivado;
 
+    @Column(name = "semestre")
+    private Integer semestre;
+
+    @Column(name = "ano")
+    private Integer ano;
+
 
     @Column(name = "data_criacao")
     @CreatedDate

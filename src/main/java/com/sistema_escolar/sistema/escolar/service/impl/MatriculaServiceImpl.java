@@ -1,25 +1,30 @@
 package com.sistema_escolar.sistema.escolar.service.impl;
 
 import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
-import com.sistema_escolar.sistema.escolar.exception.RegistroConflitanteException;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.MatriculaMapper;
-import com.sistema_escolar.sistema.escolar.mapper.ResultadoMapper;
-import com.sistema_escolar.sistema.escolar.model.*;
+import com.sistema_escolar.sistema.escolar.model.Aluno;
+import com.sistema_escolar.sistema.escolar.model.Disciplina;
+import com.sistema_escolar.sistema.escolar.model.Matricula;
+import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
-import com.sistema_escolar.sistema.escolar.service.*;
+import com.sistema_escolar.sistema.escolar.repository.specs.MatriculaSpecs;
+import com.sistema_escolar.sistema.escolar.service.AlunoService;
+import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
+import com.sistema_escolar.sistema.escolar.service.MatriculaService;
+import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.MatriculaValidator;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 import static org.springframework.data.domain.Sort.Direction;
 
@@ -49,6 +54,14 @@ public class MatriculaServiceImpl implements MatriculaService {
 
         matricula.inicializaMatricula(); // inicializa dados de notas, nota final e média com valor 0.
 
+        matricula.setAno(LocalDate.now().getYear());
+
+        if (LocalDate.now().getMonth().getValue() <= 7) {
+            matricula.setSemestre(1);
+        }else {
+            matricula.setSemestre(2);
+        }
+
         disciplina.decrementaVaga(); // decrementa uma vaga e acrescenta um aluno matriculado na disciplina.
         return mapper.toDTO(matriculaRepository.save(matricula));
     }
@@ -63,21 +76,38 @@ public class MatriculaServiceImpl implements MatriculaService {
 
 
     @Override
-    public Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+    public Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection,
+                                             String nomeAluno,
+                                             String nomeDisciplina,
+                                             StatusSolicitacao statusSolicitacao,
+                                             StatusDisciplina statusDisciplina,
+                                             Boolean efetivado,
+                                             Integer semestre,
+                                             Integer ano) {
         Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "media");
 
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+        Specification<Matricula> specs = (root, query, cb) -> cb.conjunction();
 
+        if (nomeAluno != null) specs = specs.and(MatriculaSpecs.findByNomeAluno(nomeAluno));
+        if (nomeDisciplina != null) specs = specs.and(MatriculaSpecs.findByNomeDisciplina(nomeDisciplina));
+        if (statusSolicitacao != null) specs = specs.and(MatriculaSpecs.findByStatusSolicitacao(statusSolicitacao));
+        if (statusDisciplina != null) specs = specs.and(MatriculaSpecs.findByStatusDisciplina(statusDisciplina));
+        if (efetivado != null) specs = specs.and(MatriculaSpecs.findByEfetivado(efetivado));
+        if (semestre != null) specs = specs.and(MatriculaSpecs.findBySemestre(semestre));
+        if (ano != null) specs = specs.and(MatriculaSpecs.findByAno(ano));
+
+
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
         if (usuarioLogado.getRoles().contains("ALUNO")) {
-            return matriculaRepository.findByAluno(usuarioLogado.getAluno(), pageable).map(mapper::toDTO);
+            return matriculaRepository.findByAluno(usuarioLogado.getAluno(), pageable, specs).map(mapper::toDTO);
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            return matriculaRepository.obterMatriculasDocente(usuarioLogado.getDocente(), pageable).map(mapper::toDTO);
+            return matriculaRepository.obterMatriculasDocente(usuarioLogado.getDocente(), pageable, specs).map(mapper::toDTO);
         }
 
-        return matriculaRepository.findAll(pageable).map(mapper::toDTO);
+        return matriculaRepository.findAll(specs, pageable).map(mapper::toDTO);
     }
 
     @Override
@@ -110,6 +140,7 @@ public class MatriculaServiceImpl implements MatriculaService {
         Matricula matricula = getMatricula(id);
         validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
         matricula.efetivar();
+        matricula.getDisciplina().acrescentaVaga();
 
         return mapper.toDTO(matriculaRepository.save(matricula));
     }
@@ -133,6 +164,11 @@ public class MatriculaServiceImpl implements MatriculaService {
         }
         matriculaRepository.save(matricula);
 
+    }
+
+    @Override
+    public Long countMatriculas() {
+        return matriculaRepository.count();
     }
 
     @Override

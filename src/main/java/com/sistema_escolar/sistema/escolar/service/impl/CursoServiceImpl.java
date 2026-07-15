@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static org.springframework.data.domain.Sort.Direction;
 
 @Service
@@ -62,12 +64,12 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Override
-    public Page<CursoResponseDTO> listar(String nome, Areas area, Periodo periodo, String nomeDepartamento,
+    public Page<CursoResponseDTO> listar(String nome, Areas area, Periodo periodo, Integer quantidadePeriodos,
                                          int pagina, int tamanho, String sortDirection) {
         Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
 
-        Specification<Curso> specs = ((root, query, cb) -> cb.disjunction());
+        Specification<Curso> specs = ((root, query, cb) -> cb.conjunction());
 
         if (nome != null) specs = specs.and(CursoSpecs.findByName(nome));
 
@@ -75,7 +77,7 @@ public class CursoServiceImpl implements CursoService {
 
         if (periodo != null) specs = specs.and(CursoSpecs.findByPeriodo(periodo));
 
-        if (nomeDepartamento != null) specs = specs.and(CursoSpecs.findByNomeDepartamento(nomeDepartamento));
+        if (quantidadePeriodos != null) specs = specs.and(CursoSpecs.findByQuantidadePeriodo(quantidadePeriodos));
 
         return repository.findAll(specs, pageable).map(mapper::toDTO);
     }
@@ -91,6 +93,21 @@ public class CursoServiceImpl implements CursoService {
     public Curso getCurso(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Curso não encontrado!"));
+    }
+
+    @Override
+    public List<Object[]> quantidadeDeAreas() {
+        return repository.quantidadeDeAreas();
+    }
+
+    @Override
+    public List<Object[]> alunosPorCurso() {
+        return repository.alunosPorCurso();
+    }
+
+    @Override
+    public Long countCurso() {
+        return repository.count();
     }
 }
 

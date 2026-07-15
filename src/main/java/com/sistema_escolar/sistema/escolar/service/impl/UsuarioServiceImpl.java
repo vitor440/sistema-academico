@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.data.domain.Sort.Direction;
@@ -126,4 +127,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setPermissions(List.of(permission));
         repository.save(usuario);
     }
+
+    @Override
+    public Long countUsuario() {
+        return repository.count();
+    }
+
+
 }

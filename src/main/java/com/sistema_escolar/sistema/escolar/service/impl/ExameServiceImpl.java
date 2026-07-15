@@ -7,6 +7,7 @@ import com.sistema_escolar.sistema.escolar.mapper.ExameMapper;
 import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
+import com.sistema_escolar.sistema.escolar.repository.specs.ExameSpecs;
 import com.sistema_escolar.sistema.escolar.service.DisciplinaService;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
 import com.sistema_escolar.sistema.escolar.service.UsuarioService;
@@ -17,8 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -73,23 +77,28 @@ public class ExameServiceImpl implements ExameService {
 
     @Override
     @Transactional
-    public Page<ExameResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+    public Page<ExameResponseDTO> listar(int pagina, int tamanho, String sortDirection, LocalDate data) {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
+        Specification<Exame> specs = (root, query, cb) -> cb.conjunction();
+
+//        if(data != null) {
+//            specs = specs.and(ExameSpecs.greaterThanData(data))
+//        }
 
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioLogado.getAluno();
-            return repository.obterExamesDeAluno(aluno, pageable).map(mapper::toDTO);
+            return repository.obterExamesDeAluno(aluno, pageable, specs).map(mapper::toDTO);
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docente = usuarioLogado.getDocente();
-            return repository.obterExamesDoDocente(docente, pageable).map(mapper::toDTO);
+            return repository.obterExamesDoDocente(docente, pageable, specs).map(mapper::toDTO);
         }
         else {
-            return repository.findAll(pageable).map(mapper::toDTO);
+            return repository.findAll(specs, pageable).map(mapper::toDTO);
         }
 
     }
@@ -109,6 +118,11 @@ public class ExameServiceImpl implements ExameService {
     public Exame getExame(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Exame não encontrado!"));
+    }
+
+    @Override
+    public Long countExame() {
+        return repository.count();
     }
 }
 

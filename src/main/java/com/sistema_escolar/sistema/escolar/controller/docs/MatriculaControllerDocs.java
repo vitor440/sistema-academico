@@ -6,6 +6,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -49,7 +50,14 @@ public interface MatriculaControllerDocs extends GenericController {
     ResponseEntity<Page<MatriculaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nome-aluno", required = false) String nomeAluno,
+            @RequestParam(value = "nome-disciplina", required = false) String nomeDisciplina,
+            @RequestParam(value = "status-disciplina", required = false) StatusDisciplina statusDisciplina,
+            @RequestParam(value = "status-solicitacao", required = false) StatusSolicitacao statusSolicitacao,
+            @RequestParam(value = "efetivado", required = false) Boolean efetivado,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano);
 
 
     @Operation(summary = "deletar matrícula", description = "Deleta uma matrícula pelo ID.")
@@ -71,4 +79,6 @@ public interface MatriculaControllerDocs extends GenericController {
 
     ResponseEntity<Void> decrementaFaltas(@PathVariable("id") Long id, @RequestParam(value = "faltas") int faltas);
 
+
+    ResponseEntity<Long> matriculaCount();
 }

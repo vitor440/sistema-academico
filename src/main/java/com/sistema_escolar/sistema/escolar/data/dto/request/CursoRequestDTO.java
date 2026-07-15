@@ -9,7 +9,7 @@ import lombok.Data;
 public class CursoRequestDTO {
 
     @NotBlank(message = "campo obrigatório!")
-    @Size(min = 10, max = 300, message = "nome do curso deve ter entre 10 a 300 dígitos!")
+    @Size(min = 5, max = 300, message = "nome do curso deve ter entre 5 a 300 dígitos!")
     private String nome;
 
     @NotNull(message = "campo obrigatório!")

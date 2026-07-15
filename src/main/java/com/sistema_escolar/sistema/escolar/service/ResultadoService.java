@@ -1,9 +1,12 @@
 package com.sistema_escolar.sistema.escolar.service;
 
+import com.sistema_escolar.sistema.escolar.data.dto.MesAnoEMedia;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
-import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDTO;
 import org.springframework.data.domain.Page;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface ResultadoService {
 
@@ -18,7 +21,11 @@ public interface ResultadoService {
 
     ResultadoResponseDTO obterResultadoPeloId(Long id);
 
-    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection,  LocalDate data);
 
     Page<ResultadoResponseDTO> listarPeloIdDaMatricula(Long id, int pagina, int tamanho, String sortDirection);
+
+    List<MesAnoEMedia> mediaNotasUltimosQuatroMeses();
+
+
 }

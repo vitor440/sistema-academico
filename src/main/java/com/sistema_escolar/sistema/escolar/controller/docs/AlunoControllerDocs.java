@@ -79,4 +79,6 @@ public interface AlunoControllerDocs extends GenericController {
 
     ResponseEntity<AlunoResponseDTO> obterAlunoLogado();
 
+    ResponseEntity<Long> alunoCount();
+
 }

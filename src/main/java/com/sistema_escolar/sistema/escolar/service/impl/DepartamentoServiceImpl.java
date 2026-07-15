@@ -7,12 +7,14 @@ import com.sistema_escolar.sistema.escolar.mapper.CursoMapper;
 import com.sistema_escolar.sistema.escolar.mapper.DepartamentoMapper;
 import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.repository.DepartamentoRepository;
+import com.sistema_escolar.sistema.escolar.repository.specs.DepartamentoSpecs;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
 import com.sistema_escolar.sistema.escolar.validator.DepartamentoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.data.domain.Sort.Direction;
@@ -51,11 +53,14 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    public Page<DepartamentoResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+    public Page<DepartamentoResponseDTO> listar(int pagina, String nome, int tamanho, String sortDirection) {
         Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
+        Specification<Departamento> specs = (root, query, cb) -> cb.conjunction();
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        if(nome != null) specs = specs.and(DepartamentoSpecs.findByNome(nome));
+
+        return repository.findAll(specs, pageable).map(mapper::toDTO);
     }
 
     @Override
@@ -69,5 +74,10 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     public Departamento getDepartamento(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Departamento não encontrado!"));
+    }
+
+    @Override
+    public Long countDepartamento() {
+        return repository.count();
     }
 }

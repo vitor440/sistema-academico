@@ -2,6 +2,7 @@ package com.sistema_escolar.sistema.escolar.data.dto.response;
 
 import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
+import jakarta.persistence.Column;
 import lombok.Data;
 
 import java.util.List;
@@ -28,6 +29,10 @@ public class MatriculaResponseDTO {
     private StatusSolicitacao statusSolicitacao;
 
     private boolean efetivado;
+
+    private Integer semestre;
+
+    private Integer ano;
 
     private List<ResultadoResponseDTO> resultados;
 }

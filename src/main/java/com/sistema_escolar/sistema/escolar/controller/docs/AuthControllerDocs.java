@@ -45,4 +45,6 @@ public interface AuthControllerDocs extends GenericController {
     ResponseEntity<UsuarioResponseDTO> obterPeloId(@PathVariable("id") Long id);
 
     ResponseEntity<UsuarioResponseDTO> deletarPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<Long> usuarioCount();
 }

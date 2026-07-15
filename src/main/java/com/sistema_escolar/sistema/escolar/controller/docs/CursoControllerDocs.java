@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Tag(name = "Cursos")
 public interface CursoControllerDocs extends GenericController {
 
@@ -65,7 +67,7 @@ public interface CursoControllerDocs extends GenericController {
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "area", required = false) Areas area,
             @RequestParam(value = "periodo", required = false, defaultValue = "0") Periodo periodo,
-            @RequestParam(value = "nome-departamento", required = false, defaultValue = "0") String nomeDepartamento,
+            @RequestParam(value = "quantidade-periodos", required = false, defaultValue = "0") Integer quantidadePeriodos,
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
@@ -79,4 +81,10 @@ public interface CursoControllerDocs extends GenericController {
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<List<Object[]>> quantidadeDeAreas();
+
+    ResponseEntity<List<Object[]>> alunosPorCurso();
+
+    ResponseEntity<Long> cursoCount();
 }

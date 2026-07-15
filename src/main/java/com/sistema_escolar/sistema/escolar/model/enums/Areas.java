@@ -4,5 +4,6 @@ public enum Areas {
     HUMANAS,
     EXATAS,
     ENGENHARIAS,
-    CIENCIAS_SOCIAIS
+    CIENCIAS_SOCIAIS,
+    LETRAS
 }

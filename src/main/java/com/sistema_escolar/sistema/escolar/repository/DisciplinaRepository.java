@@ -4,14 +4,20 @@ import com.sistema_escolar.sistema.escolar.model.Departamento;
 import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import com.sistema_escolar.sistema.escolar.model.Docente;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
+public interface DisciplinaRepository extends JpaRepository<Disciplina, Long>, JpaSpecificationExecutor<Disciplina> {
 
     Optional<Disciplina> findByNomeAndDepartamento(String nome, Departamento departamento);
 
     boolean existsByDepartamento(Departamento departamento);
 
     boolean existsByDocente(Docente docente);
+
+    @Query(" SELECT d from Disciplina d WHERE d.docente.id = :docenteId ORDER BY d.alunosMatriculados DESC LIMIT 5 ")
+    List<Disciplina> topCincoDisciplinas(Long docenteId);
 }
