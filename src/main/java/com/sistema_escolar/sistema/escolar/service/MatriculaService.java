@@ -16,7 +16,7 @@ public interface MatriculaService {
 
     Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection,
                                       String nomeAluno,
-                                      String nomeDisciplina,
+                                      Long disciplinaId,
                                       StatusSolicitacao statusSolicitacao,
                                       StatusDisciplina statusDisciplina,
                                       Boolean efetivado,
@@ -33,9 +33,7 @@ public interface MatriculaService {
 
     MatriculaResponseDTO efetivarHistorico(Long id);
 
-    void acrescentaFaltas(Long id, int x);
-
-    void decrementaFaltas(Long id, int x);
+    void modificaFaltas(Long id, Integer faltas);
 
     Long countMatriculas();
 }

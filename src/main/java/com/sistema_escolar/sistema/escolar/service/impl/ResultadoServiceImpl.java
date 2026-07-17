@@ -6,6 +6,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.ResultadoResponseDT
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.ResultadoMapper;
 import com.sistema_escolar.sistema.escolar.model.*;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
 import com.sistema_escolar.sistema.escolar.repository.ResultadoRepository;
 import com.sistema_escolar.sistema.escolar.repository.specs.ResultadoSpecs;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
@@ -38,6 +39,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 
     @Override
+    @Transactional
     public ResultadoResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO) {
         Resultado resultado = resultadoMapper.toEntity(resultadoRequestDTO);
         Matricula matricula = matriculaService.getMatricula(id);
@@ -95,7 +97,7 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     @Override
-    public Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection, LocalDate data) {
+    public Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection, LocalDate data, Integer semestre, Integer ano, Long exameId) {
 
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
@@ -107,19 +109,31 @@ public class ResultadoServiceImpl implements ResultadoService {
             specs = specs.and(ResultadoSpecs.greaterThanData(data));
         }
 
+        if(semestre != null) {
+            specs = specs.and(ResultadoSpecs.findBySemestre(semestre));
+        }
+
+        if(ano != null) {
+            specs = specs.and(ResultadoSpecs.findByAno(ano));
+        }
+
+        if(exameId != null) {
+            specs = specs.and(ResultadoSpecs.findByExameId(exameId));
+        }
+
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioLogado.getAluno();
-            return resultadoRepository.obterResultadosDeAluno(aluno, pageable, specs).map(resultadoMapper::toDTO);
+            specs = specs.and(ResultadoSpecs.findByAluno(aluno));
         }
 
-        else if (usuarioLogado.getRoles().contains("DOCENTE")) {
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docente = usuarioLogado.getDocente();
-            return resultadoRepository.obterResultadosDaDisciplinaDoDocente(docente, pageable, specs).map(resultadoMapper::toDTO);
+            specs = specs.and(ResultadoSpecs.findByDocente(docente));
         }
 
-        else {
-            return resultadoRepository.findAll(specs, pageable).map(resultadoMapper::toDTO);
-        }
+
+        return resultadoRepository.findAll(specs, pageable).map(resultadoMapper::toDTO);
+
     }
 
     @Override

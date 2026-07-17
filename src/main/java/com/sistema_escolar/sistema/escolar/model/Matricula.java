@@ -43,10 +43,10 @@ public class Matricula {
     private StatusDisciplina status;
 
     @Column(name = "nota_final")
-    private double notaFinal;
+    private Double notaFinal;
 
     @Column(name = "media_final")
-    private double mediaFinal;
+    private Double mediaFinal;
 
     @Column(name = "status_solicitacao")
     @Enumerated(EnumType.STRING)

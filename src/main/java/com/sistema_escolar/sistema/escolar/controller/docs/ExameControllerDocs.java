@@ -6,6 +6,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.ExameRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -67,7 +68,11 @@ public interface ExameControllerDocs extends GenericController {
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(value = "data", required = false) LocalDate data);
+            @RequestParam(value = "data", required = false) LocalDate data,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano,
+            @RequestParam(value = "disciplinaId", required = false) Long disciplinaId,
+            @RequestParam(value = "status", required = false) StatusExame status);
 
 
 
@@ -79,6 +84,8 @@ public interface ExameControllerDocs extends GenericController {
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
+
+    ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id, @RequestParam(value = "status") StatusExame status);
 
     ResponseEntity<Long> exameCount();
 }

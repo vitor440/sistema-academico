@@ -3,6 +3,7 @@ package com.sistema_escolar.sistema.escolar.controller;
 import com.sistema_escolar.sistema.escolar.controller.docs.ExameControllerDocs;
 import com.sistema_escolar.sistema.escolar.data.dto.request.ExameRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
 import com.sistema_escolar.sistema.escolar.service.ExameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +52,12 @@ public class ExameController implements ExameControllerDocs {
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
         @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(value = "data", required = false) LocalDate data) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, data));
+            @RequestParam(value = "data", required = false) LocalDate data,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano,
+            @RequestParam(value = "disciplinaId", required = false) Long disciplinaId,
+            @RequestParam(value = "status", required = false) StatusExame status) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, data, semestre, ano, disciplinaId, status));
     }
 
 
@@ -64,6 +69,16 @@ public class ExameController implements ExameControllerDocs {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/status")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id, @RequestParam(value = "status") StatusExame status) {
+        service.atualizaStatusExame(id, status);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
     @Override
     @GetMapping("/count")

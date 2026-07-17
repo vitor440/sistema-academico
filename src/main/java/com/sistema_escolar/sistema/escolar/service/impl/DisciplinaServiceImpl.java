@@ -75,12 +75,15 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     }
 
     @Override
-    public Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome) {
+    public Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome, Long docenteId, Integer semestre, Integer ano) {
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "alunosMatriculados");
         Specification<Disciplina> specs = (root, query, cb) -> cb.conjunction();
 
         if (nome != null) specs = specs.and(DisciplinaSpecs.findByNome(nome));
+        if (docenteId != null) specs = specs.and(DisciplinaSpecs.findByDocenteId(docenteId));
+        if (semestre != null) specs = specs.and(DisciplinaSpecs.findBySemestre(semestre));
+        if (ano != null) specs = specs.and(DisciplinaSpecs.findByAno(ano));
 
         return repository.findAll(specs, pageable).map(mapper::toDTO);
     }

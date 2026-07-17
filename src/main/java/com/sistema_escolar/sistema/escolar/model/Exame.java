@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.model;
 
+import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
 import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -43,6 +44,10 @@ public class Exame {
 
     @Column(name = "peso")
     private int peso;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private StatusExame status;
 
     @Column(name = "data_criacao")
     @CreatedDate

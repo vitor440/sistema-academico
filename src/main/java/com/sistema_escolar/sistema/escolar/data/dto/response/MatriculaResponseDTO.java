@@ -14,6 +14,12 @@ public class MatriculaResponseDTO {
 
     private Long alunoId;
 
+    private String nomeAluno;
+
+    private String disciplina;
+
+    private String matricula;
+
     private Long disciplinaId;
 
     private Integer faltas;

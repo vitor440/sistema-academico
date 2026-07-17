@@ -1,5 +1,6 @@
 package com.sistema_escolar.sistema.escolar.data.dto.response;
 
+import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
 import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import lombok.Data;
 
@@ -22,4 +23,6 @@ public class ExameResponseDTO {
     private TipoExame tipo;
 
     private Integer peso;
+
+    private StatusExame status;
 }

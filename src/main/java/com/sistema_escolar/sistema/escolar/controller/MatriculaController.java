@@ -46,15 +46,15 @@ public class MatriculaController implements MatriculaControllerDocs {
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(value = "nome-aluno", required = false) String nomeAluno,
-            @RequestParam(value = "nome-disciplina", required = false) String nomeDisciplina,
-            @RequestParam(value = "status-disciplina", required = false) StatusDisciplina statusDisciplina,
-            @RequestParam(value = "status-solicitacao", required = false) StatusSolicitacao statusSolicitacao,
+            @RequestParam(value = "nomeAluno", required = false) String nomeAluno,
+            @RequestParam(value = "disciplinaId", required = false) Long disciplinaId,
+            @RequestParam(value = "statusDisciplina", required = false) StatusDisciplina statusDisciplina,
+            @RequestParam(value = "statusSolicitacao", required = false) StatusSolicitacao statusSolicitacao,
             @RequestParam(value = "efetivado", required = false) Boolean efetivado,
             @RequestParam(value = "semestre", required = false) Integer semestre,
             @RequestParam(value = "ano", required = false) Integer ano) {
         return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, nomeAluno,
-                nomeDisciplina, statusSolicitacao, statusDisciplina, efetivado, semestre, ano));
+                disciplinaId, statusSolicitacao, statusDisciplina, efetivado, semestre, ano));
     }
 
     @DeleteMapping("/{id}")
@@ -88,21 +88,12 @@ public class MatriculaController implements MatriculaControllerDocs {
         return ResponseEntity.ok(service.efetivarHistorico(id));
     }
 
-    @PatchMapping("/{id}/acrescentaFaltas")
+    @PatchMapping("/{id}/faltas")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<Void> acrescentaFaltas(@PathVariable("id") Long id,
+    public ResponseEntity<Void> modificaFaltas(@PathVariable("id") Long id,
                                                                   @RequestParam(value = "faltas") int faltas) {
-        service.acrescentaFaltas(id, faltas);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PatchMapping("/{id}/decrementaFaltas")
-    @Override
-    @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<Void> decrementaFaltas(@PathVariable("id") Long id,
-                                                  @RequestParam(value = "faltas") int faltas) {
-        service.decrementaFaltas(id, faltas);
+        service.modificaFaltas(id, faltas);
         return ResponseEntity.noContent().build();
     }
 

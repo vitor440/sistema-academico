@@ -50,11 +50,11 @@ public interface MatriculaControllerDocs extends GenericController {
     ResponseEntity<Page<MatriculaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(value = "nome-aluno", required = false) String nomeAluno,
-            @RequestParam(value = "nome-disciplina", required = false) String nomeDisciplina,
-            @RequestParam(value = "status-disciplina", required = false) StatusDisciplina statusDisciplina,
-            @RequestParam(value = "status-solicitacao", required = false) StatusSolicitacao statusSolicitacao,
+            @RequestParam(value = "sortDirection", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nomeAluno", required = false) String nomeAluno,
+            @RequestParam(value = "disciplinaId", required = false) Long disciplinaId,
+            @RequestParam(value = "statusDisciplina", required = false) StatusDisciplina statusDisciplina,
+            @RequestParam(value = "statusSolicitacao", required = false) StatusSolicitacao statusSolicitacao,
             @RequestParam(value = "efetivado", required = false) Boolean efetivado,
             @RequestParam(value = "semestre", required = false) Integer semestre,
             @RequestParam(value = "ano", required = false) Integer ano);
@@ -75,10 +75,8 @@ public interface MatriculaControllerDocs extends GenericController {
 
     ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id);
 
-    ResponseEntity<Void> acrescentaFaltas(@PathVariable("id") Long id, @RequestParam(value = "faltas") int faltas);
-
-    ResponseEntity<Void> decrementaFaltas(@PathVariable("id") Long id, @RequestParam(value = "faltas") int faltas);
-
+    ResponseEntity<Void> modificaFaltas(@PathVariable("id") Long id,
+                                               @RequestParam(value = "faltas") int faltas);
 
     ResponseEntity<Long> matriculaCount();
 }

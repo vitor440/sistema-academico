@@ -1,5 +1,7 @@
 package com.sistema_escolar.sistema.escolar.repository.specs;
 
+import com.sistema_escolar.sistema.escolar.model.Aluno;
+import com.sistema_escolar.sistema.escolar.model.Docente;
 import com.sistema_escolar.sistema.escolar.model.Matricula;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
@@ -8,6 +10,18 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class MatriculaSpecs {
 
+    public static Specification<Matricula> findByAluno(Aluno aluno) {
+        return (root, query, cb) ->
+                cb.equal(root.get("aluno"), aluno);
+    }
+
+    public static Specification<Matricula> findByDocente(Docente docente) {
+        return (root, query, cb) -> {
+            Join<Object, Object> disciplina = root.join("disciplina");
+            return cb.equal(disciplina.get("docente"), docente);
+        };
+    }
+
     public static Specification<Matricula> findByNomeAluno(String nome) {
         return (root, query, cb) -> {
             Join<Object, Object> aluno = root.join("aluno");
@@ -15,10 +29,10 @@ public class MatriculaSpecs {
         };
     }
 
-    public static Specification<Matricula> findByNomeDisciplina(String nome) {
+    public static Specification<Matricula> findByDisciplinaId(Long disciplinaId) {
         return (root, query, cb) -> {
             Join<Object, Object> disciplina = root.join("disciplina");
-            return cb.like(cb.upper(disciplina.get("nome")), "%" + nome.toUpperCase() + "%");
+            return cb.equal(disciplina.get("id"), disciplinaId);
         };
     }
 

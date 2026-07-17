@@ -5,6 +5,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.ExameMapper;
 import com.sistema_escolar.sistema.escolar.model.*;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
 import com.sistema_escolar.sistema.escolar.repository.specs.ExameSpecs;
@@ -22,6 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.time.LocalDate;
 
 @Service
@@ -43,6 +45,7 @@ public class ExameServiceImpl implements ExameService {
         exame.setDisciplina(disciplina);
 
         validator.validar(exame);
+        exame.setStatus(StatusExame.PENDENTE);
         return mapper.toDTO(repository.save(exame));
     }
 
@@ -77,14 +80,37 @@ public class ExameServiceImpl implements ExameService {
 
     @Override
     @Transactional
-    public Page<ExameResponseDTO> listar(int pagina, int tamanho, String sortDirection, LocalDate data) {
+    public Page<ExameResponseDTO> listar(int pagina, int tamanho,
+                                         String sortDirection,
+                                         LocalDate data,
+                                         Integer semestre,
+                                         Integer ano,
+                                         Long disciplinaId,
+                                         StatusExame status) {
+
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
         Specification<Exame> specs = (root, query, cb) -> cb.conjunction();
 
-//        if(data != null) {
-//            specs = specs.and(ExameSpecs.greaterThanData(data))
-//        }
+        if(data != null) {
+            specs = specs.and(ExameSpecs.greaterThanData(data));
+        }
+
+        if(semestre != null) {
+            specs = specs.and(ExameSpecs.findBySemestre(semestre));
+        }
+
+        if(ano != null) {
+            specs = specs.and(ExameSpecs.findByAno(ano));
+        }
+
+        if(disciplinaId != null) {
+            specs = specs.and(ExameSpecs.findByDisciplinaId(disciplinaId));
+        }
+
+        if(status != null) {
+            specs = specs.and(ExameSpecs.findByStatus(status));
+        }
 
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
@@ -95,11 +121,10 @@ public class ExameServiceImpl implements ExameService {
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {
             Docente docente = usuarioLogado.getDocente();
-            return repository.obterExamesDoDocente(docente, pageable, specs).map(mapper::toDTO);
+            specs = specs.and(ExameSpecs.findByDocente(docente));
         }
-        else {
+
             return repository.findAll(specs, pageable).map(mapper::toDTO);
-        }
 
     }
 
@@ -112,6 +137,15 @@ public class ExameServiceImpl implements ExameService {
 
         validator.validaDelecao(exame);
         repository.delete(exame);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatusExame(Long id, StatusExame status) {
+        Docente docente = usuarioService.getUsuarioLogado().getDocente();
+        validator.validarDocenteLogado(docente);
+        Exame exame = getExame(id);
+        exame.setStatus(status);
     }
 
     @Override

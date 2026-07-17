@@ -31,7 +31,7 @@ public class AuthController implements AuthControllerDocs {
 
     @GetMapping
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Page<UsuarioResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,

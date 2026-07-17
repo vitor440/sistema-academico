@@ -65,7 +65,10 @@ public interface DisciplinaControllerDocs extends GenericController {
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(value = "nome", required = false) String nome);
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "docente-id", required = false) Long docenteId,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano);
 
 
     @Operation(summary = "deletar disciplina", description = "Deleta uma disciplina pelo ID.")

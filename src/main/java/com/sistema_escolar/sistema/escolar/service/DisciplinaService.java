@@ -17,7 +17,7 @@ public interface DisciplinaService {
 
     DisciplinaResponseDTO obterPeloId(Long id);
 
-    Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome);
+    Page<DisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection, String nome, Long docenteId, Integer semestre, Integer ano);
 
     void deletarPeloId(Long id);
 

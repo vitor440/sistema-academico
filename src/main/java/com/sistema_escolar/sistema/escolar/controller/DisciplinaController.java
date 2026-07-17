@@ -51,8 +51,11 @@ public class DisciplinaController implements DisciplinaControllerDocs {
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(value = "nome", required = false) String nome) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, nome));
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "docenteId", required = false) Long docenteId,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, nome, docenteId, semestre, ano));
     }
 
 

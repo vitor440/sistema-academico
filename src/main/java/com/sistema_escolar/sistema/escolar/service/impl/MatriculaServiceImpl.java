@@ -78,7 +78,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public Page<MatriculaResponseDTO> listar(int pagina, int tamanho, String sortDirection,
                                              String nomeAluno,
-                                             String nomeDisciplina,
+                                             Long disciplinaId,
                                              StatusSolicitacao statusSolicitacao,
                                              StatusDisciplina statusDisciplina,
                                              Boolean efetivado,
@@ -89,23 +89,22 @@ public class MatriculaServiceImpl implements MatriculaService {
 
         Specification<Matricula> specs = (root, query, cb) -> cb.conjunction();
 
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+        if (usuarioLogado.getRoles().contains("ALUNO")) {
+            specs = specs.and(MatriculaSpecs.findByAluno(usuarioLogado.getAluno()));
+        }
+
+        if (usuarioLogado.getRoles().contains("DOCENTE")) {
+            specs = specs.and(MatriculaSpecs.findByDocente(usuarioLogado.getDocente()));
+        }
+
         if (nomeAluno != null) specs = specs.and(MatriculaSpecs.findByNomeAluno(nomeAluno));
-        if (nomeDisciplina != null) specs = specs.and(MatriculaSpecs.findByNomeDisciplina(nomeDisciplina));
+        if (disciplinaId != null) specs = specs.and(MatriculaSpecs.findByDisciplinaId(disciplinaId));
         if (statusSolicitacao != null) specs = specs.and(MatriculaSpecs.findByStatusSolicitacao(statusSolicitacao));
         if (statusDisciplina != null) specs = specs.and(MatriculaSpecs.findByStatusDisciplina(statusDisciplina));
         if (efetivado != null) specs = specs.and(MatriculaSpecs.findByEfetivado(efetivado));
         if (semestre != null) specs = specs.and(MatriculaSpecs.findBySemestre(semestre));
         if (ano != null) specs = specs.and(MatriculaSpecs.findByAno(ano));
-
-
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
-        if (usuarioLogado.getRoles().contains("ALUNO")) {
-            return matriculaRepository.findByAluno(usuarioLogado.getAluno(), pageable, specs).map(mapper::toDTO);
-        }
-
-        if (usuarioLogado.getRoles().contains("DOCENTE")) {
-            return matriculaRepository.obterMatriculasDocente(usuarioLogado.getDocente(), pageable, specs).map(mapper::toDTO);
-        }
 
         return matriculaRepository.findAll(specs, pageable).map(mapper::toDTO);
     }
@@ -146,30 +145,23 @@ public class MatriculaServiceImpl implements MatriculaService {
     }
 
     @Override
-    public void acrescentaFaltas(Long id, int x) {
+    public void modificaFaltas(Long id, Integer faltas) {
         Matricula matricula = getMatricula(id);
         validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
-        matricula.setFaltas(matricula.getFaltas() + x);
-        matriculaRepository.save(matricula);
-    }
 
-    @Override
-    public void decrementaFaltas(Long id, int x) {
-        Matricula matricula = getMatricula(id);
-        validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
-        matricula.setFaltas(matricula.getFaltas() - x);
-
-        if (matricula.getFaltas() < 0)  {
+        if (faltas < 0)  {
             throw new RuntimeException("faltas menor que 0");
         }
-        matriculaRepository.save(matricula);
 
+        matricula.setFaltas(faltas);
+        matriculaRepository.save(matricula);
     }
 
     @Override
     public Long countMatriculas() {
         return matriculaRepository.count();
     }
+
 
     @Override
     public Matricula getMatricula(Long id) {
