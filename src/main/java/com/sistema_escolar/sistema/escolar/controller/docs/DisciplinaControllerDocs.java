@@ -79,8 +79,4 @@ public interface DisciplinaControllerDocs extends GenericController {
                     content = @Content(schema = @Schema(implementation = ErroResposta.class)))
     })
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
-
-    ResponseEntity<Long> disciplinaCount();
-
-    ResponseEntity<List<DisciplinaResponseDTO>> topCincoDisciplinas();
 }

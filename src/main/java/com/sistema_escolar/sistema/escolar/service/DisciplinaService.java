@@ -11,8 +11,6 @@ public interface DisciplinaService {
 
     DisciplinaResponseDTO salvar(DisciplinaRequestDTO requestDTO);
 
-    void salvarEntidade(Disciplina disciplina);
-
     DisciplinaResponseDTO atualizar(Long id, DisciplinaRequestDTO requestDTO);
 
     DisciplinaResponseDTO obterPeloId(Long id);
@@ -22,8 +20,4 @@ public interface DisciplinaService {
     void deletarPeloId(Long id);
 
     Disciplina getDisciplina(Long id);
-
-    Long countDisciplina();
-
-    List<DisciplinaResponseDTO> topCincoDisciplinas();
 }

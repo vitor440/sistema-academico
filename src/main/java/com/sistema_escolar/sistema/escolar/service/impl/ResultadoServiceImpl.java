@@ -49,6 +49,7 @@ public class ResultadoServiceImpl implements ResultadoService {
         Docente docente = exame.getDisciplina().getDocente();
         validator.validarDocenteLogado(docente);
         resultado.setExame(exame);
+        resultado.setPeso(exame.getPeso());
 
         resultado.setMatricula(matricula);
         validator.validar(resultado);
@@ -97,17 +98,13 @@ public class ResultadoServiceImpl implements ResultadoService {
     }
 
     @Override
-    public Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection, LocalDate data, Integer semestre, Integer ano, Long exameId) {
+    public Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection, Integer semestre, Integer ano, Long exameId) {
 
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nota");
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         Specification<Resultado> specs = (root, query, cb) -> cb.conjunction();
-
-        if(data != null) {
-            specs = specs.and(ResultadoSpecs.greaterThanData(data));
-        }
 
         if(semestre != null) {
             specs = specs.and(ResultadoSpecs.findBySemestre(semestre));

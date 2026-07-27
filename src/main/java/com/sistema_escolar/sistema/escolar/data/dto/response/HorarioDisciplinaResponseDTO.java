@@ -13,6 +13,8 @@ public class HorarioDisciplinaResponseDTO {
 
     private Long id;
 
+    private String disciplina;
+
     private LocalTime horario;
 
     private DiasSemana diaSemana;
@@ -20,7 +22,5 @@ public class HorarioDisciplinaResponseDTO {
     private Periodo periodo;
 
     private Long disciplinaId;
-
-    private List<HorarioDisciplinaResponseDTO> horarios;
 
 }

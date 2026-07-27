@@ -104,7 +104,7 @@ public class Matricula {
 
     public void addResultado(Resultado resultado) {
         if(this.getResultados() == null) {
-            this.setResultados(List.of());
+            this.resultados = new ArrayList<>();
         }
 
         this.getResultados().add(resultado);

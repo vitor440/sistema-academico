@@ -16,7 +16,7 @@ public interface HorarioDisciplinaService {
 
     HorarioDisciplinaResponseDTO obterPeloId(Long id);
 
-    Page<HorarioDisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<HorarioDisciplinaResponseDTO> listar(int pagina, int tamanho, String sortDirection, Integer semestre, Integer ano);
 
     void deletarPeloId(Long id);
 
@@ -24,5 +24,5 @@ public interface HorarioDisciplinaService {
 
     Page<HorarioDisciplinaResponseDTO> obterHorariosPeloIdDaDisciplina(Long id, int pagina, int tamanho, String sortDirection);
 
-    Page<HorarioDisciplinaResponseDTO> obterHorariosAlunoPeloSemestreEAno(Long alunoId, Integer semestre, Integer ano, Integer pagina, Integer tamanho, String sortDirection);
+
 }

@@ -67,16 +67,4 @@ public class DisciplinaController implements DisciplinaControllerDocs {
         service.deletarPeloId(id);
         return ResponseEntity.noContent().build();
     }
-
-    @Override
-    @GetMapping("/count")
-    public ResponseEntity<Long> disciplinaCount() {
-        return ResponseEntity.ok(service.countDisciplina());
-    }
-
-    @GetMapping("/topDisciplinas")
-    @Override
-    public ResponseEntity<List<DisciplinaResponseDTO>> topCincoDisciplinas() {
-        return ResponseEntity.ok(service.topCincoDisciplinas());
-    }
 }

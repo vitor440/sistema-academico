@@ -4,6 +4,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.ExameRequestDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.Exame;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
+import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public interface ExameService {
     ExameResponseDTO obterPeloId(Long id);
 
     Page<ExameResponseDTO> listar(int pagina, int tamanho, String sortDirection, LocalDate data, Integer semestre, Integer ano, Long disciplinaId,
-                                  StatusExame status);
+                                  TipoExame tipo, StatusExame status);
 
     void deletarPeloId(Long id);
 

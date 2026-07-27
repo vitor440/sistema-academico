@@ -6,6 +6,7 @@ import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoExcept
 import com.sistema_escolar.sistema.escolar.mapper.ExameMapper;
 import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
+import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import com.sistema_escolar.sistema.escolar.repository.ExameRepository;
 import com.sistema_escolar.sistema.escolar.repository.MatriculaRepository;
 import com.sistema_escolar.sistema.escolar.repository.specs.ExameSpecs;
@@ -86,10 +87,11 @@ public class ExameServiceImpl implements ExameService {
                                          Integer semestre,
                                          Integer ano,
                                          Long disciplinaId,
+                                         TipoExame tipo,
                                          StatusExame status) {
 
         Sort.Direction direction = sortDirection.equalsIgnoreCase("ASC")? Sort.Direction.ASC: Sort.Direction.DESC;
-        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "nome");
+        Pageable pageable = PageRequest.of(pagina, tamanho, direction, "data");
         Specification<Exame> specs = (root, query, cb) -> cb.conjunction();
 
         if(data != null) {
@@ -112,11 +114,16 @@ public class ExameServiceImpl implements ExameService {
             specs = specs.and(ExameSpecs.findByStatus(status));
         }
 
+        if(tipo != null) {
+            specs = specs.and(ExameSpecs.findByTipo(tipo));
+        }
+
         Usuario usuarioLogado = usuarioService.getUsuarioLogado();
 
         if (usuarioLogado.getRoles().contains("ALUNO")) {
             Aluno aluno = usuarioLogado.getAluno();
-            return repository.obterExamesDeAluno(aluno, pageable, specs).map(mapper::toDTO);
+//            return repository.obterExamesDeAluno(aluno, pageable, specs).map(mapper::toDTO);
+            specs = specs.and(ExameSpecs.findByAluno(aluno));
         }
 
         if (usuarioLogado.getRoles().contains("DOCENTE")) {

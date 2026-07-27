@@ -2,6 +2,7 @@ package com.sistema_escolar.sistema.escolar.repository.specs;
 
 import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
+import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 public class ExameSpecs {
 
     public static Specification<Exame> greaterThanData(LocalDate data) {
-        return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("dataCriacao"), data);
+        return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("data"), data);
     }
 
     public static Specification<Exame> findBySemestre(Integer semestre) {
@@ -40,5 +41,18 @@ public class ExameSpecs {
             Join<Object, Object> disciplina = root.join("disciplina");
             return cb.equal(disciplina.get("docente"), docente);
         };
+    }
+
+    public static Specification<Exame> findByAluno(Aluno aluno) {
+        return (root, query, cb) -> {
+            Join<Object, Object> disciplina = root.join("disciplina");
+            Join<Object, Object> matricula = disciplina.join("matriculas");
+            return cb.equal(matricula.get("aluno"), aluno);
+        };
+    }
+
+    public static Specification<Exame> findByTipo(TipoExame tipo) {
+        return (root, query, cb) ->
+                cb.equal(root.get("tipo"), tipo);
     }
 }

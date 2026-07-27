@@ -9,6 +9,8 @@ public class ResultadoResponseDTO {
 
     private Long exameId;
 
+    private Integer peso;
+
     private Long matriculaId;
 
     private Double nota;

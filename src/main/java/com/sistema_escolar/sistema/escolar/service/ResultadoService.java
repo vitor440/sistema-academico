@@ -21,7 +21,7 @@ public interface ResultadoService {
 
     ResultadoResponseDTO obterResultadoPeloId(Long id);
 
-    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection,  LocalDate data, Integer semestre, Integer ano, Long disciplinaId);
+    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection, Integer semestre, Integer ano, Long disciplinaId);
 
     Page<ResultadoResponseDTO> listarPeloIdDaMatricula(Long id, int pagina, int tamanho, String sortDirection);
 

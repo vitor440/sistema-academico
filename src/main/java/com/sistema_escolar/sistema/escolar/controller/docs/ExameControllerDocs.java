@@ -7,6 +7,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.response.AlunoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.DepartamentoResponseDTO;
 import com.sistema_escolar.sistema.escolar.data.dto.response.ExameResponseDTO;
 import com.sistema_escolar.sistema.escolar.model.enums.StatusExame;
+import com.sistema_escolar.sistema.escolar.model.enums.TipoExame;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -72,6 +73,7 @@ public interface ExameControllerDocs extends GenericController {
             @RequestParam(value = "semestre", required = false) Integer semestre,
             @RequestParam(value = "ano", required = false) Integer ano,
             @RequestParam(value = "disciplinaId", required = false) Long disciplinaId,
+            @RequestParam(value = "tipo", required = false) TipoExame tipo,
             @RequestParam(value = "status", required = false) StatusExame status);
 
 

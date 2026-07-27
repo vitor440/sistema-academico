@@ -76,7 +76,6 @@ public interface ResultadoControllerDocs extends GenericController {
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(value = "data", required = false) LocalDate data,
             @RequestParam(value = "semestre", required = false) Integer semestre,
             @RequestParam(value = "ano", required = false) Integer ano,
             @RequestParam(value = "disciplinaId", required = false) Long disciplinaId);

@@ -28,8 +28,17 @@ public class Resultado {
     @ManyToOne
     private Exame exame;
 
+    @Column(name = "peso")
+    private Integer peso;
+
     @Column(name = "nota")
     private Double nota;
+
+    @Column(name = "semestre")
+    private int semestre;
+
+    @Column(name = "ano")
+    private int ano;
 
     @Column(name = "data_criacao")
     @CreatedDate

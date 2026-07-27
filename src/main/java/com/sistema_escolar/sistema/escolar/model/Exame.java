@@ -45,6 +45,12 @@ public class Exame {
     @Column(name = "peso")
     private int peso;
 
+    @Column(name = "semestre")
+    private int semestre;
+
+    @Column(name = "ano")
+    private int ano;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private StatusExame status;

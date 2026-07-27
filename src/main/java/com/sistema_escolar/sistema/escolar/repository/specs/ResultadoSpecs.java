@@ -8,10 +8,6 @@ import java.time.LocalDate;
 
 public class ResultadoSpecs {
 
-    public static Specification<Resultado> greaterThanData(LocalDate data) {
-        return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("dataCriacao"), data);
-    }
-
     public static Specification<Resultado> findBySemestre(Integer semestre) {
         return (root, query, cb) ->
                 cb.equal(root.get("semestre"), semestre);

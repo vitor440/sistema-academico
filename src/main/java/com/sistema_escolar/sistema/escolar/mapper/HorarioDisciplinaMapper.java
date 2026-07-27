@@ -12,5 +12,6 @@ public interface HorarioDisciplinaMapper {
     HorarioDisciplina toEntity(HorarioDisciplinaRequestDTO requestDTO);
 
     @Mapping(target = "disciplinaId", expression = "java( horarioDisciplina.getDisciplina().getId() )")
+    @Mapping(target = "disciplina", expression = "java( horarioDisciplina.getDisciplina().getNome() )")
     HorarioDisciplinaResponseDTO toDTO(HorarioDisciplina horarioDisciplina);
 }

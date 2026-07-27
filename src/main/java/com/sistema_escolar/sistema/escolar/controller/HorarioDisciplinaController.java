@@ -50,8 +50,10 @@ public class HorarioDisciplinaController implements HorarioDisciplinaControllerD
     public ResponseEntity<Page<HorarioDisciplinaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+            @RequestParam(value = "sortDirection", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, semestre, ano));
     }
 
 
@@ -73,11 +75,6 @@ public class HorarioDisciplinaController implements HorarioDisciplinaControllerD
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
         return ResponseEntity.ok(service.obterHorariosPeloIdDaDisciplina(id, pagina, tamanho, sortDirection));
-    }
-
-    @Override
-    public ResponseEntity<Page<HorarioDisciplinaResponseDTO>> obterHorarioAlunoPeloSemestreEAno(Long alunoId, Integer semestre, Integer ano, int pagina, int tamanho, String sortDirection) {
-        return ResponseEntity.ok(service.obterHorariosAlunoPeloSemestreEAno(alunoId, semestre, ano, pagina, tamanho, sortDirection));
     }
 
 

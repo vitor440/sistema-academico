@@ -25,7 +25,9 @@ public interface HorarioDisciplinaControllerDocs extends GenericController {
     ResponseEntity<Page<HorarioDisciplinaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano);
 
 
     ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id);
@@ -37,11 +39,5 @@ public interface HorarioDisciplinaControllerDocs extends GenericController {
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
             @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
 
-    ResponseEntity<Page<HorarioDisciplinaResponseDTO>> obterHorarioAlunoPeloSemestreEAno(
-            @RequestParam(value = "aluno-id") Long alunoId,
-            @RequestParam(value = "semestre") Integer semestre,
-            @RequestParam(value = "ano") Integer ano,
-            @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
-            @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+
 }

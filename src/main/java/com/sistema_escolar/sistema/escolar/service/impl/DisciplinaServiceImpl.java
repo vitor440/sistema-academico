@@ -4,10 +4,7 @@ import com.sistema_escolar.sistema.escolar.data.dto.request.DisciplinaRequestDTO
 import com.sistema_escolar.sistema.escolar.data.dto.response.DisciplinaResponseDTO;
 import com.sistema_escolar.sistema.escolar.exception.RegistroNaoEncontradoException;
 import com.sistema_escolar.sistema.escolar.mapper.DisciplinaMapper;
-import com.sistema_escolar.sistema.escolar.model.Departamento;
-import com.sistema_escolar.sistema.escolar.model.Disciplina;
-import com.sistema_escolar.sistema.escolar.model.Docente;
-import com.sistema_escolar.sistema.escolar.model.Usuario;
+import com.sistema_escolar.sistema.escolar.model.*;
 import com.sistema_escolar.sistema.escolar.repository.DisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.specs.DisciplinaSpecs;
 import com.sistema_escolar.sistema.escolar.service.DepartamentoService;
@@ -34,7 +31,6 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     private final DocenteService docenteService;
     private final DepartamentoService departamentoService;
     private final DisciplinaValidator validator;
-    private final UsuarioService usuarioService;
 
     @Override
     public DisciplinaResponseDTO salvar(DisciplinaRequestDTO requestDTO) {
@@ -44,14 +40,14 @@ public class DisciplinaServiceImpl implements DisciplinaService {
         disciplina.setDepartamento(departamento);
         disciplina.setDocente(docente);
 
+        if(disciplina.getHorarios() != null && !disciplina.getHorarios().isEmpty()) {
+            for (HorarioDisciplina horario : disciplina.getHorarios()) {
+                horario.setDisciplina(disciplina);
+            }
+        }
+
         validator.validar(disciplina);
         return mapper.toDTO(repository.save(disciplina));
-    }
-
-    @Override
-    public void salvarEntidade(Disciplina disciplina) {
-        validator.validar(disciplina);
-        repository.save(disciplina);
     }
 
     @Override
@@ -99,16 +95,5 @@ public class DisciplinaServiceImpl implements DisciplinaService {
     public Disciplina getDisciplina(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Disciplina não encontrada!"));
-    }
-
-    @Override
-    public Long countDisciplina() {
-        return repository.count();
-    }
-
-    @Override
-    public List<DisciplinaResponseDTO> topCincoDisciplinas() {
-        Long docenteId = usuarioService.getUsuarioLogado().getDocente().getId();
-        return repository.topCincoDisciplinas(docenteId).stream().map(mapper::toDTO).toList();
     }
 }

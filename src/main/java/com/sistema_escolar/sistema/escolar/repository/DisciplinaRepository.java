@@ -17,7 +17,4 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Long>, J
     boolean existsByDepartamento(Departamento departamento);
 
     boolean existsByDocente(Docente docente);
-
-    @Query(" SELECT d from Disciplina d WHERE d.docente.id = :docenteId ORDER BY d.alunosMatriculados DESC LIMIT 5 ")
-    List<Disciplina> topCincoDisciplinas(Long docenteId);
 }

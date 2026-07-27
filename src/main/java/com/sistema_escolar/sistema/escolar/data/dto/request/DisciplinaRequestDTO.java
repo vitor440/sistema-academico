@@ -6,6 +6,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class DisciplinaRequestDTO {
 
@@ -30,4 +32,6 @@ public class DisciplinaRequestDTO {
 
     @NotNull(message = "campo obrigatório!")
     private Long docenteId;
+
+    private List<HorarioDisciplinaRequestDTO> horarios;
 }

@@ -27,8 +27,6 @@ public interface HorarioDisciplinaRepository extends JpaRepository<HorarioDiscip
     @Query(" SELECT h FROM HorarioDisciplina h JOIN Matricula m ON h.disciplina = m.disciplina WHERE m.aluno = :aluno ")
     Page<HorarioDisciplina> obterHorariosDoAlunoPaginado(Aluno aluno, Pageable pageable);
 
-    @Query(" SELECT h FROM HorarioDisciplina h JOIN Matricula m ON h.disciplina = m.disciplina WHERE m.aluno.id = :alunoId AND m.semestre = :semestre AND m.ano = :ano")
-    Page<HorarioDisciplina> obterHorariosAlunoPorSemestreEAno(Long alunoId, Integer semestre, Integer ano, Pageable pageable);
 
     @Query(" SELECT h FROM HorarioDisciplina h JOIN Disciplina d ON h.disciplina.id = d.id WHERE d.docente = :docente ")
     Page<HorarioDisciplina> obterHorariosDoDocente(Docente docente, Pageable pageable);
