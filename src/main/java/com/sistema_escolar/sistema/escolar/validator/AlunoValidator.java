@@ -33,9 +33,9 @@ public class AlunoValidator {
         return alunoOpt.map(Aluno::getId).stream().anyMatch(id -> !id.equals(aluno.getId()));
     }
 
-    public void validaDelecao(Aluno aluno) {
-        if (matriculaRepository.existsByAluno(aluno)) {
-            throw new RuntimeException("Deleção não permitida!");
-        }
-    }
+//    public void validaDelecao(Aluno aluno) {
+//        if (matriculaRepository.existsByAluno(aluno)) {
+//            throw new RuntimeException("Deleção não permitida!");
+//        }
+//    }
 }

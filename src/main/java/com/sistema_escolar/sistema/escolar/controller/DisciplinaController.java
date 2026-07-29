@@ -50,7 +50,7 @@ public class DisciplinaController implements DisciplinaControllerDocs {
     public ResponseEntity<Page<DisciplinaResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "sortDirection", required = false, defaultValue = "DESC") String sortDirection,
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "docenteId", required = false) Long docenteId,
             @RequestParam(value = "semestre", required = false) Integer semestre,

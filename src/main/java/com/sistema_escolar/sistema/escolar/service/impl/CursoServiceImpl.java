@@ -38,6 +38,7 @@ public class CursoServiceImpl implements CursoService {
         Curso curso = mapper.toEntity(requestDTO);
         Departamento departamento = departamentoService.getDepartamento(requestDTO.getDepartamentoId());
         curso.setDepartamento(departamento);
+        curso.setQuantidadeAlunos(0);
 
         validator.validar(curso);
         return mapper.toDTO(repository.save(curso));
@@ -49,7 +50,6 @@ public class CursoServiceImpl implements CursoService {
         curso.setNome(requestDTO.getNome());
         curso.setArea(requestDTO.getArea());
         curso.setPeriodo(requestDTO.getPeriodo());
-        curso.setQuantidadeAlunos(requestDTO.getQuantidadeAlunos());
         curso.setQuantidadePeriodos(requestDTO.getQuantidadePeriodos());
         Departamento departamento = departamentoService.getDepartamento(requestDTO.getDepartamentoId());
         curso.setDepartamento(departamento);

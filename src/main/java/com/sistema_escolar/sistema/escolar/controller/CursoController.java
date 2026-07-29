@@ -53,10 +53,10 @@ public class CursoController implements CursoControllerDocs {
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "area", required = false) Areas area,
             @RequestParam(value = "periodo", required = false) Periodo periodo,
-            @RequestParam(value = "quantidade-periodos", required = false) Integer quantidadePeriodos,
+            @RequestParam(value = "quantidadePeriodos", required = false) Integer quantidadePeriodos,
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
+            @RequestParam(value = "sortDirection", required = false, defaultValue = "DESC") String sortDirection) {
         Page<CursoResponseDTO> response = service.listar(nome, area, periodo, quantidadePeriodos, pagina, tamanho, sortDirection);
         return ResponseEntity.ok(response);
     }

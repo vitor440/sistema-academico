@@ -56,7 +56,7 @@ public class Aluno {
     @LastModifiedDate
     private LocalDateTime dataAtualizacao;
 
-    @OneToMany(mappedBy = "aluno")
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.REMOVE)
     private List<Matricula> matriculas;
 
 

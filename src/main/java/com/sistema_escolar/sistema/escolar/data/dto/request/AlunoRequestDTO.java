@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 public class AlunoRequestDTO {
 
-    @NotBlank(message = "campo obrigatório!")
+
     @Size(min = 10, max = 30, message = "matrícula deve ter entre 10 à 30 dígitos")
     private String matricula;
 
@@ -33,7 +33,7 @@ public class AlunoRequestDTO {
     @Size(min = 8, max = 80, message = "telefone deve ter entre 8 à 80 dígitos")
     private String telefone;
 
-    @NotBlank(message = "campo obrigatório!")
+
     private String senha;
 
     @NotNull(message = "campo obrigatório!")

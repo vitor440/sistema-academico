@@ -29,7 +29,7 @@ public class DocenteRequestDTO {
     @Size(min = 8, max = 300, message = "telefone deve ter entre 8 à 80 dígitos")
     private String telefone;
 
-    @NotBlank(message = "campo obrigatório!")
+
     @Size(min = 4, max = 80, message = "senha deve ter entre 4 à 80 dígitos")
     private String senha;
 

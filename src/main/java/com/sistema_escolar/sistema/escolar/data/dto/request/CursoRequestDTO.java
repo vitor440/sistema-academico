@@ -15,9 +15,9 @@ public class CursoRequestDTO {
     @NotNull(message = "campo obrigatório!")
     private Areas area;
 
-    @NotNull(message = "campo obrigatório!")
-    @PositiveOrZero
-    private int quantidadeAlunos;
+//    @NotNull(message = "campo obrigatório!")
+//    @PositiveOrZero
+//    private int quantidadeAlunos;
 
     @NotNull(message = "campo obrigatório!")
     private Periodo periodo;

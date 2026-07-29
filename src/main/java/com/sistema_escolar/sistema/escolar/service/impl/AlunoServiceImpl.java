@@ -50,27 +50,36 @@ public class AlunoServiceImpl implements AlunoService {
         Curso curso = cursoService.getCurso(requestDTO.getCursoId());
         aluno.setUsuario(usuario); // associa usuário à aluno.
         aluno.setCurso(curso);
+        curso.setQuantidadeAlunos(curso.getQuantidadeAlunos() + 1);
 
         validator.validar(aluno);
         return mapper.toDTO(repository.save(aluno)); // salva aluno.
     }
 
     @Override
+    @Transactional
     public AlunoResponseDTO atualizar(Long id, AlunoRequestDTO requestDTO) {
         Aluno aluno = getAluno(id);
         Usuario usuario = aluno.getUsuario();
 
         usuario.setEmail(requestDTO.getEmail());
         usuario.setUsername(requestDTO.getNome());
-        usuario.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
+
+        if(requestDTO.getSenha() != null) usuario.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
 
         aluno.setCpf(requestDTO.getCpf());
         aluno.setNome(requestDTO.getNome());
         aluno.setEmail(requestDTO.getEmail());
-        aluno.setMatricula(requestDTO.getMatricula());
         aluno.setTelefone(requestDTO.getTelefone());
         aluno.setDataNascimento(requestDTO.getDataNascimento());
-        aluno.setCurso(cursoService.getCurso(requestDTO.getCursoId()));
+
+        Curso curso = cursoService.getCurso(requestDTO.getCursoId());
+        if(!curso.equals(aluno.getCurso())) {
+            Curso cursoAntigo = aluno.getCurso();
+            cursoAntigo.setQuantidadeAlunos(curso.getQuantidadeAlunos() - 1);
+            curso.setQuantidadeAlunos(curso.getQuantidadeAlunos() + 1);
+        }
+        aluno.setCurso(curso);
 
         validator.validar(aluno);
         return mapper.toDTO(repository.save(aluno));
@@ -96,9 +105,12 @@ public class AlunoServiceImpl implements AlunoService {
     }
 
     @Override
+    @Transactional
     public void deletarPeloId(Long id) {
         Aluno aluno = getAluno(id);
-        validator.validaDelecao(aluno);
+//        validator.validaDelecao(aluno);
+        Curso curso = aluno.getCurso();
+        curso.setQuantidadeAlunos(curso.getQuantidadeAlunos() - 1);
         repository.delete(aluno);
     }
 

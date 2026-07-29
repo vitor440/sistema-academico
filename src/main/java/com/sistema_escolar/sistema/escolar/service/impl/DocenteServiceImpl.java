@@ -62,7 +62,7 @@ public class DocenteServiceImpl implements DocenteService {
         Usuario usuario = docente.getUsuario();
         usuario.setEmail(requestDTO.getEmail());
         usuario.setUsername(requestDTO.getNome());
-        usuario.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
+        if(requestDTO.getSenha() != null) usuario.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
 
 
         docente.setCpf(requestDTO.getCpf());
@@ -102,7 +102,8 @@ public class DocenteServiceImpl implements DocenteService {
 
         usuarioLogado.setEmail(requestDTO.getEmail());
         usuarioLogado.setUsername(requestDTO.getNome());
-        usuarioLogado.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
+        if (requestDTO.getSenha() != null)  usuarioLogado.setSenha(usuarioService.encriptaSenha(requestDTO.getSenha()));
+
 
         Docente docente = repository.findByUsuario(usuarioLogado)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado!"));
