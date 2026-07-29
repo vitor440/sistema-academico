@@ -13,5 +13,7 @@ public interface DisciplinaMapper {
 
     @Mapping(target = "departamentoId", expression = "java( disciplina.getDepartamento().getId() )")
     @Mapping(target = "docenteId", expression = "java( disciplina.getDocente().getId() )")
+    @Mapping(target = "departamento", expression = "java( disciplina.getDepartamento().getNome() )")
+    @Mapping(target = "docente", expression = "java( disciplina.getDocente().getNome() )")
     DisciplinaResponseDTO toDTO(Disciplina disciplina);
 }

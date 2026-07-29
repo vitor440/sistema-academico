@@ -10,6 +10,7 @@ import com.sistema_escolar.sistema.escolar.model.Aluno;
 import com.sistema_escolar.sistema.escolar.model.Disciplina;
 import com.sistema_escolar.sistema.escolar.model.HorarioDisciplina;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
+import com.sistema_escolar.sistema.escolar.model.enums.Periodo;
 import com.sistema_escolar.sistema.escolar.repository.DisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.HorarioDisciplinaRepository;
 import com.sistema_escolar.sistema.escolar.repository.specs.HorarioDisciplinaSpecs;
@@ -23,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +44,7 @@ public class HorarioDisciplinaImpl implements HorarioDisciplinaService {
         HorarioDisciplina horarioDisciplina = mapper.toEntity(requestDTO);
         horarioDisciplina.setDisciplina(disciplina);
         disciplina.getHorarios().add(horarioDisciplina);
+
 
         return disciplinaMapper.toDTO(disciplinaRepository.save(disciplina));
     }

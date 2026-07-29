@@ -21,10 +21,6 @@ public class DisciplinaRequestDTO {
 
     @NotNull(message = "campo obrigatório!")
     @PositiveOrZero
-    private Integer alunosMatriculados;
-
-    @NotNull(message = "campo obrigatório!")
-    @PositiveOrZero
     private Integer vagas;
 
     @NotNull(message = "campo obrigatório!")

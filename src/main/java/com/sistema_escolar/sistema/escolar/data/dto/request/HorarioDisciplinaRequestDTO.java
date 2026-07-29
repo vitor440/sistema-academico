@@ -16,6 +16,5 @@ public class HorarioDisciplinaRequestDTO {
     @NotNull(message = "campo obrigatório!")
     private DiasSemana diaSemana;
 
-    @NotNull(message = "campo obrigatório!")
     private Periodo periodo;
 }

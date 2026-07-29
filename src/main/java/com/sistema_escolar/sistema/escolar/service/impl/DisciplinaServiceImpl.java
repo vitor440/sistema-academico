@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,6 +40,7 @@ public class DisciplinaServiceImpl implements DisciplinaService {
         Docente docente = docenteService.getDocente(requestDTO.getDocenteId());
         disciplina.setDepartamento(departamento);
         disciplina.setDocente(docente);
+        disciplina.setAlunosMatriculados(0);
 
         if(disciplina.getHorarios() != null && !disciplina.getHorarios().isEmpty()) {
             for (HorarioDisciplina horario : disciplina.getHorarios()) {
@@ -56,10 +58,19 @@ public class DisciplinaServiceImpl implements DisciplinaService {
 
         disciplina.setNome(requestDTO.getNome());
         disciplina.setLocalizacao(requestDTO.getLocalizacao());
-        disciplina.setAlunosMatriculados(requestDTO.getAlunosMatriculados());
         disciplina.setVagas(requestDTO.getVagas());
         disciplina.setDepartamento(departamentoService.getDepartamento(requestDTO.getDepartamentoId()));
         disciplina.setDocente(docenteService.getDocente(requestDTO.getDocenteId()));
+
+        List<HorarioDisciplina> horarios = mapper.toEntity(requestDTO).getHorarios();
+
+        for (HorarioDisciplina horario : horarios) {
+            horario.setDisciplina(disciplina);
+        }
+
+        disciplina.getHorarios().clear();
+        disciplina.getHorarios().addAll(horarios);
+
 
         validator.validar(disciplina);
         return mapper.toDTO(repository.save(disciplina));
