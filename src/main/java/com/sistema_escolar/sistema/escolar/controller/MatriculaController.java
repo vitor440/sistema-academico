@@ -68,7 +68,7 @@ public class MatriculaController implements MatriculaControllerDocs {
     @PatchMapping("/{id}/notaFinal")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<Void> modificaNotaFinal(@PathVariable("id") Long id, @RequestParam(value = "nota-final") Double nota) {
+    public ResponseEntity<Void> modificaNotaFinal(@PathVariable("id") Long id, @RequestParam(value = "notaFinal") Double nota) {
         service.modificaNotaFinal(id, nota);
         return ResponseEntity.noContent().build();
     }
@@ -76,7 +76,7 @@ public class MatriculaController implements MatriculaControllerDocs {
     @PatchMapping("/{id}/statusSolicitacao")
     @Override
     @PreAuthorize("hasRole('DOCENTE')")
-    public ResponseEntity<Void> modificaStatusSolicitacao(@PathVariable("id") Long id, @RequestParam(value = "status-solicitacao") StatusSolicitacao statusSolicitacao) {
+    public ResponseEntity<Void> modificaStatusSolicitacao(@PathVariable("id") Long id, @RequestParam(value = "statusSolicitacao") StatusSolicitacao statusSolicitacao) {
         service.modificaStatusSolicitacao(id, statusSolicitacao);
         return ResponseEntity.noContent().build();
     }

@@ -34,6 +34,8 @@ public interface UsuarioService {
 
     void addRole(Usuario usuario, String role);
 
+    UsuarioResponseDTO obterDados();
+
     Long countUsuario();
 
 

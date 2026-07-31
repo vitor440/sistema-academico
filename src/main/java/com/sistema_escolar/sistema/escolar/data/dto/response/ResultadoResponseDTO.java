@@ -13,6 +13,8 @@ public class ResultadoResponseDTO {
 
     private Long matriculaId;
 
+    private String aluno;
+
     private Double nota;
 
 }

@@ -10,10 +10,7 @@ import java.util.List;
 
 public interface ResultadoService {
 
-//    MatriculaResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
     ResultadoResponseDTO salvarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
-
-    //MatriculaResponseDTO atualizarResultadoExame(Long id, ResultadoRequestDTO resultadoRequestDTO);
 
     ResultadoResponseDTO atualizaNota(Long id, Double nota);
 
@@ -21,7 +18,7 @@ public interface ResultadoService {
 
     ResultadoResponseDTO obterResultadoPeloId(Long id);
 
-    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection, Integer semestre, Integer ano, Long disciplinaId);
+    Page<ResultadoResponseDTO> listar(int pagina, int tamanho, String sortDirection, Integer semestre, Integer ano, Long exameId);
 
     Page<ResultadoResponseDTO> listarPeloIdDaMatricula(Long id, int pagina, int tamanho, String sortDirection);
 

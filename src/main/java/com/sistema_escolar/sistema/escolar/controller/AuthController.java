@@ -62,6 +62,12 @@ public class AuthController implements AuthControllerDocs {
     }
 
     @Override
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioResponseDTO> obterDados() {
+        return ResponseEntity.ok(service.obterDados());
+    }
+
+    @Override
     @GetMapping("/count")
     public ResponseEntity<Long> usuarioCount() {
         return ResponseEntity.ok(service.countUsuario());

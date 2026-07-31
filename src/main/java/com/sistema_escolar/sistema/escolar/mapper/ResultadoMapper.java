@@ -14,5 +14,6 @@ public interface ResultadoMapper {
 
     @Mapping(target = "exameId", expression = "java( resultado.getExame().getId() )")
     @Mapping(target = "matriculaId", expression = "java( resultado.getMatricula().getId() )")
+    @Mapping(target = "aluno", expression = "java( resultado.getMatricula().getAluno().getNome() )")
     ResultadoResponseDTO toDTO(Resultado resultado);
 }

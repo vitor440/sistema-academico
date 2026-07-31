@@ -56,11 +56,11 @@ public class ResultadoController implements ResultadoControllerDocs {
     public ResponseEntity<Page<ResultadoResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "sortDirection", required = false, defaultValue = "DESC") String sortDirection,
             @RequestParam(value = "semestre", required = false) Integer semestre,
             @RequestParam(value = "ano", required = false) Integer ano,
-            @RequestParam(value = "disciplinaId", required = false) Long disciplinaId) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, semestre, ano, disciplinaId));
+            @RequestParam(value = "exameId", required = false) Long exameId) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, semestre, ano, exameId));
     }
 
     @GetMapping("/matriculas/{id}/resultados")

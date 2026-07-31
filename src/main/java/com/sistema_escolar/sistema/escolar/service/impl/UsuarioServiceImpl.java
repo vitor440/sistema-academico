@@ -114,6 +114,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario não encontrado!"));
     }
 
+
+
     @Override
     public String encriptaSenha(String senha) {
         return passwordEncoder.encode(senha);
@@ -126,6 +128,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuario.setPermissions(List.of(permission));
         repository.save(usuario);
+    }
+
+    @Override
+    public UsuarioResponseDTO obterDados() {
+        Usuario usuarioLogado = getUsuarioLogado();
+        return mapper.toDTO(usuarioLogado);
     }
 
     @Override

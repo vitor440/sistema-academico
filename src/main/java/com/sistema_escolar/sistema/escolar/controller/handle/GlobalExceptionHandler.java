@@ -42,7 +42,11 @@ public class GlobalExceptionHandler {
         return new ErroResposta(e.getMessage(), HttpStatus.UNAUTHORIZED.value(), List.of());
     }
 
-
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroResposta RuntimeExceptionHandler(Exception e) {
+        return new ErroResposta(e.getMessage(), HttpStatus.BAD_REQUEST.value(), List.of());
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
