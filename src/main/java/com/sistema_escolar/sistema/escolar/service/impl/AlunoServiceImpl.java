@@ -22,6 +22,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AlunoServiceImpl implements AlunoService {
@@ -51,6 +53,7 @@ public class AlunoServiceImpl implements AlunoService {
         aluno.setUsuario(usuario); // associa usuário à aluno.
         aluno.setCurso(curso);
         curso.setQuantidadeAlunos(curso.getQuantidadeAlunos() + 1);
+        aluno.setMatricula(UUID.randomUUID().toString().substring(7));
 
         validator.validar(aluno);
         return mapper.toDTO(repository.save(aluno)); // salva aluno.

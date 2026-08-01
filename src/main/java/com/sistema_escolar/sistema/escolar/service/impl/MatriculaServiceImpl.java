@@ -56,7 +56,7 @@ public class MatriculaServiceImpl implements MatriculaService {
 
         matricula.setAno(LocalDate.now().getYear());
 
-        if (LocalDate.now().getMonth().getValue() <= 7) {
+        if (LocalDate.now().getMonth().getValue() < 7) {
             matricula.setSemestre(1);
         }else {
             matricula.setSemestre(2);

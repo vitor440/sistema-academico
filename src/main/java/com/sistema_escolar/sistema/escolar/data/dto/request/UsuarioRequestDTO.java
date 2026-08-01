@@ -15,7 +15,7 @@ public class UsuarioRequestDTO {
     @Size(min = 8, max = 100)
     private String email;
 
-    @NotBlank(message = "campo obrigatório!")
+
     @Size(min = 8, max = 50)
     private String senha;
 

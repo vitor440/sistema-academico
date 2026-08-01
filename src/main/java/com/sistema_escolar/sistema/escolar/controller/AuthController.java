@@ -35,8 +35,9 @@ public class AuthController implements AuthControllerDocs {
     public ResponseEntity<Page<UsuarioResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection) {
-        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection));
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "role", required = false) String role) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, role));
     }
 
     @PutMapping("/{id}")

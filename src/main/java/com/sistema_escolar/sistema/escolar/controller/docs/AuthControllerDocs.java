@@ -37,7 +37,8 @@ public interface AuthControllerDocs extends GenericController {
     ResponseEntity<Page<UsuarioResponseDTO>> listar(
             @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
             @RequestParam(value = "tamanho", required = false, defaultValue = "6") int tamanho,
-            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection);
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "role", required = false) String role);
 
 
     ResponseEntity<UsuarioResponseDTO> atualizarUsuarioAdmin(@RequestBody @Valid UsuarioRequestDTO dto, @PathVariable("id") Long id);

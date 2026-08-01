@@ -33,10 +33,10 @@ public class MatriculaValidator {
     private void verificaConflitoDeHorarios(Matricula matricula) {
 
         int anoAtual = LocalDate.now().getYear();
-        int periodoAtual = LocalDate.now().getMonth().getValue() <= 7 ? 1 : 2;
+        int periodoAtual = LocalDate.now().getMonth().getValue() < 7 ? 1 : 2;
 
         List<HorarioDisciplina> horariosNovaDisciplina = horarioDisciplinaRepository.findByDisciplina(matricula.getDisciplina());
-        List<HorarioDisciplina> horariosDoAluno = horarioDisciplinaRepository.obterHorariosDoAluno(matricula.getAluno());
+        List<HorarioDisciplina> horariosDoAluno = horarioDisciplinaRepository.obterHorariosDoAluno(matricula.getAluno(), periodoAtual, anoAtual);
 
 
         for (HorarioDisciplina horarioDisciplina : horariosNovaDisciplina) {

@@ -52,6 +52,13 @@ public class ResultadoServiceImpl implements ResultadoService {
         resultado.setPeso(exame.getPeso());
 
         resultado.setMatricula(matricula);
+        resultado.setAno(LocalDate.now().getYear());
+
+        if (LocalDate.now().getMonth().getValue() < 7) {
+            resultado.setSemestre(1);
+        }else {
+            resultado.setSemestre(2);
+        }
         validator.validar(resultado);
 
         matricula.addResultado(resultado);

@@ -8,12 +8,14 @@ import com.sistema_escolar.sistema.escolar.model.Permission;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.repository.PermissionRepository;
 import com.sistema_escolar.sistema.escolar.repository.UsuarioRepository;
+import com.sistema_escolar.sistema.escolar.repository.specs.UsuarioSpecs;
 import com.sistema_escolar.sistema.escolar.service.UsuarioService;
 import com.sistema_escolar.sistema.escolar.validator.UsuarioValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -74,7 +76,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = getUsuario(id);
         usuario.setUsername(requestDTO.getUsername());
         usuario.setEmail(requestDTO.getEmail());
-        usuario.setSenha(encriptaSenha(requestDTO.getSenha()));
+        if(requestDTO.getSenha() != null) usuario.setSenha(encriptaSenha(requestDTO.getSenha()));
+
 
         validator.validar(usuario);
         return mapper.toDTO(repository.save(usuario));
@@ -86,11 +89,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Page<UsuarioResponseDTO> listar(int pagina, int tamanho, String sortDirection) {
+    public Page<UsuarioResponseDTO> listar(int pagina, int tamanho, String sortDirection, String role) {
         Direction direction = sortDirection.equalsIgnoreCase("ASC")? Direction.ASC: Direction.DESC;
         Pageable pageable = PageRequest.of(pagina, tamanho, direction, "username");
+        Specification<Usuario> specs = (root, query, cb) -> cb.conjunction();
+        if(role != null) {
+            specs = specs.and(UsuarioSpecs.findByRole(role));
+        }
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        return repository.findAll(specs, pageable).map(mapper::toDTO);
     }
 
     @Override

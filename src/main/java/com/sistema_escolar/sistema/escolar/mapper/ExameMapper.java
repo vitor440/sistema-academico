@@ -12,5 +12,6 @@ public interface ExameMapper {
     Exame toEntity(ExameRequestDTO requestDTO);
 
     @Mapping(target = "disciplinaId", expression = "java( exame.getDisciplina().getId() )")
+    @Mapping(target = "disciplina", expression = "java( exame.getDisciplina().getNome() )")
     ExameResponseDTO toDTO(Exame exame);
 }

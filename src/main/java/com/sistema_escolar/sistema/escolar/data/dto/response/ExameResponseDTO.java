@@ -16,6 +16,8 @@ public class ExameResponseDTO {
 
     private Long disciplinaId;
 
+    private String disciplina;
+
     private LocalDate data;
 
     private LocalTime hora;

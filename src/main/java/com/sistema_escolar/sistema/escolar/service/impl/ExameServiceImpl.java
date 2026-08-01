@@ -47,6 +47,13 @@ public class ExameServiceImpl implements ExameService {
 
         validator.validar(exame);
         exame.setStatus(StatusExame.PENDENTE);
+        exame.setAno(LocalDate.now().getYear());
+
+        if (LocalDate.now().getMonth().getValue() < 7) {
+            exame.setSemestre(1);
+        }else {
+            exame.setSemestre(2);
+        }
         return mapper.toDTO(repository.save(exame));
     }
 

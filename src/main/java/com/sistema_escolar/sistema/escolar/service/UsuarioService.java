@@ -22,7 +22,7 @@ public interface UsuarioService {
 
     UsuarioResponseDTO obterPeloId(Long id);
 
-    Page<UsuarioResponseDTO> listar(int pagina, int tamanho, String sortDirection);
+    Page<UsuarioResponseDTO> listar(int pagina, int tamanho, String sortDirection, String role);
 
     void deletarPeloId(Long id);
 

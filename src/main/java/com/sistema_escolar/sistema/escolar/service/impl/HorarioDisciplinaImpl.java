@@ -91,7 +91,7 @@ public class HorarioDisciplinaImpl implements HorarioDisciplinaService {
             specs = specs.and(HorarioDisciplinaSpecs.findByDocente(usuario.getDocente()));
         }
 
-        return repository.findAll(pageable).map(mapper::toDTO);
+        return repository.findAll(specs, pageable).map(mapper::toDTO);
     }
 
     @Override
