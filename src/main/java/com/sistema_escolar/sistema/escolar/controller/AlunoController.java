@@ -31,7 +31,7 @@ public class AlunoController implements AlunoControllerDocs {
 
     @PutMapping("/{id}")
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
     public ResponseEntity<AlunoResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid AlunoRequestDTO dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }

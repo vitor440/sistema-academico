@@ -31,7 +31,7 @@ public class DocenteController implements DocenteControllerDocs {
 
     @PutMapping("/{id}")
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCENTE')")
     public ResponseEntity<DocenteResponseDTO> atualizar(@PathVariable("id") Long id, @RequestBody @Valid DocenteRequestDTO dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));
     }

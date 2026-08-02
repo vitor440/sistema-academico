@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -59,6 +60,13 @@ public class DocenteServiceImpl implements DocenteService {
     @Override
     public DocenteResponseDTO atualizar(Long id, DocenteRequestDTO requestDTO) {
         Docente docente = getDocente(id);
+
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+
+        if(usuarioLogado.getRoles().contains("DOCENTE") && !usuarioLogado.getDocente().getId().equals(docente.getId())) {
+            throw new AccessDeniedException("Acesso Negado!");
+        }
+
         Usuario usuario = docente.getUsuario();
         usuario.setEmail(requestDTO.getEmail());
         usuario.setUsername(requestDTO.getNome());

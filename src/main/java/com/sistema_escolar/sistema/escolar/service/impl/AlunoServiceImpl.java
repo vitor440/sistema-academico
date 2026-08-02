@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -63,6 +64,11 @@ public class AlunoServiceImpl implements AlunoService {
     @Transactional
     public AlunoResponseDTO atualizar(Long id, AlunoRequestDTO requestDTO) {
         Aluno aluno = getAluno(id);
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+        if(usuarioLogado.getRoles().contains("ALUNO") && !usuarioLogado.getAluno().getId().equals(aluno.getId())) {
+            throw new AccessDeniedException("Acesso Negado!");
+        }
+
         Usuario usuario = aluno.getUsuario();
 
         usuario.setEmail(requestDTO.getEmail());
