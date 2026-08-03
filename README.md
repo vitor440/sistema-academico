@@ -1,2 +1,1 @@
-# sistema-escolar
-teste
+# sistema_escolar_backend
