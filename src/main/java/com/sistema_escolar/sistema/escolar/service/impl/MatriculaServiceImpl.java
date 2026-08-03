@@ -138,8 +138,16 @@ public class MatriculaServiceImpl implements MatriculaService {
     public MatriculaResponseDTO efetivarHistorico(Long id) {
         Matricula matricula = getMatricula(id);
         validator.validaDocenteLogado(matricula.getDisciplina().getDocente());
-        matricula.efetivar();
-        matricula.getDisciplina().acrescentaVaga();
+
+        if(matricula.isEfetivado()) {
+            matricula.setEfetivado(false);
+            matricula.getDisciplina().decrementaVaga();
+        }
+        else{
+            matricula.efetivar();
+            matricula.getDisciplina().acrescentaVaga();
+        }
+
 
         return mapper.toDTO(matriculaRepository.save(matricula));
     }
