@@ -1,0 +1,20 @@
+h1,h2,h3,h4,h5,p, a {
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.6px solid #444242;
+    background-color: #181818;
+    height: 60px;
+    align-items: center;
+    top: 0;
+    width: 100vw;
+    padding: 0 40px;
+    
+}

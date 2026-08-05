@@ -1,0 +1,21 @@
+#aluno-input {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+#aluno-input label{
+    color: #fff;
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+
+#aluno-input input{
+    color: #fff;
+    background-color: #181818;
+    border: 1px solid #ccc;
+    height: 22px;
+    padding: 16px;
+    font-size: 16px;
+}

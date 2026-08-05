@@ -1,1 +1,0 @@
-alter table resultado add column peso integer default 2;

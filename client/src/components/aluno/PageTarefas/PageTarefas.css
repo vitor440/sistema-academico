@@ -1,0 +1,21 @@
+.main-container {
+    padding: 2rem;
+}
+
+.main-container h2{
+    font-size: 32px;
+}
+
+#filtrar-btn {
+    width: 160px;
+    height: 26px;
+    background-color: #181818;
+    color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+#filtrar-btn:hover {
+    opacity: 0.6;
+}

@@ -1,0 +1,15 @@
+
+#main-container-calendar {
+    width: 100 vw;
+    padding: 2rem;
+}
+
+#main-container-calendar h2{
+    font-size: 32px;
+    margin-bottom: 2rem;
+}
+#calendario-div {
+    width: 80vw;
+    color: #fff;
+}
+

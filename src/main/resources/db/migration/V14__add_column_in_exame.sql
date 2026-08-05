@@ -1,1 +1,0 @@
-alter table exame add column status varchar(50) not null default 'PENDENTE';

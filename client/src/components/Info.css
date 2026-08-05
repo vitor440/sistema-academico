@@ -1,0 +1,17 @@
+.info {
+    background-color: #181818;
+    display: flex;
+    padding: 2rem;
+    width: 480px;
+    height: 121px;
+}
+
+.info h2, h3{
+    font-size: 30px;
+}
+
+.icon {
+    align-content: center;
+    padding-right: 1rem;
+}
+

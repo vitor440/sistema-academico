@@ -1,0 +1,35 @@
+.side-bar {
+
+    width: 251px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background-color: #181818;
+    padding: 1rem;
+    padding-left: 0;
+    height: 100vh;
+    position: sticky;
+    top: 0px;
+}
+
+a,h1,h2,h3,h4,p, li {
+    color: #fff;
+    font-size: 20px;
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.item {
+    display: flex;
+    padding: 1rem;
+    width: 180px;
+    transition: 0.7s;
+    cursor: pointer;
+}
+
+.item:hover {
+    background-image: linear-gradient(to right, #061409, #181818);
+}
+
+

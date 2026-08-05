@@ -1,0 +1,31 @@
+.lista-tarefas-container {
+    background-color: #181818;
+    padding: 2rem;
+    width: 480px;
+    height: 100vh;
+}
+
+.lista-tarefas {
+    background-color: #181818;
+    margin-top: 2rem;
+}
+
+.lista-tarefas .lista.linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.6px solid #444242;
+    height: 80px;
+}
+
+.lista-tarefas .linha li {
+    text-align: center;
+    padding: 8px;
+    flex: 1;
+    margin-top: .7rem;
+    min-width: 140px;
+}
+
+.lista-tarefas .linha li :nth-child(4){
+    max-width: 100px;
+}

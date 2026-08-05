@@ -1,0 +1,53 @@
+#resultados{
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    gap: 12px;
+    width: 85vw;
+}
+
+
+
+#data-resultado {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+#nota-resultado {
+    display: flex;
+    align-items: center;
+}
+
+#titulo-resultado {
+    margin-bottom: 1rem;
+}
+
+#titulo-resultado h3{
+    margin-bottom: 0.5rem;
+}
+
+#resultado p{
+    font-size: 16px;
+}
+
+#resultado {
+    width: 400px;
+    height: 190px;
+    padding: 2rem;
+    background-color: #181818;
+}
+
+#resultado:hover {
+    background-color: #1f1e1e;
+    cursor: pointer;
+
+}
+
+#check-icone {
+    display: inline;
+}
+
+#resultado-content {
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,0 +1,105 @@
+package com.sistema_escolar.sistema.escolar.controller;
+
+import com.sistema_escolar.sistema.escolar.controller.docs.MatriculaControllerDocs;
+import com.sistema_escolar.sistema.escolar.data.dto.request.MatriculaRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.request.ResultadoRequestDTO;
+import com.sistema_escolar.sistema.escolar.data.dto.response.MatriculaResponseDTO;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusDisciplina;
+import com.sistema_escolar.sistema.escolar.model.enums.StatusSolicitacao;
+import com.sistema_escolar.sistema.escolar.service.MatriculaService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+
+@RestController
+@RequestMapping("/matriculas")
+@RequiredArgsConstructor
+public class MatriculaController implements MatriculaControllerDocs {
+
+    private final MatriculaService service;
+
+    @PostMapping
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO')")
+    public ResponseEntity<MatriculaResponseDTO> salvar(@RequestBody @Valid MatriculaRequestDTO dto) {
+        MatriculaResponseDTO response = service.salvar(dto);
+        URI location = getLocation(response.getId());
+        return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping("/{id}")
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
+    public ResponseEntity<MatriculaResponseDTO> obterPeloId(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.obterPeloId(id));
+    }
+
+    @GetMapping
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
+    public ResponseEntity<Page<MatriculaResponseDTO>> listar(
+            @RequestParam(value = "pagina", required = false, defaultValue = "0") int pagina,
+            @RequestParam(value = "tamanho", required = false, defaultValue = "600") int tamanho,
+            @RequestParam(value = "sort-direction", required = false, defaultValue = "DESC") String sortDirection,
+            @RequestParam(value = "nomeAluno", required = false) String nomeAluno,
+            @RequestParam(value = "disciplinaId", required = false) Long disciplinaId,
+            @RequestParam(value = "statusDisciplina", required = false) StatusDisciplina statusDisciplina,
+            @RequestParam(value = "statusSolicitacao", required = false) StatusSolicitacao statusSolicitacao,
+            @RequestParam(value = "efetivado", required = false) Boolean efetivado,
+            @RequestParam(value = "semestre", required = false) Integer semestre,
+            @RequestParam(value = "ano", required = false) Integer ano) {
+        return ResponseEntity.ok(service.listar(pagina, tamanho, sortDirection, nomeAluno,
+                disciplinaId, statusSolicitacao, statusDisciplina, efetivado, semestre, ano));
+    }
+
+    @DeleteMapping("/{id}")
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'ALUNO', 'DOCENTE')")
+    public ResponseEntity<Void> deletarPeloId(@PathVariable("id") Long id) {
+        service.deletarPeloId(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/notaFinal")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<Void> modificaNotaFinal(@PathVariable("id") Long id, @RequestParam(value = "notaFinal") Double nota) {
+        service.modificaNotaFinal(id, nota);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/statusSolicitacao")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<Void> modificaStatusSolicitacao(@PathVariable("id") Long id, @RequestParam(value = "statusSolicitacao") StatusSolicitacao statusSolicitacao) {
+        service.modificaStatusSolicitacao(id, statusSolicitacao);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/efetivarHistorico")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<MatriculaResponseDTO> efetivarHistorico(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.efetivarHistorico(id));
+    }
+
+    @PatchMapping("/{id}/faltas")
+    @Override
+    @PreAuthorize("hasRole('DOCENTE')")
+    public ResponseEntity<Void> modificaFaltas(@PathVariable("id") Long id,
+                                                                  @RequestParam(value = "faltas") int faltas) {
+        service.modificaFaltas(id, faltas);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/count")
+    public ResponseEntity<Long> matriculaCount() {
+        return ResponseEntity.ok(service.countMatriculas());
+    }
+}

@@ -1,0 +1,1 @@
+insert into user_role (usuario_id, permission_id) VALUES (1, 1);

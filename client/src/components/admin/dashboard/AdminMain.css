@@ -1,0 +1,65 @@
+#grid-div {
+    width: 1480px;
+    background-color: #181818;
+    padding: 2rem;
+}
+
+#grid-div h2{
+    margin-bottom: 2rem;
+}
+
+#grid table {
+    background-color: #181818;
+}
+
+.MuiDataGrid-footerContainer button{
+    color: #fff;
+}
+
+.MuiDataGrid-footerContainer button:hover{
+    background-color: #555555;
+}
+
+
+
+.MuiDataGrid-footerContainer .Mui-disabled svg {
+    color: #5f5d5d;
+}
+
+.MuiDataGrid-columnHeaderDraggableContainer svg{
+    color: #fff;
+    display: none;
+}
+
+#pie-chart-container {
+    background-color: #181818;
+    padding: 0.6rem;
+    width: 480px;
+    height: 400px;
+}
+
+#pie-chart-container h2{
+    margin-bottom: 3.5rem;
+}
+
+#barchart-container h2{
+    margin-bottom: 3.5rem;
+}
+
+#pie-chart-div {
+    background-color: #181818;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#barchart-container {
+    background-color: #181818;
+    padding: 0.6rem;
+    width: 980px;
+}
+
+.MuiSelect-select .MuiTablePagination-select input {
+    color: #fff;
+}
+

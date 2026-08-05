@@ -1,28 +1,48 @@
-version: '3.4'
-
 services:
   db:
     image: postgres:16.3
-    ports:
-      - 5433:5432
+    restart: always
     expose:
       - 5432
+    ports:
+      - 5433:5432
     environment:
       - POSTGRES_USER=prod
-      - POSTGRES_PASSWORD=prod
-      - POSTGRES_DB=sistema_escolar
-    restart: always
+      - POSTGRES_PASSWORD=prod123
+      - POSTGRES_DB=college
+    networks:
+      - college
 
-  sistema-escolar:
-    image: vitoroliveira2024/sistema-escolar:latest
-    ports:
-      - 8080:8080
+  sistema_academico_backend:
+    image: sistema_academico
+    restart: always
+    build: ./server
     expose:
       - 8080
+    ports:
+      - 8080:8080
     environment:
-      - DB_URL=jdbc:postgresql://db:5432/sistema_escolar
+      - DB_URL=jdbc:postgresql://db:5432/college
       - DB_USER=prod
-      - DB_PASSWORD=prod
+      - DB_PASSWORD=prod123
     depends_on:
       - db
+    networks:
+      - college
+
+  sistema_academico_frontend:
+    image: sistema_academico_react
     restart: always
+    build: ./client
+    expose:
+      - 80
+    ports:
+      - 5173:80
+    depends_on:
+      - sistema_academico_backend
+    networks:
+      - college
+
+networks:
+  college:
+  
