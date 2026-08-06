@@ -141,9 +141,9 @@ const PageCursos = () => {
                         <MenuItem key={2} value='EXATAS'>EXATAS</MenuItem>
                         <MenuItem key={3} value='HUMANAS'>HUMANAS</MenuItem>
                         <MenuItem key={4} value='LETRAS'>LETRAS</MenuItem>
-                        <MenuItem key={5} value='CIENCIAS BIOLOGICAS'>CIẼNCIAS BIOLOGICAS</MenuItem>
+                        <MenuItem key={5} value='CIENCIAS_BIOLOGICAS'>CIẼNCIAS BIOLOGICAS</MenuItem>
                         <MenuItem key={6} value='ENGENHARIAS'>ENGENHARIAS</MenuItem>
-                        <MenuItem key={7} value='CIENCIAS AGRÁRIAS'>CIÊNCIAS AGRÁRIAS</MenuItem>
+                        <MenuItem key={7} value='CIENCIAS_AGRARIAS'>CIÊNCIAS AGRÁRIAS</MenuItem>
                       </TextField>
 
                       <TextField label='Turno' size='small' select sx={{width:180}} value={turno} onChange={(e) => setTurno(e.target.value)}>

@@ -28,7 +28,7 @@ const Header2 = () => {
     function detalhesPerfil() {
         const role = localStorage.getItem("roles")
         if(role.includes("DOCENTE")) {
-            return <Navigate to={"/docentes/perfil"}/>
+            return navigate("/docentes/perfil")
         }
         else if(role.includes("ALUNO")) {
             return navigate("/alunos/perfil")
@@ -55,7 +55,7 @@ const Header2 = () => {
     <Toolbar/>
 
     <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
-        <MenuItem onClick={() => detalhesPerfil}>Perfil</MenuItem>
+        {/* <MenuItem onClick={() => detalhesPerfil}>Perfil</MenuItem> */}
         <MenuItem onClick={() => navigate("/logout")}>Sair</MenuItem>
     </Menu>
     </>

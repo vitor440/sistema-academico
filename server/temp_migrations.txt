@@ -1,0 +1,101 @@
+INSERT INTO departamento (nome, bloco, sigla, data_criacao, data_atualizacao) VALUES
+      ('Departamento de Computação', 'Bloco A', 'DCOMP', NOW(), NOW()),
+      ('Departamento de Matemática', 'Bloco B', 'DMAT', NOW(), NOW()),
+      ('Departamento de Física', 'Bloco C', 'DFIS', NOW(), NOW()),
+      ('Departamento de Química', 'Bloco D', 'DQUI', NOW(), NOW()),
+      ('Departamento de Biologia', 'Bloco E', 'DBIO', NOW(), NOW()),
+      ('Departamento de Medicina', 'Bloco F', 'DMED', NOW(), NOW()),
+      ('Departamento de Enfermagem', 'Bloco G', 'DENF', NOW(), NOW()),
+      ('Departamento de Odontologia', 'Bloco H', 'DODO', NOW(), NOW()),
+      ('Departamento de Farmácia', 'Bloco I', 'DFAR', NOW(), NOW()),
+      ('Departamento de Nutrição', 'Bloco J', 'DNUT', NOW(), NOW()),
+
+      ('Departamento de Direito', 'Bloco K', 'DDIR', NOW(), NOW()),
+      ('Departamento de Administração', 'Bloco L', 'DADM', NOW(), NOW()),
+      ('Departamento de Economia', 'Bloco M', 'DECO', NOW(), NOW()),
+      ('Departamento de Contabilidade', 'Bloco N', 'DCON', NOW(), NOW()),
+      ('Departamento de Estatística', 'Bloco O', 'DEST', NOW(), NOW()),
+      ('Departamento de História', 'Bloco P', 'DHIS', NOW(), NOW()),
+      ('Departamento de Geografia', 'Bloco Q', 'DGEO', NOW(), NOW()),
+      ('Departamento de Filosofia', 'Bloco R', 'DFIL', NOW(), NOW()),
+      ('Departamento de Sociologia', 'Bloco S', 'DSOC', NOW(), NOW()),
+      ('Departamento de Psicologia', 'Bloco T', 'DPSI', NOW(), NOW()),
+
+      ('Departamento de Pedagogia', 'Bloco U', 'DPED', NOW(), NOW()),
+      ('Departamento de Letras', 'Bloco V', 'DLET', NOW(), NOW()),
+      ('Departamento de Artes', 'Bloco W', 'DART', NOW(), NOW()),
+      ('Departamento de Música', 'Bloco X', 'DMUS', NOW(), NOW()),
+      ('Departamento de Educação Física', 'Bloco Y', 'DEF', NOW(), NOW()),
+      ('Departamento de Engenharia Civil', 'Bloco Z', 'DECIV', NOW(), NOW()),
+      ('Departamento de Engenharia Elétrica', 'Bloco A1', 'DELET', NOW(), NOW()),
+      ('Departamento de Engenharia Mecânica', 'Bloco B1', 'DEMEC', NOW(), NOW()),
+      ('Departamento de Engenharia Química', 'Bloco C1', 'DEQUI', NOW(), NOW()),
+      ('Departamento de Engenharia de Produção', 'Bloco D1', 'DEPRO', NOW(), NOW()),
+
+      ('Departamento de Engenharia Ambiental', 'Bloco E1', 'DEAMB', NOW(), NOW()),
+      ('Departamento de Arquitetura', 'Bloco F1', 'DARQ', NOW(), NOW()),
+      ('Departamento de Design', 'Bloco G1', 'DDES', NOW(), NOW()),
+      ('Departamento de Comunicação Social', 'Bloco H1', 'DCOM', NOW(), NOW()),
+      ('Departamento de Jornalismo', 'Bloco I1', 'DJOR', NOW(), NOW()),
+      ('Departamento de Relações Internacionais', 'Bloco J1', 'DRI', NOW(), NOW()),
+      ('Departamento de Turismo', 'Bloco K1', 'DTUR', NOW(), NOW()),
+      ('Departamento de Agronomia', 'Bloco L1', 'DAGR', NOW(), NOW()),
+      ('Departamento de Medicina Veterinária', 'Bloco M1', 'DVET', NOW(), NOW()),
+      ('Departamento de Zootecnia', 'Bloco N1', 'DZOO', NOW(), NOW()),
+
+      ('Departamento de Geologia', 'Bloco O1', 'DGEO', NOW(), NOW()),
+      ('Departamento de Oceanografia', 'Bloco P1', 'DOCE', NOW(), NOW()),
+      ('Departamento de Meteorologia', 'Bloco Q1', 'DMET', NOW(), NOW()),
+      ('Departamento de Ciência de Dados', 'Bloco R1', 'DCD', NOW(), NOW()),
+      ('Departamento de Inteligência Artificial', 'Bloco S1', 'DIA', NOW(), NOW()),
+      ('Departamento de Sistemas de Informação', 'Bloco T1', 'DSI', NOW(), NOW()),
+      ('Departamento de Segurança da Informação', 'Bloco U1', 'DSEG', NOW(), NOW()),
+      ('Departamento de Engenharia de Software', 'Bloco V1', 'DESW', NOW(), NOW()),
+      ('Departamento de Biotecnologia', 'Bloco W1', 'DBTEC', NOW(), NOW()),
+      ('Departamento de Ciências Ambientais', 'Bloco X1', 'DCAMB', NOW(), NOW());
+
+
+INSERT INTO curso (
+    nome,
+    area,
+    quantidade_alunos,
+    periodo,
+    quantidade_periodos,
+    departamento_id,
+    data_criacao,
+    data_atualizacao
+) VALUES
+
+-- Departamento de Computação (id = 1)
+
+('Ciência da Computação', 'TECNOLOGIA', 450, 'MATUTINO', 8, 1, NOW(), NOW()),
+('Engenharia de Software', 'TECNOLOGIA', 350, 'INTEGRAL', 8, 1, NOW(), NOW()),
+('Sistemas de Informação', 'TECNOLOGIA', 400, 'INTEGRAL', 8, 1, NOW(), NOW()),
+('Ciência de Dados', 'TECNOLOGIA', 300, 'VESPERTINO', 8, 1, NOW(), NOW()),
+('Inteligência Artificial', 'TECNOLOGIA', 250, 'MATUTINO', 8, 1, NOW(), NOW()),
+('Segurança da Informação', 'TECNOLOGIA', 220, 'INTEGRAL', 8, 1, NOW(), NOW()),
+('Computação em Nuvem', 'TECNOLOGIA', 180, 'INTEGRAL', 8, 1, NOW(), NOW()),
+('Análise e Desenvolvimento de Sistemas', 'TECNOLOGIA', 500, 'INTEGRAL', 6, 1, NOW(), NOW()),
+
+-- Departamento de Medicina (id = 6)
+
+('Medicina', 'SAUDE', 600, 'INTEGRAL', 12, 6, NOW(), NOW()),
+('Enfermagem', 'SAUDE', 320, 'INTEGRAL', 10, 6, NOW(), NOW()),
+('Farmácia', 'SAUDE', 280, 'MATUTINO', 10, 6, NOW(), NOW()),
+('Fisioterapia', 'SAUDE', 240, 'INTEGRAL', 10, 6, NOW(), NOW()),
+('Nutrição', 'SAUDE', 200, 'MATUTINO', 8, 6, NOW(), NOW()),
+('Biomedicina', 'SAUDE', 220, 'VESPERTINO', 8, 6, NOW(), NOW()),
+
+-- Departamento de Engenharia Civil (id = 26)
+
+('Engenharia Civil', 'EXATAS', 500, 'MATUTINO', 10, 26, NOW(), NOW()),
+('Engenharia de Transportes', 'EXATAS', 180, 'VESPERTINO', 10, 26, NOW(), NOW()),
+('Engenharia Hidráulica', 'EXATAS', 150, 'MATUTINO', 10, 26, NOW(), NOW()),
+('Engenharia Estrutural', 'EXATAS', 120, 'MATUTINO', 10, 26, NOW(), NOW()),
+('Engenharia Urbana', 'EXATAS', 170, 'INTEGRAL', 10, 26, NOW(), NOW());
+
+
+
+insert into usuario (username, email, senha, isAccountNonExpired, isAccountNonLocked, isCredentialsNonExpired, enabled, data_criacao, data_atualizacao)
+values ('admin', 'admin@email.com', '{bcrypt}$2a$10$PijdcLYsNcmsDSnGyroAEeoxOapACtCpbCHxo5SMxgapgAbIxF1p.', true, true, true, true, '2026-05-26 10:43:41.848', '2026-05-26 10:43:41.848');
+-- senha: admin123

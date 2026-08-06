@@ -29,10 +29,7 @@ const LancarFaltas = () => {
     const { disciplinaId } = useParams()
 
     const columns = [
-        { field: 'id', headerName: 'Id', flex: 1 },
-        { field: 'matricula', headerName: 'Matrícula', flex: 1 },
         { field: 'nomeAluno', headerName: 'Nome', flex: 1 },
-        { field: 'disciplina', headerName: 'Disciplina', flex: 1 },
         {
             field: "faltas", headerName: "Faltas", flex: 1, renderCell: (params) =>
                 <TextField defaultValue={params.row.faltas} size='small' sx={{ width: "50px", height: "40px" }}

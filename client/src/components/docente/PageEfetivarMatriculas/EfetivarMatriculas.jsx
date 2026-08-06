@@ -27,7 +27,6 @@ const EfetivarMatriculas = () => {
   })
 
   const columns = [
-    { field: 'id', headerName: 'Id', flex: 1 },
     { field: 'nomeAluno', headerName: 'Nome', flex: 1 },
     { field: 'disciplina', headerName: 'Disciplinas', flex: 1 },
     {

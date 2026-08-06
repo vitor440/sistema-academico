@@ -23,6 +23,10 @@ import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import api from '../../../services/api'
+import { FaRegBuilding } from "react-icons/fa";
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import { HiMiniBuildingLibrary } from "react-icons/hi2";
+import { ImUserTie } from "react-icons/im";
 
 const AdminMain = () => {
 
@@ -31,6 +35,7 @@ const AdminMain = () => {
   const {countDepartamentos}  = DepartamentoHook()
   const {countDocentes} = DocenteHook()
   const [loading, setLoading] = useState(false)
+  const [loadingTable, setLoadingTable] = useState(false)
 
   
   const [cursos, setCursos] = useState([])
@@ -113,11 +118,12 @@ const AdminMain = () => {
     }
 
     async function obterCursos() {
-        setLoading(true)
+        setLoadingTable(true)
         try {
           const response = await api.get("/cursos", {
             params:{
-              tamanho: 500
+              pagina: paginationModel.page,
+              tamanho: paginationModel.pageSize
             }
           }) 
           const data = response.data.content
@@ -126,7 +132,7 @@ const AdminMain = () => {
         } catch (error) {
           
         }
-        setLoading(false)
+        setLoadingTable(false)
       }
 
   
@@ -182,13 +188,13 @@ const AdminMain = () => {
       <Grid container direction="column" spacing={3}>
         <Grid container direction="row"spacing={3}>
           <Grid size={4}>
-            <Card Icone={FaBook} titulo={"Departamentos"} content={totalDepartamentos} cor={"#01460a"}/>
+            <Card Icone={FaRegBuilding} titulo={"Departamentos"} content={totalDepartamentos} cor={"#01460a"}/>
           </Grid>
           <Grid size={4}>
-            <Card Icone={LuNotebookText} titulo={"Cursos"} content={totalCursos} cor={"#914202"}/>
+            <Card Icone={HiMiniBuildingLibrary} titulo={"Cursos"} content={totalCursos} cor={"#914202"}/>
           </Grid>
           <Grid size={4}>
-            <Card Icone={FaPencil} titulo={"Docentes"} content={totalDocentes} cor={"#021791"}/>
+            <Card Icone={ImUserTie} titulo={"Docentes"} content={totalDocentes} cor={"#021791"}/>
           </Grid>
         </Grid>
         <Grid container direction="row"spacing={3}>
@@ -210,7 +216,7 @@ const AdminMain = () => {
       </Grid>
       <Paper sx={{p:2, mt:3}} variant='outlined' >
         <Typography variant='h5' sx={{mb:2}}>Lista de cursos</Typography>
-        <CustomTable columns={columns} rows={cursos} paginationModel={paginationModel} setPaginationModel={setPaginationModel} loading={loading} total={totalCursos}/>
+        <CustomTable columns={columns} rows={cursos} paginationModel={paginationModel} setPaginationModel={setPaginationModel} loading={loadingTable} total={totalCursos}/>
       </Paper>
     </Box>
   )

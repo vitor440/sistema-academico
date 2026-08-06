@@ -37,7 +37,8 @@ const Alunos = () => {
                     nomeAluno: alunoInput,
                     disciplinaId: disciplinaId,
                     semestre: periodo,
-                    ano: ano
+                    ano: ano,
+                    statusSolicitacao: 'EFETIVADA'
                 }
             })
             setTotalAlunos(response.data.totalElements)

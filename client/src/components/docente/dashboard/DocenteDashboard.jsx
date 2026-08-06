@@ -20,6 +20,8 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import { CircularProgress } from '@mui/material'
 
+import { PiStudentBold } from "react-icons/pi";
+
 
 const DocenteDashboard = () => {
 
@@ -148,10 +150,10 @@ const DocenteDashboard = () => {
       <Grid container direction="column" spacing={3} sx={{ minWidth: 0 }}>
         <Grid container direction="row" spacing={3}>
           <Grid size={4}>
-            <Card Icone={FaBook} titulo={"Turmas"} content={quantidadeTurmas} cor={"#01460a"} />
+            <Card Icone={FaBook} titulo={"Disciplinas"} content={quantidadeTurmas} cor={"#01460a"} />
           </Grid>
           <Grid size={4}>
-            <Card Icone={LuNotebookText} titulo={"Total ALunos"} content={quantidadeAlunos} cor={"#914202"} />
+            <Card Icone={PiStudentBold} titulo={"Total ALunos"} content={quantidadeAlunos} cor={"#914202"} />
           </Grid>
           <Grid size={4}>
             <Card Icone={FaPencil} titulo={"Exames Agendados"} content={quantidadeExames} cor={"#021791"} />
@@ -160,6 +162,7 @@ const DocenteDashboard = () => {
         <Grid container direction="row">
           <Grid size={6}>
             <Paper variant='outlined' sx={{ p: 2 }}>
+              <Typography variant='h6' sx={{mb:2}}>Média de notas nos últimos 6 meses</Typography>
               <LineChart
                 dataset={mediaNotas}
                 series={[{ dataKey: "media", label: "média de notas", curve: "natural", showMark: true, shape: "circle" }]}
@@ -172,6 +175,7 @@ const DocenteDashboard = () => {
           </Grid>
           <Grid size={6}>
             <Paper variant='outlined' sx={{ p: 2 }}>
+              <Typography variant='h6' sx={{mb:2}}>Disciplinas x Alunos Matriculados</Typography>
               <BarChart
                 dataset={disciplinaAlunos}
                 series={[{ dataKey: "alunosMatriculados", label: "Alunos Matriculados" }]}
@@ -186,6 +190,7 @@ const DocenteDashboard = () => {
       </Grid>
 
       <Paper sx={{ p: 2, mt: 3 }} variant='outlined'>
+          <Typography variant='h6' sx={{mb:2}}>Exames Marcados</Typography>
         <CustomTable columns={columns} rows={exames} paginationModel={paginationModel} setPaginationModel={setPaginationModel} loading={loading} total={quantidadeExames}/>
       </Paper>
     </Box>

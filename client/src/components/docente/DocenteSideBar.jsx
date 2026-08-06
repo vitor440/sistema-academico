@@ -12,6 +12,13 @@ import { FaFileCircleCheck } from 'react-icons/fa6'
 import { MdOutlineEventNote } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../context/GlobalContext'
+import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
+import { PiExam } from "react-icons/pi";
+import { PiStudentBold } from "react-icons/pi";
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import { CiCirclePlus } from "react-icons/ci";
 
 const DocenteSideBar = () => {
 
@@ -34,7 +41,7 @@ const DocenteSideBar = () => {
           </ListItem>
           <ListItem>
             <ListItemButton  onClick={() => navigate("/docentes/turmas")}>
-              <ListItemIcon><FaTasks color='#fff'/></ListItemIcon>
+              <ListItemIcon><ClassOutlinedIcon/></ListItemIcon>
               <ListItemText primary="Turmas"/>
             </ListItemButton>
           </ListItem>
@@ -46,7 +53,7 @@ const DocenteSideBar = () => {
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/docentes/turmasNotas")}>
-              <ListItemIcon><LuNotebookPen color='#fff'/></ListItemIcon>
+              <ListItemIcon><FaFileCircleCheck color='#fff'/></ListItemIcon>
               <ListItemText primary="Lançar Notas"/>
             </ListItemButton>
           </ListItem>
@@ -58,19 +65,19 @@ const DocenteSideBar = () => {
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/docentes/turmasFrequencia")}>
-              <ListItemIcon><FaRegClock color='#fff'/></ListItemIcon>
+              <ListItemIcon><CiCirclePlus color='#fff'/></ListItemIcon>
               <ListItemText primary="Gerenciar Faltas"/>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/docentes/provasFinais")}>
-              <ListItemIcon><FaRegClock color='#fff'/></ListItemIcon>
+              <ListItemIcon><PiExam color='#fff'/></ListItemIcon>
               <ListItemText primary="Gerenciar Provas Finais"/>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/docentes/efetivarMatriculas")}>
-              <ListItemIcon><FaRegClock color='#fff'/></ListItemIcon>
+              <ListItemIcon><CheckOutlinedIcon color='#fff'/></ListItemIcon>
               <ListItemText primary="Efetivar matriculas"/>
             </ListItemButton>
           </ListItem>
@@ -82,19 +89,19 @@ const DocenteSideBar = () => {
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/docentes/alunos")}>
-              <ListItemIcon><FaFileCircleCheck color='#fff'/></ListItemIcon>
+              <ListItemIcon><PiStudentBold color='#fff'/></ListItemIcon>
               <ListItemText primary="Listar Alunos"/>
             </ListItemButton>
           </ListItem>
           <ListItem sx={{flex:1}}>
             <ListItemButton onClick={() => navigate("/docentes/solicitacoesMatriculas")}>
-              <ListItemIcon><FaFileCircleCheck color='#fff'/></ListItemIcon>
+              <ListItemIcon><MessageOutlinedIcon color='#fff'/></ListItemIcon>
               <ListItemText primary="Solicitações de Matrícula"/>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/docentes/perfil")}>
-              <ListItemIcon><FaFileCircleCheck color='#fff'/></ListItemIcon>
+              <ListItemIcon><AccountCircleOutlinedIcon color='#fff'/></ListItemIcon>
               <ListItemText primary="Perfil"/>
             </ListItemButton>
           </ListItem>

@@ -16,8 +16,8 @@ const EditarNotas = () => {
     const [resultados, setResultados] = useState([])
     const [loading, setLoading] = useState(false)
     const columns = [
-        { field: 'id', headerName: 'ID', flex: 1 },
         { field: 'aluno', headerName: 'Nome', flex: 1 },
+        { field: 'matricula', headerName: 'Matrícula', flex: 1 },
         {
             field: "nota", headerName: "Nota", flex: 1, renderCell: (params) =>
                 <TextField

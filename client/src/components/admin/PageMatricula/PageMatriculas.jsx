@@ -108,7 +108,6 @@ const PageMatriculas = () => {
                 <MenuItem key={1} value=''>Todos</MenuItem>
                 <MenuItem key={2} value='PENDENTE'>PENDENTE</MenuItem>
                 <MenuItem key={3} value='EFETIVADA'>EFETIVADA</MenuItem>
-                <MenuItem key={4} value='INDEFERIDA'>INDEFERIDA</MenuItem>
               </TextField>
               <TextField label='Efetivado' size='small' select sx={{ width: 180 }} value={efetivado} onChange={(e) => setEfetivado(e.target.value)}>
                 <MenuItem key={1} value=''>Todos</MenuItem>

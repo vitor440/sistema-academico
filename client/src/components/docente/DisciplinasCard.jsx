@@ -47,7 +47,7 @@ const DisciplinasCard = ({disciplina, buttonText, funcao}) => {
 
   return (
     <Grid size={3}>
-        <Card sx={{height:"230px", justifyContent:"center", 
+        <Card sx={{height:"260px", justifyContent:"center", // height: 230px
         "&:hover": {
             borderColor:"#3fb566",
             cursor: "pointer"

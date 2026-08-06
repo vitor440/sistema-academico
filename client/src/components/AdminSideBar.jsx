@@ -16,6 +16,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { GlobalContext } from '../context/GlobalContext';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import { FaRegBuilding } from "react-icons/fa";
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import { ImUserTie } from "react-icons/im";
+import { PiStudentBold } from "react-icons/pi";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 
 const AdminSideBar = () => {
 
@@ -38,31 +44,31 @@ const AdminSideBar = () => {
               </ListItem>
               <ListItem>
                 <ListItemButton  onClick={() => navigate("/admin/departamentos")}>
-                  <ListItemIcon><FaTasks color='#fff'/></ListItemIcon>
+                  <ListItemIcon><FaRegBuilding color='#fff'/></ListItemIcon>
                   <ListItemText primary="Departamentos"/>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton onClick={() => navigate("/admin/cursos")}>
-                  <ListItemIcon><FaCalendarAlt color='#fff'/></ListItemIcon>
+                  <ListItemIcon><AccountBalanceOutlinedIcon color='#fff'/></ListItemIcon>
                   <ListItemText primary="Cursos"/>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton onClick={() => navigate("/admin/docentes")}>
-                  <ListItemIcon><LuNotebookPen color='#fff'/></ListItemIcon>
+                  <ListItemIcon><ImUserTie color='#fff'/></ListItemIcon>
                   <ListItemText primary="Docentes"/>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton onClick={() => navigate("/admin/alunos")}>
-                  <ListItemIcon><FaRegClock color='#fff'/></ListItemIcon>
+                  <ListItemIcon><PiStudentBold color='#fff'/></ListItemIcon>
                   <ListItemText primary="Alunos"/>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton onClick={() => navigate("/admin/usuarios")}>
-                  <ListItemIcon><FaFileCircleCheck color='#fff'/></ListItemIcon>
+                  <ListItemIcon><PermIdentityOutlinedIcon color='#fff'/></ListItemIcon>
                   <ListItemText primary="Usuários"/>
                 </ListItemButton>
               </ListItem>
@@ -80,7 +86,7 @@ const AdminSideBar = () => {
               </ListItem>
               <ListItem>
                 <ListItemButton onClick={() => navigate("/admin/criarUsuario")}>
-                  <ListItemIcon><AccountCircleOutlinedIcon color='#fff'/></ListItemIcon>
+                  <ListItemIcon><PersonAddOutlinedIcon color='#fff'/></ListItemIcon>
                   <ListItemText primary="Criar usuário"/>
                 </ListItemButton>
               </ListItem>

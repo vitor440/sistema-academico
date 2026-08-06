@@ -75,10 +75,8 @@ const DetalheTurma = () => {
 
 
     const columns = [
-        { field: 'id', headerName: 'Id', flex: 1 },
-        { field: 'matricula', headerName: 'Matrícula', flex: 1 },
         { field: 'nomeAluno', headerName: 'Nome', flex: 1 },
-        { field: 'disciplina', headerName: 'Disciplina', flex: 1 }
+        { field: 'matricula', headerName: 'Matrícula', flex: 1 }
     ];
 
 

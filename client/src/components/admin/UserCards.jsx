@@ -61,7 +61,7 @@ const UserCards = ({Icone, data, role, cor, obterDados}) => {
                                 <DeleteOutlineOutlinedIcon/>
                             </IconButton>
                         </Box>
-                        <Button variant='text'>Ver Detalhes</Button>
+                        {/* <Button variant='text'>Ver Detalhes</Button> */}
                     </Box>
                 </Paper>
 
@@ -117,7 +117,7 @@ const UserCards = ({Icone, data, role, cor, obterDados}) => {
                                 <DeleteOutlineOutlinedIcon/>
                             </IconButton>
                         </Box>
-                        <Button variant='text'>Ver Detalhes</Button>
+                        {/* <Button variant='text'>Ver Detalhes</Button> */}
                     </Box>
                 </Paper>
                 <FormAluno open={open} handleClose={() => setOpen(false)} aluno={data} atualizar={true} obterAlunos={obterDados}/>
@@ -163,7 +163,7 @@ const UserCards = ({Icone, data, role, cor, obterDados}) => {
                                 <DeleteOutlineOutlinedIcon/>
                             </IconButton>
                         </Box>
-                        <Button variant='text'>Ver Detalhes</Button>
+                        {/* <Button variant='text'>Ver Detalhes</Button> */}
                     </Box>
                 </Paper>
                 <DeleteOptions 
