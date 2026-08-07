@@ -36,7 +36,7 @@ jobs:
 
       - name: push-image-to-docker-hub
         run: |
-          docker tag sistema_academico ${{ secrets.DOCKER_USERNAME }}/sistema_academico
-          docker tag sistema_academico_react ${{ secrets.DOCKER_USERNAME }}/sistema_academico_react
-          docker push ${{ secrets.DOCKER_USERNAME }}/sistema_academico
-          docker push ${{ secrets.DOCKER_USERNAME }}/sistema_academico_react
+          docker tag sistema_academico ${{ secrets.DOCKER_USER }}/sistema_academico
+          docker tag sistema_academico_react ${{ secrets.DOCKER_USER }}/sistema_academico_react
+          docker push ${{ secrets.DOCKER_USER }}/sistema_academico
+          docker push ${{ secrets.DOCKER_USER }}/sistema_academico_react
