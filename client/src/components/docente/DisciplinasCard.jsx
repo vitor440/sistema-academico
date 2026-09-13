@@ -47,7 +47,7 @@ const DisciplinasCard = ({disciplina, buttonText, funcao}) => {
 
   return (
     <Grid size={3}>
-        <Card sx={{height:"260px", justifyContent:"center", // height: 230px
+        <Card sx={{height:"240px", justifyContent:"center", // height: 230px
         "&:hover": {
             borderColor:"#3fb566",
             cursor: "pointer"
@@ -58,7 +58,7 @@ const DisciplinasCard = ({disciplina, buttonText, funcao}) => {
                 <Avatar  sx={{height:"100px", width:"100px", mb:2, backgroundColor:"#3fb566", fontSize:"40px"}}> 
                     {avatarName(disciplina.nome.split(' '))}
                 </Avatar>
-                <Typography variant='h5'> {disciplina?.nome}</Typography>
+                <Typography variant='h6'> {disciplina?.nome}</Typography>
                 <Button variant='contained' fullWidth sx={{mt:2}} onClick={funcao}>{buttonText}</Button>
             </Box>
         </CardContent>

@@ -142,7 +142,7 @@ const Disciplinas = () => {
                         })}
                     </TextField>
                 </Box>
-                <Button variant='contained' onClick={handleClick}>Add disciplina</Button>
+                <Button variant='outlined' onClick={handleClick}>Add disciplina</Button>
             </Paper>
             <Paper variant='outlined' sx={{ p: 2 }}>
                 <CustomTable columns={columns} rows={disciplinas} paginationModel={paginationModel} setPaginationModel={setPaginationModel} loading={loading} total={totalDisciplinas}/>

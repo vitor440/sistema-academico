@@ -145,7 +145,7 @@ const PageDepartamentos = () => {
               <Grid size={12}>
                   <Paper sx={{p:2, display:'flex', justifyContent:'space-between'}} variant='outlined'>
                       <TextField label='nome do departamento' size='small' value={nome} onChange={(e) => setNome(e.target.value)}/>
-                      <Button variant='contained' size='medium' onClick={() => setOpen(true)}>Add Departamento</Button>
+                      <Button variant='outlined' size='medium' onClick={() => setOpen(true)}>Add Departamento</Button>
                   </Paper>
               </Grid>
           </Grid>

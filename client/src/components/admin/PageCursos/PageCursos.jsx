@@ -158,7 +158,7 @@ const PageCursos = () => {
                         <MenuItem key={3} value='8'>8</MenuItem>
                         <MenuItem key={4} value='10'>10</MenuItem>
                       </TextField>
-                      <Button variant='contained' size='medium' onClick={() => setOpen(true)}>Add Curso</Button>
+                      <Button variant='outlined' size='medium' onClick={() => setOpen(true)}>Add Curso</Button>
                   </Paper>
               </Grid>
           </Grid>

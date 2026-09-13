@@ -100,7 +100,7 @@ const AddExames = () => {
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Typography variant='h5' sx={{ mb: 2 }}>Exames</Typography>
-        <Button variant='contained' sx={{ mb: 2 }} onClick={() => setOpen(true)}>Add Exame</Button>
+        <Button variant='outlined' sx={{ mb: 2 }} onClick={() => setOpen(true)}>Add Exame</Button>
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid container direction="row" spacing={2}>
