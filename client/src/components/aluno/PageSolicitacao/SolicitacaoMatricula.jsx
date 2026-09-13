@@ -114,7 +114,7 @@ const SolicitacaoMatricula = () => {
           {disciplinas?.map(d => {
             return <Grid size={3}>
               <Card sx={{
-                height: "230px", justifyContent: "center",
+                height: "260px", justifyContent: "center",
                 "&:hover": {
                   borderColor: "#3fb566",
                   cursor: "pointer"
