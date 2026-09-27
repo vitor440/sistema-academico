@@ -29,7 +29,7 @@ public class SecutityConfiguration {
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/swagger-ui/**", "/v3/api-docs",
-                            "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                            "/v3/api-docs/**", "/swagger-ui.html", "/actuator/health", "/actuator/health/**").permitAll()
                             .anyRequest().authenticated();
                 })
 
