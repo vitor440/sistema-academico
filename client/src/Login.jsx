@@ -18,7 +18,7 @@ const Login = () => {
         
         const url = `${BASE_URL}/oauth2/authorize?` +
                     "response_type=code" +
-                    "&client_id=react" +
+                    `&client_id=${import.meta.env.VITE_CLIENT_ID}` +
                     "&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fcallback" +
                     `&code_challenge=${code_challenge}` +
                     `&code_challenge_method=S256`

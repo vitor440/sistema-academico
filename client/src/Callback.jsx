@@ -44,7 +44,7 @@ const Callback = () => {
             body.append("code", code)
             body.append("redirect_uri", import.meta.env.VITE_REDIRECT_URI)
             body.append("code_verifier", code_verifier)
-            body.append("client_id", "react")
+            body.append("client_id", import.meta.env.VITE_CLIENT_ID)
 
             const response = await api.post("/oauth2/token", body, {
                 headers: {
