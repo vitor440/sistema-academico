@@ -35,12 +35,12 @@ api.interceptors.response.use((response) => response,
             if (error.response.status === 401) {
                 localStorage.removeItem("access_token")
                 toast.error("Credenciais expiradas. faça login novamente!")
-                window.location.href = '/logout'
+                //window.location.href = '/logout'
             }
             else if (error.response.status === 403) {
-                localStorage.removeItem("access_token")
-                toast.error("Acesso negado!")
-                window.location.href = '/logout'
+                //localStorage.removeItem("access_token")
+                //toast.error("Acesso negado!")
+                //window.location.href = '/logout'
             }
             else if (error.response.status === 409) {
                 const { erro } = error.response.data
@@ -63,7 +63,7 @@ api.interceptors.response.use((response) => response,
         else {
             localStorage.removeItem("access_token")
             toast.error("Erro no servidor")
-            window.location.href = '/logout'
+            //window.location.href = '/logout'
         
         }
 
