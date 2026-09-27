@@ -1,17 +1,13 @@
-import React, { use } from 'react'
-import { useState, useEffect } from 'react'
-import "./UserCards.css"
-import { Link } from 'react-router-dom'
-import {Paper, Box, Typography, Button, Grid, Divider, IconButton} from '@mui/material'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import CustomModal from '../CustomModal'
-import FormAluno from './PageAlunos/FormAluno'
-import DeleteOptions from '../DeleteOptions'
-import api from '../../services/api'
-import FormUsuario from './PageUsuarios/FormUsuario'
-import FormDocentes from './PageDocentes/FormDocentes'
-import { toast } from 'react-toastify'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Box, Divider, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import api from '../../services/api';
+import DeleteOptions from '../DeleteOptions';
+import FormAluno from './PageAlunos/FormAluno';
+import FormDocentes from './PageDocentes/FormDocentes';
+import FormUsuario from './PageUsuarios/FormUsuario';
 
 const UserCards = ({Icone, data, role, cor, obterDados}) => {
 

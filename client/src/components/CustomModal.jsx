@@ -1,8 +1,7 @@
-import Modal from '@mui/material/Modal'
-import Paper from '@mui/material/Paper';
-import React from 'react'
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import Modal from '@mui/material/Modal';
+import Paper from '@mui/material/Paper';
 
 const CustomModal = ({open, handleClose,children, modalLoading}) => {
 

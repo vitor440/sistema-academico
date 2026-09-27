@@ -1,27 +1,22 @@
-import React, { useContext } from 'react'
-import "./AdminSideBar.css"
-import { FaCalendarAlt, FaRegClock, FaRegCheckCircle, FaTasks } from "react-icons/fa";
-import { LuNotebookPen } from "react-icons/lu";
-import { MdOutlineEventNote } from "react-icons/md";
-import { FaFileCircleCheck } from "react-icons/fa6";
-import { IoMdHome } from "react-icons/io";
-import { Link, useNavigate } from 'react-router-dom';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import HomeIcon from '@mui/icons-material/Home';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import { GlobalContext } from '../context/GlobalContext';
-import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import { useContext } from 'react';
 import { FaRegBuilding } from "react-icons/fa";
-import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import { ImUserTie } from "react-icons/im";
+import { MdOutlineEventNote } from "react-icons/md";
 import { PiStudentBold } from "react-icons/pi";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
+import { useNavigate } from 'react-router-dom';
+import { GlobalContext } from '../context/GlobalContext';
 
 const AdminSideBar = () => {
 

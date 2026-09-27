@@ -1,16 +1,15 @@
-import dayjs from 'dayjs'
-import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 
 
-import { Box, Button, Grid, MenuItem, TextField, Typography, IconButton } from '@mui/material'
 import ClearIcon from '@mui/icons-material/Clear';
+import { Box, Button, Grid, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import api from '../services/api';
 import CustomModal from './CustomModal';
-import CustomAlert from './CustomAlert';
 
 const FormDocentes = ({open, handleClose, docente, atualizar, obterDocentes}) => {
 
@@ -179,22 +178,6 @@ const FormDocentes = ({open, handleClose, docente, atualizar, obterDocentes}) =>
 
           
     </CustomModal>
-
-    <CustomAlert 
-          severity={"success"} 
-          open={openAlert} 
-          handleClose={() => setOpenAlert(false)} 
-          vertical={"top"} 
-          horizontal={"right"} 
-          mensagem={mensagem}/>
-
-          <CustomAlert 
-          severity={"error"} 
-          open={openErroAlert} 
-          handleClose={() => setOpenErroAlert(false)} 
-          vertical={"top"} 
-          horizontal={"right"} 
-          mensagem={mensagem}/>
     </>
   )
 }

@@ -1,11 +1,11 @@
+import { CircularProgress } from '@mui/material'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import React, { useEffect, useState } from 'react'
-import DisciplinasCard from '../DisciplinasCard'
-import api from '../../../services/api'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CircularProgress } from '@mui/material'
+import api from '../../../services/api'
+import DisciplinasCard from '../DisciplinasCard'
 
 const Turmas = () => {
 

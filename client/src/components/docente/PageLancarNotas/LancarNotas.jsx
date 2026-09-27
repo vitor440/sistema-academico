@@ -1,22 +1,15 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { DataGrid } from '@mui/x-data-grid'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import api from '../../../services/api'
-import Backdrop from '@mui/material/Backdrop'
-import CircularProgress from '@mui/material/CircularProgress'
-import Alert from '@mui/material/Alert'
-import CustomAlert from '../../CustomAlert'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import IconButton from '@mui/material/IconButton'
-import { GlobalContext } from '../../../context/GlobalContext'
-import CustomBackDrop from '../../CustomBackDrop'
 import { toast } from 'react-toastify'
+import { GlobalContext } from '../../../context/GlobalContext'
+import api from '../../../services/api'
+import CustomBackDrop from '../../CustomBackDrop'
 
 const LancarNotas = () => {
     const [alunos, setAlunos] = useState([])

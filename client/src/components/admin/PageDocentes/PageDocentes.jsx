@@ -1,14 +1,9 @@
-import React from 'react'
-import { DataGrid, gridClasses, renderActionsCell, GridActionsCell, GridActionsCellItem } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { FaUserTie } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 import { DocenteHook } from '../../hooks/DocenteHook';
 import UserCards from '../UserCards';
-import { FaUserTie } from "react-icons/fa";
-import { FaU } from 'react-icons/fa6';
-import "./PageDocentes.css"
-import Info from '../../Info';
-import { Box, CircularProgress, Grid, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 const PageDocentes = () => {
   const [docentes, setDocentes] = useState([])

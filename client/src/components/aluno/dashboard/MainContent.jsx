@@ -1,26 +1,18 @@
-import React, { useContext } from 'react'
-import './MainContent.css'
-import Info from '../../Info'
-import ListaAvaliacoes from '../PageExames/ListaAvaliacoes';
-import ListaTarefas from '../PageTarefas/ListaTarefas';
-import { FaBook } from "react-icons/fa";
-import { LuNotebookText } from "react-icons/lu";
-import { FaPencil } from "react-icons/fa6";
-import CustomTable from '../../CustomTable';
-import { DataGrid, gridClasses, renderActionsCell, GridActionsCell, GridActionsCellItem } from '@mui/x-data-grid';
-import { MdDeleteOutline } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
-import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Card from '../../Card';
-import Paper from '@mui/material/Paper';
-import { GlobalContext } from '../../../context/GlobalContext';
-import api from '../../../services/api'
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useContext, useEffect, useState } from 'react';
+import { FaBook } from "react-icons/fa";
+import { FaPencil } from "react-icons/fa6";
+import { LuNotebookText } from "react-icons/lu";
+import { GlobalContext } from '../../../context/GlobalContext';
+import api from '../../../services/api';
+import Card from '../../Card';
+import CustomTable from '../../CustomTable';
 
 const MainContent = () => {
 

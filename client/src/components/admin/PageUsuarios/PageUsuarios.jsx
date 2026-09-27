@@ -1,11 +1,10 @@
-import React from 'react'
-import { FaUserTie } from "react-icons/fa";
-import { UsuarioHook } from '../../hooks/UsuarioHook';
-import { useState, useEffect } from 'react';
-import UserCards from '../UserCards';
 import { Box, CircularProgress, Grid, Typography } from '@mui/material';
-import api from '../../../services/api';
+import { useEffect, useState } from 'react';
+import { FaUserTie } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import api from '../../../services/api';
+import { UsuarioHook } from '../../hooks/UsuarioHook';
+import UserCards from '../UserCards';
 
 const PageUsuarios = () => {
   const [usuarios, setUsuarios] = useState([])

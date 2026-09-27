@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import CustomModal from '../../CustomModal'
-import TextField from '@mui/material/TextField'
-import MenuItem from '@mui/material/MenuItem'
 import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import CustomAlert from '../../CustomAlert'
-import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
-import api from '../../../services/api';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import api from '../../../services/api';
+import CustomModal from '../../CustomModal';
 
 const FormExames = ({ open, handleClose, atualizar, exame, obterExames }) => {
 

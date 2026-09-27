@@ -1,8 +1,7 @@
-import { parseMarker } from '@fullcalendar/core/internal';
-import React, { useRef } from 'react'
-import { useSearchParams, useNavigate, redirect} from 'react-router-dom'
-import { useEffect } from 'react';
+
 import { jwtDecode } from "jwt-decode";
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from './services/api';
 
 const Callback = () => {

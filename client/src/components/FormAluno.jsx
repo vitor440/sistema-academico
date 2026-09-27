@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import api from '../../../services/api';
-import { useNavigate } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
-import CustomModal from '../../CustomModal';
-import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../../../services/api';
+import CustomModal from '../../CustomModal';
 
-import { DateField } from '@mui/x-date-pickers/DateField';
 import Button from '@mui/material/Button';
-import CustomAlert from '../../CustomAlert';
+import { DateField } from '@mui/x-date-pickers/DateField';
 
 const FormAluno = ({open, handleClose, aluno, atualizar, obterAlunos}) => {
   const navigate = useNavigate()
@@ -220,22 +219,6 @@ const FormAluno = ({open, handleClose, aluno, atualizar, obterAlunos}) => {
 
           
     </CustomModal>
-
-    <CustomAlert 
-          severity={"success"} 
-          open={openAlert} 
-          handleClose={() => setOpenAlert(false)} 
-          vertical={"top"} 
-          horizontal={"right"} 
-          mensagem={mensagem}/>
-
-      <CustomAlert 
-      severity={"error"} 
-      open={openErroAlert} 
-      handleClose={() => setOpenErroAlert(false)} 
-      vertical={"top"} 
-      horizontal={"right"} 
-      mensagem={mensagem}/>
     </>
   )
 }

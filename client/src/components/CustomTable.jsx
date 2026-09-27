@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { DataGrid } from '@mui/x-data-grid'
 import Box from '@mui/material/Box'
+import { DataGrid } from '@mui/x-data-grid'
 
 
 const CustomTable = ({columns, rows, paginationModel, setPaginationModel, loading, total}) => {

@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import CustomModal from '../../CustomModal'
+import ClearIcon from '@mui/icons-material/Clear'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton';
-import ClearIcon from '@mui/icons-material/Clear';
-import api from '../../../services/api'
-import CustomAlert from '../../CustomAlert'
 import CircularProgress from '@mui/material/CircularProgress'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import api from '../../../services/api'
+import CustomModal from '../../CustomModal'
 
 const FormDepartamento = ({open, handleClose, departamento, atualizar, obterDepartamentos}) => {
 

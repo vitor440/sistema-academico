@@ -1,24 +1,22 @@
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
+import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined'
+import HomeIcon from '@mui/icons-material/Home'
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import React, { useContext } from 'react'
-import HomeIcon from '@mui/icons-material/Home';
-import { FaCalendarAlt, FaRegClock, FaTasks } from 'react-icons/fa'
-import { LuNotebookPen } from 'react-icons/lu'
+import { useContext } from 'react'
+import { CiCirclePlus } from "react-icons/ci"
+import { FaCalendarAlt, FaRegClock } from 'react-icons/fa'
 import { FaFileCircleCheck } from 'react-icons/fa6'
-import { MdOutlineEventNote } from 'react-icons/md'
+import { LuNotebookPen } from 'react-icons/lu'
+import { PiExam, PiStudentBold } from "react-icons/pi"
 import { useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../context/GlobalContext'
-import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
-import { PiExam } from "react-icons/pi";
-import { PiStudentBold } from "react-icons/pi";
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import { CiCirclePlus } from "react-icons/ci";
 
 const DocenteSideBar = () => {
 

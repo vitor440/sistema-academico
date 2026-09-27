@@ -1,20 +1,17 @@
-import React, { useContext } from 'react'
-import { FaCalendarAlt, FaRegClock, FaRegCheckCircle, FaTasks } from "react-icons/fa";
-import { LuNotebookPen } from "react-icons/lu";
-import { MdOutlineEventNote } from "react-icons/md";
-import { FaFileCircleCheck } from "react-icons/fa6";
-import { IoMdHome } from "react-icons/io";
-import './SideBar.css'
-import { Link } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import { GlobalContext } from '../context/GlobalContext';
+import { useContext } from 'react';
+import { FaCalendarAlt, FaRegClock, FaTasks } from "react-icons/fa";
+import { FaFileCircleCheck } from "react-icons/fa6";
+import { LuNotebookPen } from "react-icons/lu";
+import { MdOutlineEventNote } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import { GlobalContext } from '../context/GlobalContext';
 
 const SideBar = () => {
 

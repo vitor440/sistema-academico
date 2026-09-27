@@ -1,5 +1,3 @@
-import React from 'react'
-import Error from '../Error'
 import { Navigate } from 'react-router-dom'
 
 function ProtectRouter({roles, children}) {

@@ -1,22 +1,21 @@
-import React from 'react'
-import { DataGrid, gridClasses, renderActionsCell, GridActionsCell, GridActionsCellItem } from '@mui/x-data-grid';
-import { MdDeleteOutline } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
-import { useState, useEffect } from 'react';
-import { CursoHooks } from '../../hooks/CursoHooks';
-import CustomTable from '../../CustomTable';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import api from '../../../services/api';
-import DeleteOptions from '../../DeleteOptions';
-import FormCurso from './FormCurso';
+import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { GridActionsCellItem } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { CiEdit } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import api from '../../../services/api';
+import CustomTable from '../../CustomTable';
+import DeleteOptions from '../../DeleteOptions';
+import { CursoHooks } from '../../hooks/CursoHooks';
+import FormCurso from './FormCurso';
 
 const PageCursos = () => {
 

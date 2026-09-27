@@ -1,10 +1,9 @@
 import { Avatar, Box, Button, Card, CardContent, CircularProgress, Grid, Typography } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
-import api from '../../../services/api'
-import { GlobalContext } from '../../../context/GlobalContext'
-import CustomAlert from '../../CustomAlert'
-import CustomBackDrop from '../../CustomBackDrop'
+import { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { GlobalContext } from '../../../context/GlobalContext'
+import api from '../../../services/api'
+import CustomBackDrop from '../../CustomBackDrop'
 
 const SolicitacaoMatricula = () => {
 

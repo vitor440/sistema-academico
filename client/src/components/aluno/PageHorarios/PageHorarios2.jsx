@@ -1,14 +1,14 @@
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import React, { useContext, useEffect, useState } from 'react'
-import { StandaloneWeekView } from '@mui/x-scheduler/week-view';
-import { pt } from 'date-fns/locale/pt'
-import dayjs from 'dayjs';
-import api from '../../../services/api'
-import { GlobalContext } from '../../../context/GlobalContext';
-import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { StandaloneWeekView } from '@mui/x-scheduler/week-view';
+import { pt } from 'date-fns/locale/pt';
+import dayjs from 'dayjs';
+import { useContext, useEffect, useState } from 'react';
+import { GlobalContext } from '../../../context/GlobalContext';
+import api from '../../../services/api';
 
 const PageHorarios2 = () => {
 

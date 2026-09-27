@@ -1,4 +1,3 @@
-import React from 'react'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { BarChart } from '@mui/x-charts'
 

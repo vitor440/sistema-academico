@@ -1,19 +1,13 @@
-import React from 'react'
-import CustomTable from '../../CustomTable';
-import { MatriculaHooks } from '../../hooks/MatriculaHooks';
-import { useState, useEffect } from 'react';
-import { GridActionsCellItem } from '@mui/x-data-grid';
-import { MdDeleteOutline } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
-import api from '../../../services/api';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../../services/api';
+import CustomTable from '../../CustomTable';
 
 const PageMatriculas = () => {
 
@@ -26,7 +20,6 @@ const PageMatriculas = () => {
   const [loading, setloading] = useState(false)
 
   const [matriculas, setMatriculas] = useState([])
-  const { listarMatriculas } = MatriculaHooks()
 
   const [paginationModel, setPaginationModel] = useState({
                           page: 0,

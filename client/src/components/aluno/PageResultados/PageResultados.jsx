@@ -1,14 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
-import "./PageResultados.css"
-import ResultadoComponent from './ResultadoComponent'
 import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
+import { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../../context/GlobalContext'
 import api from '../../../services/api'
-import MenuItem from '@mui/material/MenuItem'
-import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
+import ResultadoComponent from './ResultadoComponent'
 
 const PageResultados = () => {
 

@@ -1,15 +1,14 @@
-import Button from '@mui/material/Button';
-import React, { useContext, useEffect, useState } from 'react'
-import api from '../../../services/api';
-import { GlobalContext } from '../../../context/GlobalContext';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import { DataGrid } from '@mui/x-data-grid';
-import CustomAlert from '../../CustomAlert';
-import CustomBackDrop from '../../CustomBackDrop';
 import { MenuItem, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { DataGrid } from '@mui/x-data-grid';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { GlobalContext } from '../../../context/GlobalContext';
+import api from '../../../services/api';
+import CustomBackDrop from '../../CustomBackDrop';
 
 const EfetivarMatriculas = () => {
 

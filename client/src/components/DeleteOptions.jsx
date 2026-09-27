@@ -1,13 +1,10 @@
-import React, { useState } from 'react'
-import CustomModal from './CustomModal'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
 import ClearIcon from '@mui/icons-material/Clear';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CustomAlert from './CustomAlert';
-import { toast } from 'react-toastify';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import CustomModal from './CustomModal';
 
 const DeleteOptions = ({open, handleClose, deletar, mensagem, mensagemErro}) => {
 

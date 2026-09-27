@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { Box, Typography } from '@mui/material';
 import { StandaloneWeekView } from '@mui/x-scheduler/week-view';
-import { pt } from 'date-fns/locale/pt'
+import { pt } from 'date-fns/locale/pt';
 import dayjs from 'dayjs';
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../../../context/GlobalContext';
 import api from '../../../services/api';
 

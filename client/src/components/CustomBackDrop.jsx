@@ -1,5 +1,4 @@
 import { Backdrop, CircularProgress } from '@mui/material'
-import React from 'react'
 
 const CustomBackDrop = ({open, handleClose}) => {
   return (

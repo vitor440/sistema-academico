@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import api from '../../../services/api'
-import CustomModal from '../../CustomModal'
-import { Box, Button, CircularProgress, Grid, IconButton, TextField, Typography } from '@mui/material'
-import CustomAlert from '../../CustomAlert'
 import ClearIcon from '@mui/icons-material/Clear';
-import { toast } from 'react-toastify'
+import { Box, Button, CircularProgress, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import api from '../../../services/api';
+import CustomModal from '../../CustomModal';
 
 const FormUsuario = ({ open, handleClose, usuario, atualizar, obterUsuarios }) => {
 

@@ -1,28 +1,20 @@
-import React from 'react'
-import "./PageDepartamentos.css"
-import { DataGrid, gridClasses, renderActionsCell, GridActionsCell, GridActionsCellItem } from '@mui/x-data-grid';
-import { MdDeleteOutline } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
-import { useState, useEffect } from 'react';
-import { DepartamentoHook } from '../../hooks/DepartamentoHook';
-import CustomTable from '../../CustomTable';
-import Modal from '@mui/material/Modal';
-import DepartamentoForm from '../../DepartamentoForm';
-import Box from "@mui/material/Box"
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import CustomModal from '../../CustomModal';
-import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton';
-import api from '../../../services/api';
+import Typography from '@mui/material/Typography';
+import { GridActionsCellItem } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { CiEdit } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-import CustomAlert from '../../CustomAlert';
-import DeleteOptions from '../../DeleteOptions';
-import FormDepartamento from './FormDepartamento';
 import { toast } from 'react-toastify';
+import api from '../../../services/api';
+import CustomTable from '../../CustomTable';
+import DeleteOptions from '../../DeleteOptions';
+import { DepartamentoHook } from '../../hooks/DepartamentoHook';
+import FormDepartamento from './FormDepartamento';
 
 const PageDepartamentos = () => {
     const navigate = useNavigate()

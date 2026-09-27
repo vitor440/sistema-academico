@@ -1,18 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
-import api from '../../../services/api'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid'
-import DisciplinasCard from '../DisciplinasCard'
+import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
-import ExameCard from '../ExameCard'
-import { useNavigate, useParams } from 'react-router-dom'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { GlobalContext } from '../../../context/GlobalContext'
-import Button from '@mui/material/Button'
+import api from '../../../services/api'
+import ExameCard from '../ExameCard'
 
 const DisciplinaNotas = () => {
 

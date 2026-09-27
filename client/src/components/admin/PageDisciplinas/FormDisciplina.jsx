@@ -1,10 +1,9 @@
-import { Box, Button, CircularProgress, Divider, Grid, IconButton, MenuItem, TextField, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
-import CustomAlert from '../../CustomAlert';
-import CustomModal from '../../CustomModal';
-import api from '../../../services/api';
+import { Box, Button, CircularProgress, Divider, Grid, IconButton, MenuItem, TextField, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import api from '../../../services/api';
+import CustomModal from '../../CustomModal';
 
 const FormDisciplina = ({ open, handleClose, disciplina, atualizar, obterDisciplinas }) => {
 

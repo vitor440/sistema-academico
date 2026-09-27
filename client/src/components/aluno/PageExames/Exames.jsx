@@ -3,13 +3,11 @@ import MenuItem from '@mui/material/MenuItem'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import React, { useContext, useEffect, useState } from 'react'
-import CustomTable from '../../CustomTable'
-import { GridActionsCellItem } from '@mui/x-data-grid'
-import Button from '@mui/material/Button'
-import api from '../../../services/api'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../../context/GlobalContext'
+import api from '../../../services/api'
+import CustomTable from '../../CustomTable'
 
 const Exames = () => {
   const navigate = useNavigate()

@@ -1,14 +1,14 @@
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar';
-import React, { useContext, useState } from 'react'
-import MenuIcon from '@mui/icons-material/Menu';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { GlobalContext } from '../context/GlobalContext';
+import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Navigate, useNavigate } from 'react-router-dom';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GlobalContext } from '../context/GlobalContext';
 
 const Header2 = () => {
 

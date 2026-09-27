@@ -1,10 +1,8 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { AlunoHooks } from '../../hooks/AlunoHooks'
-import { PiStudentBold } from "react-icons/pi";
-import UserCards from '../UserCards';
-import "./PageAlunos.css"
 import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { PiStudentBold } from "react-icons/pi";
+import { AlunoHooks } from '../../hooks/AlunoHooks';
+import UserCards from '../UserCards';
 
 const PageAlunos = () => {
   const [alunos, setAlunos] = useState([])

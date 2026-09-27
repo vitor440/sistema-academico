@@ -1,10 +1,10 @@
 
-import React, { useState } from 'react'
-import { Avatar, Box, Button, Grid, Paper, Typography } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
-import FormAluno from '../admin/PageAlunos/FormAluno';
+import { Avatar, Box, Button, Grid, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FormAluno from '../admin/PageAlunos/FormAluno';
 
 const PerfilAluno = ({dadosPessoais}) => {
   const [open, setOpen] = useState(false)

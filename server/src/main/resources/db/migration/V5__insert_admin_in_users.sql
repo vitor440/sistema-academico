@@ -7,5 +7,5 @@ values ('react', '{bcrypt}$2a$10$SLxHb1QOYY1d3eIhwHJiu.5JSrShejvkNIlG2CIeWeS8LtG
 -- senha: client123
 
 insert into client (client_id, client_secret, redirect_uri, data_criacao, data_atualizacao)
-values ('react', '{bcrypt}$2a$10$SLxHb1QOYY1d3eIhwHJiu.5JSrShejvkNIlG2CIeWeS8LtG6eQBwq', 'https://sistema-academico-delta.vercel.app/algum-callback', '2026-05-26 10:43:41.848', '2026-05-26 10:43:41.848');
+values ('react-prod', '{bcrypt}$2a$10$SLxHb1QOYY1d3eIhwHJiu.5JSrShejvkNIlG2CIeWeS8LtG6eQBwq', 'https://sistema-academico-delta.vercel.app/algum-callback', '2026-05-26 10:43:41.848', '2026-05-26 10:43:41.848');
 -- senha: client123

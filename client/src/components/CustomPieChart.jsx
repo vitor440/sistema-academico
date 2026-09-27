@@ -1,5 +1,3 @@
-import React from 'react'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { PieChart } from '@mui/x-charts'
 
 const CustomPieChart = ({data, width, height, loading}) => {

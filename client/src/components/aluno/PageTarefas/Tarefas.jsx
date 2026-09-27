@@ -4,12 +4,11 @@ import MenuItem from '@mui/material/MenuItem'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import React, { useContext, useEffect, useState } from 'react'
-import CustomTable from '../../CustomTable'
-import api from '../../../services/api'
-import { data } from 'react-router-dom'
 import dayjs from 'dayjs'
+import { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../../context/GlobalContext'
+import api from '../../../services/api'
+import CustomTable from '../../CustomTable'
 
 const Tarefas = () => {
 

@@ -1,9 +1,9 @@
-import { Avatar, Box, Button, Grid, Paper, Typography } from '@mui/material'
-import React, { useState } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
-import FormDocentes from '../FormDocentes';
+import { Avatar, Box, Button, Grid, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FormDocentes from '../FormDocentes';
 
 const PerfilDocente = ({dadosPessoais}) => {
   const [open, setOpen] = useState(false)

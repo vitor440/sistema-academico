@@ -1,12 +1,10 @@
 import { Backdrop, Box, Button, CircularProgress, Paper, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
-import CustomAlert from '../../CustomAlert';
-import api from '../../../services/api';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import CustomBackDrop from '../../CustomBackDrop';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import api from '../../../services/api';
+import CustomBackDrop from '../../CustomBackDrop';
 
 const EditarNotas = () => {
     const [openBackDrop, setOpenBackDrop] = useState(false)

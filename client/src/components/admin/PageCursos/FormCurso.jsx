@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import CustomModal from '../../CustomModal'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
 import ClearIcon from '@mui/icons-material/Clear';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import api from '../../../services/api';
-import { useNavigate } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
-import MenuItem from '@mui/material/MenuItem';
 import CircularProgress from '@mui/material/CircularProgress';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import api from '../../../services/api';
+import CustomModal from '../../CustomModal';
 
 const FormCurso = ({open, handleClose, curso, atualizar, obterCursos}) => {
 

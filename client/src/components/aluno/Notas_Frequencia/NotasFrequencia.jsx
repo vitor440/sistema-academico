@@ -5,10 +5,10 @@ import MenuItem from '@mui/material/MenuItem'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import React, { useContext, useEffect, useState } from 'react'
-import CustomTable from '../../CustomTable'
+import { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../../context/GlobalContext'
 import api from '../../../services/api'
+import CustomTable from '../../CustomTable'
 
 const NotasFrequencia = () => {
     const { ano, setAno, periodo, setPeriodo } = useContext(GlobalContext)

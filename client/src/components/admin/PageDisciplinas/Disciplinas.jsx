@@ -1,12 +1,12 @@
-import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import CustomTable from '../../CustomTable';
-import api from '../../../services/api';
+import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
-import { MdDeleteOutline } from "react-icons/md";
+import { useEffect, useState } from 'react';
 import { CiEdit } from "react-icons/ci";
-import FormDisciplina from './FormDisciplina';
+import { MdDeleteOutline } from "react-icons/md";
+import api from '../../../services/api';
+import CustomTable from '../../CustomTable';
 import DeleteOptions from '../../DeleteOptions';
+import FormDisciplina from './FormDisciplina';
 
 const Disciplinas = () => {
 

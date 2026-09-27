@@ -1,18 +1,17 @@
-import Grid from '@mui/material/Grid'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import CardContent from '@mui/material/CardContent'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { Button } from '@mui/material'
+import Typography from '@mui/material/Typography'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import api from '../../services/api'
 import DeleteOptions from '../DeleteOptions'
 import FormExames from './PageAddExames/FormExames'
-import { toast } from 'react-toastify'
 
 const ExameCard = ({exame, link, obterExames}) => {
 

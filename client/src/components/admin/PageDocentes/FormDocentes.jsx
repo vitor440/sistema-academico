@@ -1,14 +1,13 @@
+import ClearIcon from '@mui/icons-material/Clear'
+import { Box, Button, CircularProgress, Grid, IconButton, MenuItem, TextField, Typography } from '@mui/material'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DateField } from '@mui/x-date-pickers/DateField'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import dayjs from 'dayjs'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import api from '../../../services/api'
 import CustomModal from '../../CustomModal'
-import { Box, Button, Grid, MenuItem, TextField, Typography, IconButton, CircularProgress } from '@mui/material'
-import ClearIcon from '@mui/icons-material/Clear';
-import CustomAlert from '../../CustomAlert'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import { toast } from 'react-toastify'
 
 const FormDocentes = ({open, handleClose, docente, atualizar, obterDocentes}) => {
 

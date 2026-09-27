@@ -1,25 +1,16 @@
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import React, { useContext, useEffect, useState } from 'react'
-import ExameCard from '../ExameCard'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import { useContext, useEffect, useState } from 'react'
 import api from '../../../services/api'
-import CustomModal from '../../CustomModal'
-import TextField from '@mui/material/TextField'
-import MenuItem from '@mui/material/MenuItem'
-import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import ExameCard from '../ExameCard'
 
-import dayjs from 'dayjs';
-import CustomAlert from '../../CustomAlert'
+import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
-import FormExames from './FormExames'
 import { GlobalContext } from '../../../context/GlobalContext'
+import FormExames from './FormExames'
 
 const AddExames = () => {
 

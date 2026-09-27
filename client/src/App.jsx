@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react'
-import HeaderComponent from './components/HeaderComponent'
+import CssBaseline from '@mui/material/CssBaseline'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { ToastContainer } from 'react-toastify'
+import './App.css'
 import Header2 from './components/Header2'
 import Main from './components/Main'
-import Error from './Error'
-import './App.css'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import { ToastContainer } from 'react-toastify'
 
 function App() {
 

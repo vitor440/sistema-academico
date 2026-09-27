@@ -1,12 +1,9 @@
-import React, { useContext } from 'react'
-import SideBar from './SideBar'
-import MainContent from './aluno/dashboard/MainContent'
-import { Outlet } from 'react-router-dom'
-import './Main.css'
-import { useState, useEffect } from 'react'
-import AdminSideBar from './AdminSideBar';
 import Box from '@mui/material/Box'
+import { useContext } from 'react'
+import { Outlet } from 'react-router-dom'
 import { GlobalContext } from '../context/GlobalContext'
+import AdminSideBar from './AdminSideBar'
+import SideBar from './SideBar'
 import DocenteSideBar from './docente/DocenteSideBar'
 
 

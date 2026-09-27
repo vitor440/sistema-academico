@@ -1,9 +1,9 @@
-import { Avatar, Box, Button, Grid, Paper, Typography } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmailIcon from '@mui/icons-material/Email';
-import React, { useState } from 'react'
-import FormUsuario from './PageUsuarios/FormUsuario';
+import { Avatar, Box, Button, Grid, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FormUsuario from './PageUsuarios/FormUsuario';
 
 const PerfilAdmin = ({dadosPessoais}) => {
   const [open, setOpen] = useState(false)

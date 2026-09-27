@@ -1,13 +1,11 @@
-import React, {  useEffect, useState } from 'react'
-import "./ResultadoComponent.css"
-import { CiCalendarDate } from "react-icons/ci";
-import { GoShieldCheck } from "react-icons/go";
-import { FaRegCircleCheck } from "react-icons/fa6";
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { CiCalendarDate } from "react-icons/ci";
+import { FaRegCircleCheck } from "react-icons/fa6";
+import { GoShieldCheck } from "react-icons/go";
 import api from '../../../services/api';
 
 const ResultadoComponent = ({resultado}) => {

@@ -1,11 +1,9 @@
-import { Avatar, Box, CircularProgress, Paper, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import api from '../services/api'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EmailIcon from '@mui/icons-material/Email';
-import PerfilDocente from './docente/PerfilDocente';
-import PerfilAluno from './aluno/PerfilAluno';
+import { Box, CircularProgress } from '@mui/material';
+import { useEffect, useState } from 'react';
+import api from '../services/api';
 import PerfilAdmin from './admin/PerfilAdmin';
+import PerfilAluno from './aluno/PerfilAluno';
+import PerfilDocente from './docente/PerfilDocente';
 
 const DetalhesPerfil = ({role}) => {
     const [dadosPessoais, setDadosPessoais] = useState(null)

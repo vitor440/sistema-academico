@@ -1,32 +1,22 @@
-import React from 'react'
-import Info from '../../Info'
-import { FaBook } from "react-icons/fa";
-import { LuNotebookText } from "react-icons/lu";
-import { FaPencil } from "react-icons/fa6";
-import { MdDeleteOutline } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
-import { BarChart, axisClasses } from '@mui/x-charts';
-import { useState, useEffect } from 'react';
-import "./AdminMain.css"
+
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { FaRegBuilding } from "react-icons/fa";
+import { HiMiniBuildingLibrary } from "react-icons/hi2";
+import { ImUserTie } from "react-icons/im";
+import { useNavigate } from 'react-router-dom';
+import api from '../../../services/api';
+import Card from '../../Card';
+import CustomBarChart from '../../CustomBarChart';
+import CustomPieChart from '../../CustomPieChart';
+import CustomTable from '../../CustomTable';
 import { CursoHooks } from '../../hooks/CursoHooks';
 import { DepartamentoHook } from '../../hooks/DepartamentoHook';
 import { DocenteHook } from '../../hooks/DocenteHook';
-import CustomTable from '../../CustomTable';
-import CustomBarChart from '../../CustomBarChart';
-import CustomPieChart from '../../CustomPieChart';
-import { GridActionsCellItem } from '@mui/x-data-grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Card from '../../Card';
-import Paper from '@mui/material/Paper';
-import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate } from 'react-router-dom';
-import api from '../../../services/api'
-import { FaRegBuilding } from "react-icons/fa";
-import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
-import { HiMiniBuildingLibrary } from "react-icons/hi2";
-import { ImUserTie } from "react-icons/im";
 
 const AdminMain = () => {
 

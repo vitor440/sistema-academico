@@ -1,10 +1,10 @@
-import { Box, Button, CircularProgress, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
 import SchoolIcon from '@mui/icons-material/School';
-import api from '../../../services/api';
-import { GlobalContext } from '../../../context/GlobalContext';
-import CustomBackDrop from '../../CustomBackDrop';
+import { Box, Button, CircularProgress, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { GlobalContext } from '../../../context/GlobalContext';
+import api from '../../../services/api';
+import CustomBackDrop from '../../CustomBackDrop';
 
 const SolicitacoesMatricula = () => {
   

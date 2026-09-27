@@ -1,7 +1,7 @@
-import { Box, Button, Grid, Paper, Typography, useScrollTrigger, useTheme } from '@mui/material'
+import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import React, { useState } from 'react'
+import { useState } from 'react';
 import FormAluno from '../PageAlunos/FormAluno';
 import FormDocentes from '../PageDocentes/FormDocentes';
 import FormUsuario from '../PageUsuarios/FormUsuario';

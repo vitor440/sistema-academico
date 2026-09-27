@@ -1,11 +1,10 @@
 import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
-import { GlobalContext } from '../../../context/GlobalContext'
 import { DataGrid } from '@mui/x-data-grid'
-import CustomAlert from '../../CustomAlert'
-import CustomBackDrop from '../../CustomBackDrop'
-import api from '../../../services/api'
+import { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { GlobalContext } from '../../../context/GlobalContext'
+import api from '../../../services/api'
+import CustomBackDrop from '../../CustomBackDrop'
 
 const ProvaFinal = () => {
 

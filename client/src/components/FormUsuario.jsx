@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import api from '../../../services/api'
-import CustomModal from '../../CustomModal'
-import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/material'
-import CustomAlert from '../../CustomAlert'
 import ClearIcon from '@mui/icons-material/Clear';
+import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import api from '../../../services/api';
+import CustomModal from '../../CustomModal';
 
 const FormUsuario = ({open, handleClose, usuario, atualizar, obterUsuarios}) => {
 
@@ -100,21 +99,8 @@ const FormUsuario = ({open, handleClose, usuario, atualizar, obterUsuarios}) => 
           
     </CustomModal>
 
-    <CustomAlert 
-          severity={"success"} 
-          open={openAlert} 
-          handleClose={() => setOpenAlert(false)} 
-          vertical={"top"} 
-          horizontal={"right"} 
-          mensagem={mensagem}/>
-
-          <CustomAlert 
-          severity={"error"} 
-          open={openErroAlert} 
-          handleClose={() => setOpenErroAlert(false)} 
-          vertical={"top"} 
-          horizontal={"right"} 
-          mensagem={mensagem}/>
+  
+      
     </>
   )
 }
