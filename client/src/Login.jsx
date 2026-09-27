@@ -19,7 +19,7 @@ const Login = () => {
         const url = `${BASE_URL}/oauth2/authorize?` +
                     "response_type=code" +
                     `&client_id=${import.meta.env.VITE_CLIENT_ID}` +
-                    "&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fcallback" +
+                    `&redirect_uri=${import.meta.env.VITE_REDIRECT_URI}` +
                     `&code_challenge=${code_challenge}` +
                     `&code_challenge_method=S256`
 
