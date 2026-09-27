@@ -81,8 +81,12 @@ const Callback = () => {
             }
             
         } catch (error) {
-            alert(error)
-            navigate("/login")
+            //alert(error)
+            //navigate("/login")
+	    console.error("ERRO NO CALLBACK:", error)
+	    console.error("response:", error.response)
+	    console.error("request:", error.request)
+	    console.error("config:", error.config)
         }
     }
 
