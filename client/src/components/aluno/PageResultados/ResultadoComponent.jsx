@@ -69,30 +69,6 @@ const ResultadoComponent = ({resultado}) => {
                         </Box>
                     </Box>
                 </Paper>
-
-                {/* <Grid size={3}>
-                <Paper sx={{height:"190px", p:3}} variant='outlined'>
-                    <Typography variant='h5' gutterBottom={true}>Engenharia de software</Typography>
-                    <Typography variant='body1' sx={{mb:2}}>Prova 1 - Testes Automatizados</Typography>
-                    <Box sx={{display:"flex"}}>
-                        <Box sx={{flex:1}}>
-                            <Box sx={{display:"flex", mb:3}}>
-                                <CiCalendarDate size={"24px"} color='#fff'/>
-                                <Typography variant='body1'>Data:</Typography>
-                                <Typography variant='body1'>03/10/2026</Typography>
-                            </Box>
-                            <Box sx={{display:"flex", alignItems:"center"}}>
-                                <GoShieldCheck size={"24px"} color='#fff'/>
-                                <Typography variant='body1'>Nota:</Typography>
-                                <Typography variant='body1'>6.7</Typography>
-                            </Box>
-                        </Box>
-                        <Box>
-                            <FaRegCircleCheck color='#038d21' size={"60px"}/>
-                        </Box>
-                    </Box>
-                </Paper>
-                </Grid> */}
             </Grid>
             
             

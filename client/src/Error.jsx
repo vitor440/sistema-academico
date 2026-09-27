@@ -12,10 +12,6 @@ const Error = () => {
 
     async function logout() {
         try{
-            // await fetch("http://localhost:8080/logout", {
-            //     credentials: "include",
-            //     method: "GET"
-            // })
             await api.post("/logout")
             console.log("logout foi realizado!")
         }

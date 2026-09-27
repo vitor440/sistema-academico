@@ -9,7 +9,6 @@ const Callback = () => {
 
     const [params] = useSearchParams();
     let navigate = useNavigate();
-    // const hasFetched = useRef(false);
     
 
     async function getDocente() {
@@ -44,7 +43,7 @@ const Callback = () => {
             
             body.append("grant_type", "authorization_code")
             body.append("code", code)
-            body.append("redirect_uri", "http://localhost:5173/callback")
+            body.append("redirect_uri", import.meta.env.VITE_REDIRECT_URI)
             body.append("code_verifier", code_verifier)
             body.append("client_id", "react")
 
@@ -90,10 +89,6 @@ const Callback = () => {
 
     useEffect(() => {
         
-        // if (!hasFetched.current) {
-        //     hasFetched.current = true;
-        //     getToken();
-        // }
         getToken()
     }, [])
 

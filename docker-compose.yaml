@@ -33,7 +33,11 @@ services:
   sistema_academico_frontend:
     image: sistema_academico_react
     restart: always
-    build: ./client
+    build:
+      context: ./client
+      args:
+        VITE_API_URL: http://localhost:8080
+        VITE_REDIRECT_URI: http://localhost:5173/callback
     expose:
       - 80
     ports:
