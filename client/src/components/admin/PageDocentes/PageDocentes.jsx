@@ -2,19 +2,19 @@ import { Box, CircularProgress, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FaUserTie } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import { DocenteHook } from '../../hooks/DocenteHook';
+import api from '../../../services/api';
 import UserCards from '../UserCards';
 
 const PageDocentes = () => {
   const [docentes, setDocentes] = useState([])
-  const { listar } = DocenteHook()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
   async function obterDocentes() {
     setLoading(true)
     try {
-      const data = await listar(0, 10)
+      // const data = await listar(0, 10)
+      const data = await api.get("/docentes")
       setDocentes(data.content)
     } catch (error) {
     }

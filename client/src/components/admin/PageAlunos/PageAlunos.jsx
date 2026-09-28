@@ -1,12 +1,11 @@
 import { Box, CircularProgress, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { PiStudentBold } from "react-icons/pi";
-import { AlunoHooks } from '../../hooks/AlunoHooks';
+import api from '../../../services/api';
 import UserCards from '../UserCards';
 
 const PageAlunos = () => {
   const [alunos, setAlunos] = useState([])
-  const {listarAlunos} = AlunoHooks()
   const [nome, setNome] = useState("")
   const [loading, setLoading] = useState(false)
 
@@ -14,7 +13,8 @@ const PageAlunos = () => {
   async function obterAlunos() {
       setLoading(true)
       try {
-      const data = await listarAlunos(0, 10, nome)
+      // const data = await listarAlunos(0, 10, nome)
+      const data = await api.get("/alunos")
       setAlunos(data.content)
       } catch (error) {
         

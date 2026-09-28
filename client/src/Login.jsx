@@ -1,7 +1,5 @@
-import React from 'react'
-import { redirect } from 'react-router-dom'
-import { useEffect } from 'react'
 import pkceChallenge from "pkce-challenge";
+import { useEffect } from 'react';
 
 const Login = () => {
   const BASE_URL = import.meta.env.VITE_API_URL

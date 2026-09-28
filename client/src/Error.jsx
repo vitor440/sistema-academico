@@ -11,14 +11,14 @@ const Error = () => {
     async function logout() {
         try{
             await api.post("/logout")
-            console.log("logout foi realizado!")
+            localStorage.clear()
+            sessionStorage.clear()
+            navigate("/login")
         }
         catch(error) {
         }
 
-        localStorage.clear()
-        sessionStorage.clear()
-        navigate("/login")
+        
         
     }
 
@@ -29,7 +29,7 @@ const Error = () => {
 
   return (
     <div>
-        <h2>Logout</h2>
+        <h2></h2>
     </div>
   )
 }
