@@ -34,7 +34,7 @@ const PageDocentes = () => {
     )
   }
 
-  if(!loading && docentes.length === 0) {
+  if(!loading && docentes?.length === 0) {
     return (
       <Box>
         <Typography>Nenhum docente encontrado.</Typography>

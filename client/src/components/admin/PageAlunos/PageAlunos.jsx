@@ -34,7 +34,7 @@ const PageAlunos = () => {
     )
   }
 
-  if(!loading && alunos.length === 0) {
+  if(!loading && alunos?.length === 0) {
     return (
       <Box>
       <Typography>Nenhum aluno encontrado.</Typography>
