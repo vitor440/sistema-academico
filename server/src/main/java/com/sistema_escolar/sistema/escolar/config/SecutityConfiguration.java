@@ -33,7 +33,10 @@ public class SecutityConfiguration {
                 .formLogin(Customizer.withDefaults())
                 .logout(logout -> logout
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl(clientUri + "/login")
+                    .logoutSuccessHandler((request, response, authentication) -> {
+                        System.out.println("========= logout order 2 =========");
+                        response.sendRedirect(clientUri);
+                    })
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID"))
                 .authorizeHttpRequests(authorize -> {
