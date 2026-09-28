@@ -34,13 +34,13 @@ api.interceptors.response.use((response) => response,
         if (error.response && error.response.data) {
             if (error.response.status === 401) {
                 localStorage.removeItem("access_token")
-                toast.error("Credenciais expiradas. faça login novamente!")
-                //window.location.href = '/logout'
+                alert("Credenciais expiradas. faça login novamente!")
+                window.location.replace(`${import.meta.env.VITE_API_URL}/logout`)
             }
             else if (error.response.status === 403) {
-                //localStorage.removeItem("access_token")
-                //toast.error("Acesso negado!")
-                //window.location.href = '/logout'
+                localStorage.removeItem("access_token")
+                alert("Acesso negado!")
+                window.location.replace(`${import.meta.env.VITE_API_URL}/logout`)
             }
             else if (error.response.status === 409) {
                 const { erro } = error.response.data

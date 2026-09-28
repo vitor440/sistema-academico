@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.sistema_escolar.sistema.escolar.model.Usuario;
 import com.sistema_escolar.sistema.escolar.security.TestFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -45,12 +46,18 @@ import java.util.UUID;
 @EnableWebSecurity
 public class AuthorizationServerConfiguration {
 
+    @Value("${frontend.uri}")
+    private String clientUri;
+
     @Bean
     @Order(1)
     public SecurityFilterChain AuthorizationFilter(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfigurer configurer = new OAuth2AuthorizationServerConfigurer();
 
         http.securityMatcher(configurer.getEndpointsMatcher())
+                .logout(logout ->
+                        logout.logoutSuccessUrl(clientUri + "/login")
+                                .invalidateHttpSession(true))
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> {

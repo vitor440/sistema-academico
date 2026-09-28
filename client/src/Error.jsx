@@ -10,10 +10,9 @@ const Error = () => {
 
     async function logout() {
         try{
-            await api.post("/logout")
             localStorage.clear()
             sessionStorage.clear()
-            navigate("/login")
+            window.location.replace(`${import.meta.env.VITE_API_URL}/logout`)
         }
         catch(error) {
         }

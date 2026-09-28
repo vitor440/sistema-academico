@@ -16,6 +16,7 @@ COPY --from=build /build/target/*.jar /app.jar
 ENV DB_URL=''
 ENV DB_USER=''
 ENV DB_PASSWORD=''
+ENV FRONTEND_URI=''
 
 EXPOSE 8080
 

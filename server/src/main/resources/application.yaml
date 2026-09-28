@@ -11,3 +11,5 @@ spring:
       ddl-auto: none
 springdoc:
   override-with-generic-response: false
+frontend:
+  uri: ${FRONTEND_URI}

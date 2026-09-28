@@ -59,7 +59,7 @@ const Callback = () => {
 
             const token = data.access_token
         
-            console.log('token obtido: ' + token)
+            
 
             const tokenDecoded = jwtDecode(token)
 

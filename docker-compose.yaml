@@ -25,6 +25,7 @@ services:
       - DB_URL=jdbc:postgresql://db:5432/college
       - DB_USER=prod
       - DB_PASSWORD=prod123
+      - FRONTEND_URI=http://localhost:5173
     depends_on:
       - db
     networks:
