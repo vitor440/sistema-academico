@@ -2,6 +2,7 @@ package com.sistema_escolar.sistema.escolar.config;
 
 import com.sistema_escolar.sistema.escolar.security.JwtAuthenticationFilter;
 import com.sistema_escolar.sistema.escolar.security.TestFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,6 +20,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecutityConfiguration {
 
+    @Value("${frontend.uri}")
+    private String clientUri;
+
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter filter) throws Exception {
@@ -27,6 +31,11 @@ public class SecutityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(Customizer.withDefaults())
+                .logout(logout -> logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl(clientUri + "/login")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID"))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/swagger-ui/**", "/v3/api-docs",
                             "/v3/api-docs/**", "/swagger-ui.html", "/actuator/health", "/actuator/health/**").permitAll()
