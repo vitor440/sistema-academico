@@ -14,8 +14,8 @@ const PageDocentes = () => {
     setLoading(true)
     try {
       // const data = await listar(0, 10)
-      const data = await api.get("/docentes")
-      setDocentes(data.content)
+      const response = await api.get("/docentes")
+      setDocentes(response.data.content)
     } catch (error) {
     }
     setLoading(false)
@@ -34,7 +34,7 @@ const PageDocentes = () => {
     )
   }
 
-  if(!loading && docentes?.length === 0) {
+  if(!loading && docentes.length === 0) {
     return (
       <Box>
         <Typography>Nenhum docente encontrado.</Typography>

@@ -14,8 +14,8 @@ const PageAlunos = () => {
       setLoading(true)
       try {
       // const data = await listarAlunos(0, 10, nome)
-      const data = await api.get("/alunos")
-      setAlunos(data.content)
+      const response = await api.get("/alunos")
+      setAlunos(response.data.content)
       } catch (error) {
         
       }
@@ -34,7 +34,7 @@ const PageAlunos = () => {
     )
   }
 
-  if(!loading && alunos?.length === 0) {
+  if(!loading && alunos.length === 0) {
     return (
       <Box>
       <Typography>Nenhum aluno encontrado.</Typography>
