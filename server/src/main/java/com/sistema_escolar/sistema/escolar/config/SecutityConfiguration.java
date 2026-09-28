@@ -35,6 +35,7 @@ public class SecutityConfiguration {
                     .logoutUrl("/logout")
                     .logoutSuccessHandler((request, response, authentication) -> {
                         System.out.println("========= logout order 2 =========");
+                        System.out.println("redirect: " + clientUri);
                         response.sendRedirect(clientUri);
                     })
                     .invalidateHttpSession(true)
